@@ -3,7 +3,7 @@ require 'rspec_api_documentation'
 require 'rspec_api_documentation/dsl'
 
 RspecApiDocumentation.configure do |config|
-  config.format = [:json, :combined_text, :html]
+  config.format = :json
   config.curl_host = 'http://smart-life.com/'
   config.api_name = "Cloud Closet API"
   # Change how the post body is formatted by default, you can still override by `raw_post`

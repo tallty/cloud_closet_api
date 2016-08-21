@@ -33,6 +33,8 @@ gem 'annotate'
 # Simple (but safe) token authentication for Rails apps or API with Devise. Read more: https://github.com/gonzalo-bulnes/simple_token_authentication
 gem 'simple_token_authentication', '~> 1.0'
 
+gem "apitome"
+
 ###############################################################################
 
 group :development, :test do
