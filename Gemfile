@@ -21,9 +21,25 @@ gem 'jbuilder', '~> 2.5'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+###############################################################################
+# Automatically generate API documentation from RSpec, Read more: https://github.com/zipmark/rspec_api_documentation
+gem 'rspec_api_documentation'
+
+
+###############################################################################
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # rspec-rails is a testing framework for Rails 3.x, 4.x and 5.0. Read more: https://github.com/rspec/rspec-rails
+  gem 'rspec-rails', '~> 3.5'
+  # Collection of testing matchers extracted from Shoulda, Read more: https://github.com/thoughtbot/shoulda-matchers
+  gem 'shoulda-matchers', '~> 3.1'
+  # factory_girl is a fixtures replacement with a straightforward definition syntax, support for multiple build strategies 
+  # (saved instances, unsaved instances, attribute hashes, and stubbed objects), and support for multiple factories for the same class 
+  # (user, admin_user, and so on), including factory inheritance.
+  # Read more: https://github.com/thoughtbot/factory_girl_rails
+  gem 'factory_girl_rails'
 end
 
 group :development do
