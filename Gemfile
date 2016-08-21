@@ -24,7 +24,8 @@ gem 'rack-cors'
 ###############################################################################
 # Automatically generate API documentation from RSpec, Read more: https://github.com/zipmark/rspec_api_documentation
 gem 'rspec_api_documentation'
-
+# A set of Rails responders to dry up your application, Read more: https://github.com/plataformatec/responders
+gem "responders"
 
 ###############################################################################
 
