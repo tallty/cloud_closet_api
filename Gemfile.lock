@@ -148,6 +148,10 @@ GEM
       rspec (~> 3.0, >= 3.0.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
+    simple_token_authentication (1.14.0)
+      actionmailer (>= 3.2.6, < 6)
+      actionpack (>= 3.2.6, < 6)
+      devise (>= 3.2, < 6)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -187,6 +191,7 @@ DEPENDENCIES
   rspec-rails (~> 3.5)
   rspec_api_documentation
   shoulda-matchers (~> 3.1)
+  simple_token_authentication (~> 1.0)
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3

@@ -30,6 +30,8 @@ gem "responders"
 gem 'devise'
 # Annotate Rails classes with schema and routes info, Read more: https://github.com/ctran/annotate_models
 gem 'annotate' 
+# Simple (but safe) token authentication for Rails apps or API with Devise. Read more: https://github.com/gonzalo-bulnes/simple_token_authentication
+gem 'simple_token_authentication', '~> 1.0'
 
 ###############################################################################
 

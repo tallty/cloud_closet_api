@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  ############ SMS Routes ###################
+  resources :sms_tokens, only: [:show]  do
+    collection do
+      post 'register'
+    end
+  end
+  ###########################################
 end

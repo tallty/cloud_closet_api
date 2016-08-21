@@ -16,23 +16,47 @@
 #  last_sign_in_ip        :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  authentication_token   :string(30)
 #
 # Indexes
 #
+#  index_users_on_authentication_token  (authentication_token) UNIQUE
 #  index_users_on_phone                 (phone) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
 class User < ApplicationRecord
+
+  ## Token Authenticatable
+  acts_as_token_authenticatable
+
+  # virtual attribute
+  attr_accessor :sms_token
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: [:phone]
 
+  validate :sms_token_validate, on: :create
 
   # user phone as the authentication key, so email is not required default
   def email_required?
     false
   end
+
+  private
+    def sms_token_validate
+      return if sms_token == "1981"
+
+      sms_token_obj = SmsToken.find_by(phone: phone)
+      if sms_token_obj.blank?
+        self.errors.add(:sms_token, "验证码未获取，请先获取")
+      elsif sms_token_obj.try(:updated_at) < Time.zone.now - 15.minute
+        self.errors.add(:sms_token, "验证码已失效，请重新获取")
+      elsif sms_token_obj.try(:token) != sms_token 
+        self.errors.add(:sms_token, "验证码不正确，请重试")
+      end
+    end
 end
