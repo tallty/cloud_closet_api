@@ -28,6 +28,8 @@ gem 'rspec_api_documentation'
 gem "responders"
 # Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
 gem 'devise'
+# Annotate Rails classes with schema and routes info, Read more: https://github.com/ctran/annotate_models
+gem 'annotate' 
 
 ###############################################################################
 
