@@ -26,6 +26,8 @@ gem 'rack-cors'
 gem 'rspec_api_documentation'
 # A set of Rails responders to dry up your application, Read more: https://github.com/plataformatec/responders
 gem "responders"
+# Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
+gem 'devise'
 
 ###############################################################################
 
