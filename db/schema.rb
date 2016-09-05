@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160821090505) do
+ActiveRecord::Schema.define(version: 20160905112455) do
 
   create_table "sms_tokens", force: :cascade do |t|
     t.string   "phone"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 20160821090505) do
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wechat_sessions", force: :cascade do |t|
+    t.string   "openid",     null: false
+    t.string   "hash_store"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["openid"], name: "index_wechat_sessions_on_openid", unique: true
   end
 
 end
