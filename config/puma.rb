@@ -4,16 +4,16 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum, this matches the default thread size of Active Record.
 #
-threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i
-threads threads_count, threads_count
+# threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i
+# threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests, default is 3000.
 #
-port        ENV.fetch("PORT") { 3000 }
+# port        ENV.fetch("PORT") { 80 }
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+# environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
@@ -42,6 +42,32 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # on_worker_boot do
 #   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 # end
+
+
+
+# !/usr/bin/env puma
+
+# rails的运行环境
+environment = ENV['RAILS_ENV'] || "production"
+threads 2, 64
+workers 4
+
+app_name = "cloud_closet_api"
+application_path = "/home/deploy/#{app_name}"
+directory application_path
+
+pidfile "#{application_path}/tmp/pids/puma.pid"
+state_path "#{application_path}/tmp/sockets/puma.state"
+stdout_redirect "#{application_path}/log/puma.stdout.log", "#{application_path}/log/puma.stderr.log"
+bind "unix://#{application_path}/tmp/sockets/#{app_name}.sock"
+activate_control_app "unix://#{application_path}/tmp/sockets/pumactl.sock"
+
+# 后台运行
+daemonize true
+on_restart do
+  puts 'On restart...'
+end
+preload_app!
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
