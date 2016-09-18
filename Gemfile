@@ -43,6 +43,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   # rspec-rails is a testing framework for Rails 3.x, 4.x and 5.0. Read more: https://github.com/rspec/rspec-rails
+  # rails generate rspec:install
   gem 'rspec-rails', '~> 3.5'
   # Collection of testing matchers extracted from Shoulda, Read more: https://github.com/thoughtbot/shoulda-matchers
   gem 'shoulda-matchers', '~> 3.1'
