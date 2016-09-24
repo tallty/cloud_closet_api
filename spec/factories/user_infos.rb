@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user_info do
-    user nil
-    nickname "MyString"
-    mail "MyString"
+    nickname "userinfo nickname"
+    mail "userinfo mail"
+    association :avatar, factory: :image, photo_type: "avatar"
   end
 end

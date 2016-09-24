@@ -29,7 +29,7 @@ class Image < ApplicationRecord
   validates_attachment_size     :photo, less_than: 5.megabytes
   validates_attachment_content_type :photo, content_type: /image\/.*\Z/
 
-  def url mode
+  def url mode=:medium
     photo.present? ? photo.url(mode) : ""
   end
 end

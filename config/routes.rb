@@ -8,4 +8,9 @@ Rails.application.routes.draw do
     end
   end
   ###########################################
+
+
+  ############ UserInfo Routes ###################
+  resource :user_info, only: [:show, :update]
+  ###############################################
 end
