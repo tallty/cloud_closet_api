@@ -20,6 +20,5 @@ class UserInfo < ApplicationRecord
   delegate :phone, to: :user
 
   has_one :avatar, -> { where photo_type: "avatar" }, class_name: "Image", as: :imageable, dependent: :destroy
-  
   accepts_nested_attributes_for :avatar, allow_destroy: true
 end

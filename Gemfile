@@ -38,6 +38,9 @@ gem "apitome"
 # Read more: https://github.com/thoughtbot/paperclip
 # First install: sudo apt-get install imagemagick -y
 gem "paperclip", "~> 5.0.0"
+# Pagination library for Rails, Sinatra, Merb, DataMapper, and more
+# Read more: https://github.com/mislav/will_paginate
+gem 'will_paginate', '~> 3.1.0'
 
 ###############################################################################
 

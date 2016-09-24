@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   ############ UserInfo Routes ###################
   resource :user_info, only: [:show, :update] 
   ###############################################
+
+  ############ Garment Routes ###################
+  resources :garments, only: [:index, :show]
+  ###############################################  
 end
