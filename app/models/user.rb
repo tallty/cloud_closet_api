@@ -41,6 +41,14 @@ class User < ApplicationRecord
 
   validate :sms_token_validate, on: :create
 
+  has_one :user_info, dependent: :destroy
+
+  delegate :nickname, :mail, to: :user_info, allow_nil: true
+
+  def info
+    self.user_info || self.create_user_info
+  end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false
