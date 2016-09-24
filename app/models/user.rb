@@ -42,6 +42,7 @@ class User < ApplicationRecord
   validate :sms_token_validate, on: :create
 
   has_one :user_info, dependent: :destroy
+  has_many :garments, dependent: :destroy
 
   delegate :nickname, :mail, to: :user_info, allow_nil: true
 
