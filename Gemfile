@@ -34,8 +34,6 @@ gem 'annotate'
 gem 'simple_token_authentication', '~> 1.0'
 # An API documentation reader for RSpec API Documentation. Read more: https://github.com/jejacks0n/apitome
 gem "apitome"
-# API, command and message handling for WeChat in Rails, Read more: https://github.com/Eric-Guo/wechat
-gem 'wechat'
 
 ###############################################################################
 
