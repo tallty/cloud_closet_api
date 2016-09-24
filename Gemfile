@@ -41,6 +41,13 @@ gem "paperclip", "~> 5.0.0"
 # Pagination library for Rails, Sinatra, Merb, DataMapper, and more
 # Read more: https://github.com/mislav/will_paginate
 gem 'will_paginate', '~> 3.1.0'
+# i18n relate gems
+# Repository for collecting Locale data for Ruby on Rails I18n as well as other interesting, Rails related I18n stuff http://rails-i18n.org
+# Read more: https://github.com/svenfuchs/rails-i18n
+gem 'rails-i18n', '~> 5.0.0'
+# Translations for the devise gem
+# Read more: https://github.com/tigrish/devise-i18n
+gem 'devise-i18n'
 
 ###############################################################################
 
