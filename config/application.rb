@@ -38,5 +38,7 @@ module CloudClosetApi
       end
     end
 
+    config.action_controller.asset_host = "http://closet-api.tallty.com"
+
   end
 end

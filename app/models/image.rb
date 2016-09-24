@@ -20,6 +20,7 @@
 #
 
 class Image < ApplicationRecord
+
   belongs_to :imageable, polymorphic: true
 
   # paperclip gem
@@ -31,5 +32,9 @@ class Image < ApplicationRecord
 
   def url mode=:medium
     photo.present? ? photo.url(mode) : ""
+  end
+
+  def image_url mode=:medium
+    ActionController::Base.helpers.image_url( url(mode) ) || ""
   end
 end

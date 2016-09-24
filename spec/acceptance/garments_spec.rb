@@ -27,4 +27,24 @@ resource "我的衣橱" do
     end
   end
 
+  get 'garments/:id' do
+    user_attrs = FactoryGirl.attributes_for(:user)
+
+    header "X-User-Token", user_attrs[:authentication_token]
+    header "X-User-Phone", user_attrs[:phone]
+
+    before do
+      @user = create(:user)
+      @garments = create_list(:garment, 5, user: @user)
+    end
+
+    let(:id) {@garments.first.id}
+
+    example "用户查询我的衣橱指定衣服详情成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
+  end
+
 end
