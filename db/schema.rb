@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160905112455) do
+ActiveRecord::Schema.define(version: 20160924025748) do
+
+  create_table "images", force: :cascade do |t|
+    t.string   "title"
+    t.string   "photo_type"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.string   "imageable_type"
+    t.integer  "imageable_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
 
   create_table "sms_tokens", force: :cascade do |t|
     t.string   "phone"
