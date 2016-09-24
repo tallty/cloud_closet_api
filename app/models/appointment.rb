@@ -19,4 +19,5 @@
 
 class Appointment < ApplicationRecord
   belongs_to :user
+  has_many :items, class_name: "AppointmentItem", dependent: :destroy
 end
