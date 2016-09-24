@@ -17,4 +17,8 @@ Rails.application.routes.draw do
   ############ Garment Routes ###################
   resources :garments, only: [:index, :show]
   ###############################################  
+
+  ############ Appointment Routes ###################
+  resources :appointments, only: [:create, :index, :show]
+  ###############################################    
 end

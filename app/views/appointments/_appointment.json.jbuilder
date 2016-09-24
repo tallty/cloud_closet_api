@@ -1,0 +1,1 @@
+json.extract! appointment, :id, :address, :name, :phone, :date, :created_at
