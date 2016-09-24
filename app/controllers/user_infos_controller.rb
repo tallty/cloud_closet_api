@@ -1,25 +1,20 @@
 class UserInfosController < ApplicationController
   include ActionView::Layouts
+  include ActionController::MimeResponds
 
-  acts_as_token_authentication_handler_for User, except: [:check, :reset, :test] 
+  acts_as_token_authentication_handler_for User, except: [:check, :reset] 
 
-  before_action :set_user_info, only: [:show, :update]
+  before_action :set_user_info, only: [:show, :update, :test]
 
   respond_to :json
-
-  def index
-    @user_infos = UserInfo.all
-    respond_with @user_infos
-  end
 
   def show
     respond_with @user_info
   end
 
-
   def update
     @user_info.update(user_info_params)
-    respond_with(@user_info)
+    respond_with @user_info, template: "user_infos/show", status: 201
   end
 
 
@@ -29,6 +24,9 @@ class UserInfosController < ApplicationController
     end
 
     def user_info_params
-      params[:user_info]
+      params.require(:user_info).permit(
+        :nickname, :mail,
+        avatar_attributes: [:id, :photo, :_destroy]
+        )
     end
 end

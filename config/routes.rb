@@ -11,6 +11,6 @@ Rails.application.routes.draw do
 
 
   ############ UserInfo Routes ###################
-  resource :user_info, only: [:show, :update]
+  resource :user_info, only: [:show, :update] 
   ###############################################
 end
