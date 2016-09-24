@@ -21,6 +21,8 @@ class Garment < ApplicationRecord
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
 
+  has_many :logs, class_name: "GarmentLog", dependent: :destroy
+
   def is_new
     put_in_time > Time.zone.now - 3.day
   end
