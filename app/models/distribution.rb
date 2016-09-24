@@ -1,12 +1,11 @@
 # == Schema Information
 #
-# Table name: appointments
+# Table name: distributions
 #
 #  id         :integer          not null, primary key
 #  address    :string
 #  name       :string
 #  phone      :string
-#  number     :integer
 #  date       :date
 #  user_id    :integer
 #  created_at :datetime         not null
@@ -14,10 +13,9 @@
 #
 # Indexes
 #
-#  index_appointments_on_user_id  (user_id)
+#  index_distributions_on_user_id  (user_id)
 #
 
-class Appointment < ApplicationRecord
-  belongs_to :user
-  has_many :items, class_name: "AppointmentItem", dependent: :destroy
+class Distribution < ApplicationRecord
+  has_many :items, class_name: "DistributionItem", dependent: :destroy
 end
