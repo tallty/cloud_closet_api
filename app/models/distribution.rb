@@ -17,4 +17,5 @@
 #
 
 class Distribution < ApplicationRecord
+  has_many :items, class_name: "DistributionItem", dependent: :destroy
 end
