@@ -34,6 +34,10 @@ gem 'annotate'
 gem 'simple_token_authentication', '~> 1.0'
 # An API documentation reader for RSpec API Documentation. Read more: https://github.com/jejacks0n/apitome
 gem "apitome"
+# Easy file attachment management for ActiveRecord
+# Read more: https://github.com/thoughtbot/paperclip
+# First install: sudo apt-get install imagemagick -y
+gem "paperclip", "~> 5.0.0"
 
 ###############################################################################
 
