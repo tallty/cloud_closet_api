@@ -104,7 +104,7 @@ resource "用户信息查询修改" do
 
     describe "openid的参数是空" do
       let(:openid) { "" }
-      example "微信openid为空，返回错误的信息" do
+      example "用户查询的微信openid为空，返回错误的信息" do
         do_request
         puts response_body
         expect(status).to eq(404)
