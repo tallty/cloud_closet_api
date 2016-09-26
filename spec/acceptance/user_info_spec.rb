@@ -59,6 +59,7 @@ resource "用户信息查询修改" do
 
     before do
       @user = create(:user)
+      create(:user_info, user: @user)
     end
 
     let(:openid) { "new openid" }
