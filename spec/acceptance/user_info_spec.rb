@@ -86,7 +86,7 @@ resource "用户信息查询修改" do
         @user = create(:user)
       end
       let(:openid) { @user.openid }
-      example "用户查询已存在的openid对应的用户鉴权信息成功" do
+      example "用户查询已存在的微信openid对应的用户鉴权信息成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -95,10 +95,19 @@ resource "用户信息查询修改" do
 
     describe "查询不存在的用户信息" do
       let(:openid) { "new openid" }
-      example "用户查询不存在该openid的用户，返回错误的信息" do
+      example "用户查询不存在该微信openid的用户，返回错误的信息" do
         do_request
         puts response_body
-        expect(status).to eq(401)
+        expect(status).to eq(404)
+      end 
+    end
+
+    describe "openid的参数是空" do
+      let(:openid) { "" }
+      example "微信openid为空，返回错误的信息" do
+        do_request
+        puts response_body
+        expect(status).to eq(404)
       end 
     end
        

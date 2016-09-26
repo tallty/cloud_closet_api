@@ -2,7 +2,7 @@ class UserInfosController < ApplicationController
   include ActionView::Layouts
   include ActionController::MimeResponds
 
-  acts_as_token_authentication_handler_for User, except: [:check, :reset] 
+  acts_as_token_authentication_handler_for User, except: [:check_openid, :check, :reset] 
 
   before_action :set_user_info, only: [:show, :update, :test, :bind]
 
@@ -23,9 +23,13 @@ class UserInfosController < ApplicationController
   end
 
   def check_openid
-    openid = bind_params[:openid]
-    @user = User.find_by openid: openid
-    respond_with @user
+    @openid = bind_params[:openid]
+    @user = User.find_by openid: @openid
+    if @openid.present? && @user.present?
+      respond_with @user
+    else
+      respond_with @user, status: 404
+    end
   end
 
 
