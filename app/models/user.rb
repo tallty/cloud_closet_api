@@ -17,10 +17,12 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  authentication_token   :string(30)
+#  openid                 :string
 #
 # Indexes
 #
 #  index_users_on_authentication_token  (authentication_token) UNIQUE
+#  index_users_on_openid                (openid)
 #  index_users_on_phone                 (phone) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
@@ -46,6 +48,16 @@ class User < ApplicationRecord
   has_many :appointments, dependent: :destroy
 
   delegate :nickname, :mail, to: :user_info, allow_nil: true
+
+  # 绑定用户信息和openid信息
+  # 微信信息和系统用户是一一对应的，所以如果一个用户绑定，需要清空这个微信原有的绑定关系
+  def bind_openid openid
+    if openid.present?
+      _binded_user = User.find_by openid: openid
+      _binded_user.update(openid: nil) if _binded_user.present?
+      self.update(openid: openid)
+    end
+  end
 
   def info
     self.user_info || self.create_user_info

@@ -4,7 +4,7 @@ class UserInfosController < ApplicationController
 
   acts_as_token_authentication_handler_for User, except: [:check, :reset] 
 
-  before_action :set_user_info, only: [:show, :update, :test]
+  before_action :set_user_info, only: [:show, :update, :test, :bind]
 
   respond_to :json
 
@@ -17,6 +17,17 @@ class UserInfosController < ApplicationController
     respond_with @user_info, template: "user_infos/show", status: 201
   end
 
+  def bind
+    current_user.bind_openid(bind_params[:openid])
+    respond_with @user_info, template: "user_infos/show", status: 201
+  end
+
+  def check_openid
+    openid = bind_params[:openid]
+    @user = User.find_by openid: openid
+    respond_with @user
+  end
+
 
   private
     def set_user_info
@@ -27,6 +38,12 @@ class UserInfosController < ApplicationController
       params.require(:user_info).permit(
         :nickname, :mail,
         avatar_attributes: [:id, :photo, :_destroy]
+        )
+    end
+
+    def bind_params
+      params.require(:user).permit(
+        :openid
         )
     end
 end

@@ -11,7 +11,12 @@ Rails.application.routes.draw do
 
 
   ############ UserInfo Routes ###################
-  resource :user_info, only: [:show, :update] 
+  resource :user_info, only: [:show, :update] do
+    member do
+      post :bind
+      post :check_openid
+    end
+  end
   ###############################################
 
   ############ Garment Routes ###################
