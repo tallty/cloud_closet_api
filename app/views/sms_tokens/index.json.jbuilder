@@ -1,0 +1,1 @@
+json.array! @sms_tokens, partial: 'sms_tokens/sms_token', as: :sms_token

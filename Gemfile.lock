@@ -49,6 +49,7 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.2)
     byebug (9.0.5)
+    china_sms (0.0.7)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -209,6 +210,7 @@ DEPENDENCIES
   annotate
   apitome
   byebug
+  china_sms
   devise
   devise-i18n
   factory_girl_rails

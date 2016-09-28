@@ -50,6 +50,8 @@ gem 'rails-i18n', '~> 5.0.0'
 # Translations for the devise gem
 # Read more: https://github.com/tigrish/devise-i18n
 gem 'devise-i18n'
+# SMS
+gem 'china_sms'
 
 ###############################################################################
 

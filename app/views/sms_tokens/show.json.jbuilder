@@ -1,0 +1,1 @@
+json.partial! "sms_tokens/sms_token", sms_token: @sms_token
