@@ -52,6 +52,9 @@ gem 'rails-i18n', '~> 5.0.0'
 gem 'devise-i18n'
 # SMS
 gem 'china_sms'
+# Simple, but flexible HTTP client library, with support for multiple backends.
+# Read more: https://github.com/lostisland/faraday
+gem 'faraday'
 
 ###############################################################################
 
