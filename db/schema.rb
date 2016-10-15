@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926193530) do
+ActiveRecord::Schema.define(version: 20161015081301) do
 
   create_table "appointment_items", force: :cascade do |t|
     t.integer  "garment_id"
@@ -76,6 +76,8 @@ ActiveRecord::Schema.define(version: 20160926193530) do
     t.datetime "expire_time"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "seq"
+    t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
   end
 

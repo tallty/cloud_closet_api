@@ -9,9 +9,11 @@
 #  expire_time :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  seq         :string
 #
 # Indexes
 #
+#  index_garments_on_seq      (seq)
 #  index_garments_on_user_id  (user_id)
 #
 
