@@ -28,5 +28,12 @@ class Garment < ApplicationRecord
   def is_new
     put_in_time > Time.zone.now - 3.day
   end
+
+  before_create :generate_seq
+
+  private
+    def generate_seq
+      "G#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+    end
   
 end

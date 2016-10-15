@@ -20,6 +20,7 @@
 class Appointment < ApplicationRecord
   belongs_to :user
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
+  has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
 
   def create_template_message
     openid = "olclvwLH5UXJpaTbe-xhT7oPWJSI"
