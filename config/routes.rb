@@ -25,7 +25,12 @@ Rails.application.routes.draw do
   ###############################################  
 
   ############ Appointment Routes ###################
-  resources :appointments, only: [:create, :index, :show]
+  resources :appointments, only: [:create, :index, :show] do
+    resources :appointment_item_groups, only: [:index]
+  end
+  resources :appointment_item_groups, only: [:show] do
+    resources :garments, only: [:index]
+  end
   ###############################################    
 
 

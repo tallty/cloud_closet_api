@@ -1,0 +1,1 @@
+json.partial! "admin_appointment_item_groups/admin_appointment_item_group", admin_appointment_item_group: @admin_appointment_item_group

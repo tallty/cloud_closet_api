@@ -40,6 +40,17 @@ resource "管理后台相关接口" do
       end
     end
 
+    get 'admin/appointments/:appointment_id/appointment_item_groups' do
+      let(:appointment_id) { @appointments.first.id }
+      example "管理员获取指定订单下面的所有订单组成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+
+
   end
 
 end
