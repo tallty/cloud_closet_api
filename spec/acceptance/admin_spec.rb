@@ -77,10 +77,20 @@ resource "管理后台相关接口" do
       let(:place) { 2 }
       let(:cover_image_attributes) { image_attrs }
 
-      example "管理员完善衣服的相信信息成功" do
+      example "管理员完善衣服的详细信息成功" do
         do_request
         puts response_body
         expect(status).to eq 201
+      end
+    end
+
+    get 'admin/garments/:id' do
+      let(:id) { @groups.first.garments.first.id }
+
+      example "管理员查看衣服的详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq 200
       end
     end
 
