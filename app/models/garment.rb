@@ -10,6 +10,9 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  seq         :string
+#  row         :integer
+#  carbit      :integer
+#  place       :integer
 #
 # Indexes
 #

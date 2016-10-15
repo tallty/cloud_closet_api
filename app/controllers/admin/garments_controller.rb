@@ -15,7 +15,7 @@ class Admin::GarmentsController < ApplicationController
   end
 
   def show
-    respond_with(@admin_garment)
+    respond_with @garment, template: "garments/show"
   end
 
   # def create
@@ -25,8 +25,8 @@ class Admin::GarmentsController < ApplicationController
   # end
 
   def update
-    @admin_garment.update(admin_garment_params)
-    respond_with(@admin_garment)
+    @garment.update(garment_params)
+    respond_with @garment, template: "garments/show", status: 201
   end
 
   # def destroy
@@ -36,10 +36,13 @@ class Admin::GarmentsController < ApplicationController
 
   private
     def set_admin_garment
-      @admin_garment = Garment.find(params[:id])
+      @garment = Garment.find(params[:id])
     end
 
-    def admin_garment_params
-      params[:admin_garment]
+    def garment_params
+      params.require(:garment).permit(
+        :title, :row, :carbit, :place,
+        cover_image_attributes: [:id, :photo, :_destroy]
+        )
     end
 end

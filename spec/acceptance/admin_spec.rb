@@ -61,9 +61,28 @@ resource "管理后台相关接口" do
       end
     end
 
+    put 'admin/garments/:id' do
+      image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
+      parameter :title, "衣服描述信息", require: false, scope: :garment
+      parameter :row, "衣服存放的 排 ", require: false, scope: :garment
+      parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
+      parameter :place, "衣服存放的 位 ", require: false, scope: :garment
+      parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
 
+      let(:id) { @groups.first.garments.first.id }
+      let(:title) { "garemnt title" }
+      let(:row) { 1 }
+      let(:carbit) { 3 }
+      let(:place) { 2 }
+      let(:cover_image_attributes) { image_attrs }
 
+      example "管理员完善衣服的相信信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq 201
+      end
+    end
 
   end
 
