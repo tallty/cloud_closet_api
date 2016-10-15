@@ -11,7 +11,8 @@ module SimpleTokenAuthentication
     #
     # Returns an identifier String value which case follows the Devise case-insensitive keys policy
     def integrate_with_devise_case_insensitive_keys(identifier_value, entity)
-      integrate_with_devise_case_insensitive_keys_origin identifier_value.dup, entity
+      puts "identifier_value is:#{identifier_value}"
+      integrate_with_devise_case_insensitive_keys_origin identifier_value.try(:dup), entity
     end
   end
 end

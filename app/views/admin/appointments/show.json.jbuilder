@@ -1,0 +1,1 @@
+json.partial! "appointments/appointment", appointment: @admin_appointment
