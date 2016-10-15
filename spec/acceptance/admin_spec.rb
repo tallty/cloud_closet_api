@@ -14,7 +14,10 @@ resource "管理后台相关接口" do
       @admin = create(:admin)
       @appointments = create_list(:appointment, 5, user: @user)
       @appointments.each do |appointment|
-        create_list(:appointment_item_group, 3, appointment: appointment)
+        @groups = create_list(:appointment_item_group, 3, appointment: appointment)
+      end
+      @groups.each do |group|
+        @items = create_list(:appointment_item, 3, appointment_item_group: group)
       end
     end
 
@@ -48,6 +51,17 @@ resource "管理后台相关接口" do
         expect(status).to eq(200)
       end
     end
+
+    get 'admin/appointment_item_groups/:appointment_item_group_id/garments' do
+      let(:appointment_item_group_id) { @groups.first.id }
+      example "管理员获取指定订单下面的订单组对应的衣服列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+
 
 
 

@@ -18,4 +18,5 @@
 class AppointmentItemGroup < ApplicationRecord
   belongs_to :appointment
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
+  has_many :garments, through: :items
 end

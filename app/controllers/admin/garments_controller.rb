@@ -1,12 +1,18 @@
 class Admin::GarmentsController < ApplicationController
+  include ActionView::Layouts
+  include ActionController::MimeResponds
+
+  acts_as_token_authentication_handler_for Admin 
+
   before_action :set_admin_garment, only: [:show, :update, :destroy]
 
   respond_to :json
 
-  # def index
-  #   @admin_garments = Admin::Garment.all
-  #   respond_with(@admin_garments)
-  # end
+  def index
+    @appointment_item_group = AppointmentItemGroup.find(params[:appointment_item_group_id])
+    @admin_garments = @appointment_item_group.garments
+    respond_with(@admin_garments)
+  end
 
   def show
     respond_with(@admin_garment)

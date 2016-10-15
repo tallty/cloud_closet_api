@@ -26,7 +26,7 @@ class Garment < ApplicationRecord
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
 
   def is_new
-    put_in_time > Time.zone.now - 3.day
+    put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
   before_create :generate_seq

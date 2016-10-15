@@ -24,10 +24,11 @@ class AppointmentItem < ApplicationRecord
   belongs_to :appointment
   belongs_to :appointment_item_group
 
-  after_create :create_relate_garment
+  before_create :create_relate_garment
 
   private
     def create_relate_garment
-      self.create_garment(user: appointment.try(:user))
+      garment = Garment.create(user: appointment.try(:user))
+      self.garment = garment
     end
 end
