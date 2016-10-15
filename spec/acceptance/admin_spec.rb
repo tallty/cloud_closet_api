@@ -20,10 +20,23 @@ resource "管理后台相关接口" do
 
     get 'admin/appointments' do
 
+      parameter :page, "当前页", require: false
+      parameter :per_page, "每页的数量", require: false
+
       example "管理员查询所有预订订单的列表" do
         do_request
         puts response_body
         expect(status).to eq 200
+      end
+    end
+
+    get 'admin/appointments/:id' do
+      let(:id) { @appointments.first.id }
+
+      example "管理员查看指定预订订单详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
       end
     end
 

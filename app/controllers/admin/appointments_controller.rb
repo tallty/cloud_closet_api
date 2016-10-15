@@ -37,7 +37,7 @@ class Admin::AppointmentsController < ApplicationController
 
   private
     def set_admin_appointment
-      @admin_appointment = Admin::Appointment.find(params[:id])
+      @admin_appointment = Appointment.find(params[:id])
     end
 
     def admin_appointment_params
