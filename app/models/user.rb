@@ -63,6 +63,10 @@ class User < ApplicationRecord
     self.user_info || self.create_user_info
   end
 
+  def worker?
+    Worker.wokrer? self
+  end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false

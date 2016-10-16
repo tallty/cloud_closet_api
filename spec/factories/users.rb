@@ -41,4 +41,12 @@ FactoryGirl.define do
     authentication_token "qwertyuiop2"
     openid "openid1"
   end  
+
+  factory :worker, class: :user do
+    phone "18616591019"
+    password "abcd.1234"
+    sms_token "1981"
+    authentication_token "qwertyuiop2"
+    openid "openid1"
+  end 
 end
