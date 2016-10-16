@@ -37,9 +37,9 @@ Rails.application.routes.draw do
   ############ Work Routes ###################
   namespace :work do
     resources :appointments, only: [:index, :show] do
-      resources :appointment_item_groups
+      resources :appointment_item_groups, only: [:index, :create]
     end
-    resources :appointment_item_groups
+    resources :appointment_item_groups, only: [:show, :update, :destroy]
   end
   ###############################################    
 

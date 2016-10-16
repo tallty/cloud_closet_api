@@ -77,13 +77,29 @@ resource "工作台相关接口" do
       end
     end
 
-    get 'work/appointments/:appointment_id/appointment_item_groups/:id' do
-      let(:appointment_id) { @appointments.first.id }
+    get 'work/appointment_item_groups/:id' do
       let(:id) { @appointments.first.groups.first.id }
       example "工作人员获取指定订单下面的指定订单组的详情成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
+      end
+    end
+
+    post 'work/appointments/:appointment_id/appointment_item_groups' do
+      parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
+      parameter :price, "存放的费用", require: true, scope: :appointment_item_group
+      parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
+
+      let(:count) { 5 }
+      let(:price) { 3000 }
+      let(:store_month) { 6 }
+      let(:appointment_id) { @appointments.first.id }
+
+      example "工作人员创建指定订单下面的订单组成功" do
+        do_request
+        puts response_body
+        expect(status).to eq 201
       end
     end
 

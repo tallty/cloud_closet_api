@@ -19,9 +19,10 @@ class Work::AppointmentItemGroupsController < ApplicationController
   end
 
   def create
-    @work_appointment_item_group = Work::AppointmentItemGroup.new(work_appointment_item_group_params)
-    @work_appointment_item_group.save
-    respond_with(@work_appointment_item_group)
+    @appointment = Appointment.find(params[:appointment_id])
+    @appointment_item_group =  @appointment.groups.build(appointment_item_group_params)
+    @appointment_item_group.save
+    respond_with(@appointment_item_group, template: "appointment_item_groups/show", status: 201)
   end
 
   def update
@@ -39,7 +40,9 @@ class Work::AppointmentItemGroupsController < ApplicationController
       @work_appointment_item_group = AppointmentItemGroup.find(params[:id])
     end
 
-    def work_appointment_item_group_params
-      params[:work_appointment_item_group]
+    def appointment_item_group_params
+      params.require(:appointment_item_group).permit(
+          :count, :price, :store_month
+        )
     end
 end
