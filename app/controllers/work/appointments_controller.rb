@@ -35,7 +35,7 @@ class Work::AppointmentsController < ApplicationController
 
   private
     def set_work_appointment
-      @work_appointment = Work::Appointment.find(params[:id])
+      @work_appointment = Appointment.find(params[:id])
     end
 
     def work_appointment_params

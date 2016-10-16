@@ -58,15 +58,15 @@ resource "工作台相关接口" do
       end
     end
 
-    # get 'admin/appointments/:id' do
-    #   let(:id) { @appointments.first.id }
+    get 'work/appointments/:id' do
+      let(:id) { @appointments.first.id }
 
-    #   example "管理员查看指定预订订单详情成功" do
-    #     do_request
-    #     puts response_body
-    #     expect(status).to eq(200)
-    #   end
-    # end
+      example "工作人员查看指定预订订单详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
     # get 'admin/appointments/:appointment_id/appointment_item_groups' do
     #   let(:appointment_id) { @appointments.first.id }
