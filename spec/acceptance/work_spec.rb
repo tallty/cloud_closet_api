@@ -77,6 +77,16 @@ resource "工作台相关接口" do
       end
     end
 
+    get 'work/appointments/:appointment_id/appointment_item_groups/:id' do
+      let(:appointment_id) { @appointments.first.id }
+      let(:id) { @appointments.first.groups.first.id }
+      example "工作人员获取指定订单下面的指定订单组的详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
     # get 'admin/appointment_item_groups/:appointment_item_group_id/garments' do
     #   let(:appointment_item_group_id) { @groups.first.id }
     #   example "管理员获取指定订单下面的订单组对应的衣服列表成功" do

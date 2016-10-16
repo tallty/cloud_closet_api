@@ -36,7 +36,7 @@ class Work::AppointmentItemGroupsController < ApplicationController
 
   private
     def set_work_appointment_item_group
-      @work_appointment_item_group = Work::AppointmentItemGroup.find(params[:id])
+      @work_appointment_item_group = AppointmentItemGroup.find(params[:id])
     end
 
     def work_appointment_item_group_params
