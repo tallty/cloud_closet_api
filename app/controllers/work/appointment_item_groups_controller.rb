@@ -26,8 +26,8 @@ class Work::AppointmentItemGroupsController < ApplicationController
   end
 
   def update
-    @work_appointment_item_group.update(work_appointment_item_group_params)
-    respond_with(@work_appointment_item_group)
+    @appointment_item_group.update(appointment_item_group_params)
+    respond_with(@appointment_item_group)
   end
 
   def destroy
@@ -38,6 +38,7 @@ class Work::AppointmentItemGroupsController < ApplicationController
   private
     def set_work_appointment_item_group
       @work_appointment_item_group = AppointmentItemGroup.find(params[:id])
+      @appointment_item_group = @work_appointment_item_group
     end
 
     def appointment_item_group_params

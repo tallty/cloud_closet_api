@@ -68,38 +68,51 @@ resource "工作台相关接口" do
       end
     end
 
-    get 'work/appointments/:appointment_id/appointment_item_groups' do
-      let(:appointment_id) { @appointments.first.id }
-      example "工作人员获取指定订单下面的所有订单组成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+    put 'work/appointments/:appointment_id' do
+      # parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
+      # parameter :price, "存放的费用", require: true, scope: :appointment_item_group
+      # parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
 
-    get 'work/appointment_item_groups/:id' do
-      let(:id) { @appointments.first.groups.first.id }
-      example "工作人员获取指定订单下面的指定订单组的详情成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
-
-    post 'work/appointments/:appointment_id/appointment_item_groups' do
-      parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
-      parameter :price, "存放的费用", require: true, scope: :appointment_item_group
-      parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
-
-      let(:count) { 5 }
-      let(:price) { 3000 }
-      let(:store_month) { 6 }
+      # let(:count) { 5 }
+      # let(:price) { 3000 }
+      # let(:store_month) { 6 }
       let(:appointment_id) { @appointments.first.id }
 
-      example "工作人员创建指定订单下面的订单组成功" do
-        do_request
+      example "工作人员修改指定订单下面的订单组成功" do
+        params = {
+          appointment_item: 
+          {
+            groups: [
+              {
+                count: 5,
+                price: 100,
+                store_month: 3
+              },
+              {
+                count: 2,
+                price: 300,
+                store_month: 6
+              },
+              {
+                count: 3,
+                price: 200,
+                store_month: 12
+              },
+            ]
+          }
+        }
+        do_request params
         puts response_body
         expect(status).to eq 201
+      end
+    end
+
+    delete 'work/appointments/:appointment_id' do
+      let(:appointment_id) { @appointments.first.id }
+      example "工作人员删除指定订单成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(204)
       end
     end
 

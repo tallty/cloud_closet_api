@@ -17,15 +17,20 @@ class Work::AppointmentsController < ApplicationController
     respond_with(@work_appointment)
   end
 
-  def create
-    @work_appointment = Work::Appointment.new(work_appointment_params)
-    @work_appointment.save
-    respond_with(@work_appointment)
-  end
+  # def create
+  #   @work_appointment = Work::Appointment.new(work_appointment_params)
+  #   @work_appointment.save
+  #   respond_with(@work_appointment)
+  # end
 
   def update
-    @work_appointment.update(work_appointment_params)
-    respond_with(@work_appointment)
+    @work_appointment.groups.destroy_all
+    appointment_item_group_params[:groups].each do |group_param|
+      appointment_group = @work_appointment.groups.build(group_param)
+      appointment_group.save
+    end
+
+    respond_with(@work_appointment, template: "work/appointments/show", status: 201)
   end
 
   def destroy
@@ -40,5 +45,11 @@ class Work::AppointmentsController < ApplicationController
 
     def work_appointment_params
       params[:work_appointment]
+    end
+
+    def appointment_item_group_params
+      params.require(:appointment_item).permit(
+          groups: [:count, :price, :store_month]
+        )
     end
 end
