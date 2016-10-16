@@ -29,6 +29,7 @@ class Work::AppointmentsController < ApplicationController
       appointment_group = @work_appointment.groups.build(group_param)
       appointment_group.save
     end
+    @work_appointment.pay!
 
     respond_with(@work_appointment, template: "work/appointments/show", status: 201)
   end

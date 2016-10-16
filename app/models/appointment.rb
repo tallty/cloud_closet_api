@@ -22,6 +22,13 @@ class Appointment < ApplicationRecord
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
 
+  # 支付完成，展开预约订单，这时候可以生成相关的item和
+  def pay!
+    groups.each do |group|
+      group.pay!
+    end
+  end
+
   def create_template_message
     openid = "olclvwLH5UXJpaTbe-xhT7oPWJSI"
     template = {
