@@ -34,6 +34,15 @@ Rails.application.routes.draw do
   ###############################################    
 
 
+  ############ Work Routes ###################
+  namespace :work do
+    resources :appointments, only: [:index, :show] do
+      resources :appointment_item_groups
+    end
+    resources :appointment_item_groups
+  end
+  ###############################################    
+
   ############ Admin Routes ###################
   namespace :admin do
     resources :appointments, only: [:index, :show] do

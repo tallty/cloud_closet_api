@@ -2,7 +2,7 @@ class AppointmentsController < ApplicationController
   include ActionView::Layouts
   include ActionController::MimeResponds
 
-  acts_as_token_authentication_handler_for User, except: [:check, :reset] 
+  acts_as_token_authentication_handler_for User
 
   before_action :set_appointment, only: [:show, :update, :destroy]
 
