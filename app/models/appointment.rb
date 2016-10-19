@@ -11,6 +11,7 @@
 #  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  seq        :string
 #
 # Indexes
 #
@@ -22,6 +23,9 @@ class Appointment < ApplicationRecord
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
 
+  before_create :generate_seq
+  after_save :create_template_message
+
   # 支付完成，展开预约订单，这时候可以生成相关的item和
   def pay!
     groups.each do |group|
@@ -30,14 +34,15 @@ class Appointment < ApplicationRecord
   end
 
   def create_template_message
-    openid = "olclvwLH5UXJpaTbe-xhT7oPWJSI"
+    openid = user.try(openid)
+    return if openid.blank?
     template = {
       template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
-      url: "http://www.baidu.com",
+      url: "http://closet.tallty.com/orders",
       topcolor: "#FF0000",
       data: {
         first: {
-          value: "亲，您有新预约订单，请注意查收。",
+          value: "亲，您的预约订单状态变更，请注意查看。",
           color: "#0A0A0A"
         },
         keyword1: {
@@ -45,11 +50,11 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         keyword2: {
-          value: "13825688888",
+          value: user.phone,
           color: "#CCCCCC"
         },
         keyword3: {
-          value: "DS20140808E708500",
+          value: seq,
           color: "#CCCCCC"
         },
         keyword4: {
@@ -61,7 +66,7 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         remark: {
-          value: "上门时间是2016-10-12，请安排好您的时间",
+          value: "请您留意上门时间，合理安排好您的时间",
           color: "#173177"
         }
       }
@@ -70,4 +75,9 @@ class Appointment < ApplicationRecord
       { openid: openid, template: template}
     puts response.body
   end
+
+  private
+    def generate_seq
+      "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+    end
 end
