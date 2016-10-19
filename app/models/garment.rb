@@ -36,7 +36,7 @@ class Garment < ApplicationRecord
 
   private
     def generate_seq
-      "G#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+      self.seq = "G#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
     end
   
 end

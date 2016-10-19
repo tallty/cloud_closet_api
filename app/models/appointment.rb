@@ -78,6 +78,6 @@ class Appointment < ApplicationRecord
 
   private
     def generate_seq
-      "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+      self.seq = "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
     end
 end
