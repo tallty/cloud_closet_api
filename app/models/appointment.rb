@@ -34,7 +34,7 @@ class Appointment < ApplicationRecord
   end
 
   def create_template_message
-    openid = user.try(openid)
+    openid = user.try(:openid)
     return if openid.blank?
     template = {
       template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
