@@ -90,7 +90,7 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         keyword4: {
-          value: "已预约",
+          value: state,
           color: "#CCCCCC"
         },
         keyword5: {
