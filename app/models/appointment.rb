@@ -27,7 +27,7 @@ class Appointment < ApplicationRecord
     state :accepted, :unpaid, :paid, :stored, :canceled
 
     event :accept do
-      transitions from: :committed, to: :serviced
+      transitions from: :committed, to: :accepted
     end
 
     event :service do
