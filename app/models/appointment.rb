@@ -12,6 +12,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  seq        :string
+#  aasm_state :string
 #
 # Indexes
 #
@@ -19,6 +20,10 @@
 #
 
 class Appointment < ApplicationRecord
+  include AASM
+
+  aasm do
+  end
   belongs_to :user
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
