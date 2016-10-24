@@ -12,6 +12,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  seq        :string
+#  aasm_state :string
 #
 # Indexes
 #
@@ -19,12 +20,43 @@
 #
 
 class Appointment < ApplicationRecord
+  include AASM
+
+  aasm do
+    state :committed, initial: true
+    state :accepted, :unpaid, :paid, :stored, :canceled
+
+    event :accept do
+      transitions from: :committed, to: :accepted
+    end
+
+    event :service do
+      transitions from: :accepted, to: :unpaid
+    end
+
+    event :pay do
+      transitions from: :unpaid, to: :paid
+    end
+
+    event :store do
+      transitions from: :paid, to: :store
+    end
+
+    event :cancel do
+      transitions from: [:committed, :accepted, :unpaid], to: :canceled
+    end
+  end
+
   belongs_to :user
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
 
-  before_create :generate_seq
-  after_save :create_template_message
+  after_create :generate_seq
+  after_save :create_template_message, if: :aasm_state_changed?
+
+  def state
+    I18n.t :"appointment_aasm_state.#{aasm_state}"
+  end
 
   # 支付完成，展开预约订单，这时候可以生成相关的item和
   def pay!
@@ -58,7 +90,7 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         keyword4: {
-          value: "已预约",
+          value: state,
           color: "#CCCCCC"
         },
         keyword5: {
@@ -79,5 +111,6 @@ class Appointment < ApplicationRecord
   private
     def generate_seq
       self.seq = "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+      self.save
     end
 end

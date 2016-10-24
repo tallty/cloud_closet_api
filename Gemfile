@@ -55,6 +55,10 @@ gem 'china_sms'
 # Simple, but flexible HTTP client library, with support for multiple backends.
 # Read more: https://github.com/lostisland/faraday
 gem 'faraday'
+# AASM - State machines for Ruby classes (plain Ruby, ActiveRecord, Mongoid, MongoMapper)
+# Read more: https://github.com/aasm/aasm
+# After installing AASM you can run generator: rails generate aasm NAME [COLUMN_NAME]
+gem 'aasm'
 
 ###############################################################################
 
