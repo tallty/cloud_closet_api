@@ -54,6 +54,10 @@ class Appointment < ApplicationRecord
   after_create :generate_seq
   after_save :create_template_message, if: :aasm_state_changed?
 
+  def state
+    I18n.t :"appointment_aasm_state.#{aasm_state}"
+  end
+
   # 支付完成，展开预约订单，这时候可以生成相关的item和
   def pay!
     groups.each do |group|
