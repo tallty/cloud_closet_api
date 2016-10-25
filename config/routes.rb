@@ -50,5 +50,11 @@ Rails.application.routes.draw do
     end
     resources :garments, only: [:update, :show]
   end
+
+  ############ Address Routes ########################
+  resources :addresses, only: [:index, :create,:update, :destroy] do
+    post 'set_default', on: :member
+  end
+
   ###############################################    
 end
