@@ -47,10 +47,10 @@ resource "用户收货地址查询修改" do
       @user_info = create(:user_info, user: @user,
       																default_address_id: 4	
 						      				)
-      create_list(:address, 5, user_info: @user_info)
+      @addresses = create_list(:address, 5, user_info: @user_info)
     end
 
-    let(:id) {3}
+    let(:id) {@addresses.first.id}
     let(:name) { "new consignee_name" }
     let(:address_detail) { "new consignee_address" }
     let(:phone) { "new 13813813811" }
@@ -74,10 +74,10 @@ resource "用户收货地址查询修改" do
       @user_info = create(:user_info, user: @user,
       																default_address_id: 1	)
 
-      create_list(:address, 5, user_info: @user_info)
+      @addresses = create_list(:address, 5, user_info: @user_info)
     end
 
-    let(:id) {3}
+    let(:id) {@addresses.first.id}
 
 
     example "用户修改默认收货地址成功" do
