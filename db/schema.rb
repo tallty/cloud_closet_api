@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025080832) do
+ActiveRecord::Schema.define(version: 20161026023719) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -141,6 +141,15 @@ ActiveRecord::Schema.define(version: 20161025080832) do
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
   end
 
+  create_table "purchase_logs", force: :cascade do |t|
+    t.string   "type"
+    t.string   "operation"
+    t.float    "change"
+    t.string   "payment_method"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "sms_tokens", force: :cascade do |t|
     t.string   "phone"
     t.string   "token"
@@ -156,6 +165,7 @@ ActiveRecord::Schema.define(version: 20161025080832) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "default_address_id"
+    t.float    "balance"
     t.index ["user_id"], name: "index_user_infos_on_user_id"
   end
 
