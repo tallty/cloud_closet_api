@@ -17,7 +17,7 @@ resource "预约存入衣服到我的衣橱" do
     parameter :address, "地址", require: true, scope: :appointment
     parameter :name, "预约人", require: true, scope: :appointment
     parameter :phone, "联系电话", require: true, scope: :appointment
-    parameter :number, "上门地址", require: true, scope: :appointment
+    parameter :number, "衣服数量", require: true, scope: :appointment
     parameter :date, "预约日期", require: true, scope: :appointment
 
     let(:address) {appointment_attrs[:address]}
