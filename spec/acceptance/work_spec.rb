@@ -41,6 +41,7 @@ resource "工作台相关接口" do
     before do
       @worker = create(:worker)
       @user = create(:user)
+      create(:user_info, user: @user)
       today_appointments = create_list(:appointment, 3, user: @user, date: Time.zone.today)
       tomorrow_appointments = create_list(:appointment, 3, user: @user, date: Time.zone.today + 1.days)
       @appointments = today_appointments.concat tomorrow_appointments

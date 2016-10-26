@@ -68,11 +68,13 @@ class Appointment < ApplicationRecord
       _detail += [ ["衣服类型???", "#{group.count}"] ]
                 ##{group.garment.type}
     end
-    self.user.user_info.purchases.build(:change => _appointment_price,
+
+    _purchase_log = self.user.user_info.purchase_logs.build(:change => _appointment_price,
                                                       :detail => _detail,
                                                       :operation_type => "消费",
                                                       :operation => "购买衣橱???",
-                                                      :pay_method => "微信支付？余额？")
+                                                      :payment_method => "微信支付？余额？")
+    _purchase_log.save
   end
 
   def create_template_message
