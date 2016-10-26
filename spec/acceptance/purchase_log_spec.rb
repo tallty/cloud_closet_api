@@ -38,10 +38,10 @@ resource "用户账户账单修改" do
     before do
       @user = create(:user)
       @user_info = create(:user_info, user: @user)
-      create_list(:purchase_log, 5, user_info: @user_info)
+      @purchase_logs = create_list(:purchase_log, 5, user_info: @user_info)
     end
 
-    let(:id) {1}
+    let(:id) {@purchase_logs.first.id}
 
     example "用户账户账单详情查看成功" do
       do_request
