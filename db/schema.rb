@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026062812) do
+ActiveRecord::Schema.define(version: 20161026073151) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20161026062812) do
     t.datetime "updated_at",     null: false
     t.integer  "user_info_id"
     t.string   "detail"
+    t.float    "balance"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end
 
