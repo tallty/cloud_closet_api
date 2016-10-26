@@ -71,6 +71,6 @@ class PurchaseLog < ApplicationRecord
 	def cut_payment
 		self.user_info.balance += self.change unless self.operation_type == "发票"
 		self.user_info.save
-		self.balance = "%.2f"%self.user_info.balance
+		self.balance = self.user_info.balance
 	end
 end
