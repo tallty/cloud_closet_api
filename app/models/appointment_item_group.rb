@@ -23,7 +23,8 @@ class AppointmentItemGroup < ApplicationRecord
   def pay!
     count.times do
       item = self.items.build(
-        store_month: self.store_month
+        store_month: self.store_month,
+        appointment: appointment
         )
       item.save
     end
