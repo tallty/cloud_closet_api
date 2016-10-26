@@ -98,6 +98,7 @@ resource "管理后台相关接口" do
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
       parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
+      parameter :detail_images_attributes, "衣服的详细图片", require: false, scope: :garment
 
       let(:id) { @groups.first.garments.first.id }
       let(:title) { "garemnt title" }
@@ -105,6 +106,7 @@ resource "管理后台相关接口" do
       let(:carbit) { 3 }
       let(:place) { 2 }
       let(:cover_image_attributes) { image_attrs }
+      let(:detail_images_attributes) { [image_attrs, image_attrs] }
 
       example "管理员完善衣服的详细信息成功" do
         do_request

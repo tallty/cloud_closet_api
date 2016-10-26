@@ -42,7 +42,8 @@ class Admin::GarmentsController < ApplicationController
     def garment_params
       params.require(:garment).permit(
         :title, :row, :carbit, :place,
-        cover_image_attributes: [:id, :photo, :_destroy]
+        cover_image_attributes: [:id, :photo, :_destroy],
+        detail_images_attributes: [:id, :photo, :_destroy]
         )
     end
 end
