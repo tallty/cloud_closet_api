@@ -11,6 +11,7 @@
 #  updated_at     :datetime         not null
 #  user_info_id   :integer
 #  detail         :string
+#  balance        :float
 #
 # Indexes
 #
@@ -19,11 +20,7 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	after_save :cut_payment
-
-	def balance
-		"%.2f"%self.user_info.balance
-	end
+	before_save :cut_payment
 
 	def change_output
 		case self.operation_type
@@ -72,6 +69,8 @@ class PurchaseLog < ApplicationRecord
 	private
 
 	def cut_payment
-		self.user_info.balance  += self.change unless self.operation_type == "发票"
+		self.user_info.balance += self.change unless self.operation_type == "发票"
+		self.user_info.save
+		self.balance = "%.2f"%self.user_info.balance
 	end
 end
