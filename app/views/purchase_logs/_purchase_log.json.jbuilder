@@ -1,0 +1,2 @@
+json.extract! purchase_log, :id, :user_info_id, :balance, :operation_type, :operation, :detail, :payment_method, :change_output, :what_day, :date, :time, :created_at, :updated_at
+json.url purchase_log_url(purchase_log, format: :json)

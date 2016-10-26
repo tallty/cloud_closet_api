@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   end
   ######################################################## 
 
-  ############ Admin Routes ###################
+  ############ Admin Routes ###############################
   namespace :admin do
     resources :appointments, only: [:index, :show] do
       resources :appointment_item_groups, only: [:index]
@@ -50,11 +50,15 @@ Rails.application.routes.draw do
     end
     resources :garments, only: [:update, :show]
   end
+  #########################################################
 
-  ############ Address Routes ########################
+  ############ Address Routes ##############################
   resources :addresses, only: [:index, :create,:update, :destroy] do
     post 'set_default', on: :member
   end
+  ###########################################################   
 
-  ###############################################    
+  ############ PurchaseLog Routes #########################
+  resources :purchase_logs, only: [:index,:show]
+  #####################################################
 end
