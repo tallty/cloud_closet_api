@@ -19,6 +19,7 @@
 class UserInfo < ApplicationRecord
   belongs_to :user
   has_many :addresses
+  has_many :purchase_logs
   
   delegate :phone, to: :user
 

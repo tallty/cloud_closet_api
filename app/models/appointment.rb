@@ -60,9 +60,19 @@ class Appointment < ApplicationRecord
 
   # 支付完成，展开预约订单，这时候可以生成相关的item和
   def pay!
+    _appointment_price = 0.00
+    _detail = []
     groups.each do |group|
       group.pay!
+      _appointment_price += group.price
+      _detail += [ ["衣服类型???", "#{group.count}"] ]
+                ##{group.garment.type}
     end
+    self.user.user_info.purchases.build(:change => _appointment_price,
+                                                      :detail => _detail,
+                                                      :operation_type => "消费",
+                                                      :operation => "购买衣橱???",
+                                                      :pay_method => "微信支付？余额？")
   end
 
   def create_template_message

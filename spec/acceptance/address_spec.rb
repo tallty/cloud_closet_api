@@ -30,7 +30,8 @@ resource "用户收货地址查询修改" do
     end
 
   end
-
+  
+  #post '/addresses'
   put '/addresses/:id' do
     user_attrs = FactoryGirl.attributes_for(:user)
 
