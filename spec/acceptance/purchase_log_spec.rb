@@ -15,8 +15,8 @@ resource "用户账户账单修改" do
       create_list(:purchase_log, 10, user_info: @user_info)
     end
 
-    parameter :page, "当前页", require: false
-    parameter :per_page, "每页的数量", require: false
+    parameter :page, "当前页", required: false
+    parameter :per_page, "每页的数量", required: false
 
     let(:page) {1}
     let(:per_page) {5}

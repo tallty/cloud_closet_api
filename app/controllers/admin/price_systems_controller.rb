@@ -1,4 +1,4 @@
-class PriceSystemsController < ApplicationController
+class Admin::PriceSystemsController < ApplicationController
   include ActionView::Layouts
   include ActionController::MimeResponds
 
@@ -12,11 +12,11 @@ class PriceSystemsController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 10
     @price_systems = PriceSystem.all.paginate(page: page, per_page: per_page)
-    respond_with(@price_systems)
+    respond_with @price_systems, template: "price_systems/index", status: 200
   end
 
   def show
-    respond_with(@price_system)
+    respond_with @price_system, template: "price_systems/show", status: 200
   end
 
   def create

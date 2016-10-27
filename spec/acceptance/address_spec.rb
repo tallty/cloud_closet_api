@@ -17,8 +17,8 @@ resource "用户收货地址查询修改" do
       create_list(:address, 5, user_info: @user_info)
     end
 
-    parameter :page, "当前页", require: false
-    parameter :per_page, "每页的数量", require: false
+    parameter :page, "当前页", required: false
+    parameter :per_page, "每页的数量", required: false
 
     let(:page) {1}
     let(:per_page) {2}
@@ -43,9 +43,9 @@ resource "用户收货地址查询修改" do
       @user_info = create(:user_info, user: @user)
     end
 
-    parameter :name, "收货人姓名", require: true, scope: :address
-    parameter :address_detail, "收货地址", require: true, scope: :address
-    parameter :phone, "收货人电话", require: true, scope: :address
+    parameter :name, "收货人姓名", required: true, scope: :address
+    parameter :address_detail, "收货地址", required: true, scope: :address
+    parameter :phone, "收货人电话", required: true, scope: :address
 
     let(:name) { address_attrs[:name] }
     let(:address_detail) { address_attrs[:address_detail] }
@@ -65,9 +65,9 @@ resource "用户收货地址查询修改" do
     header "X-User-Token", user_attrs[:authentication_token]
     header "X-User-Phone", user_attrs[:phone]
 
-    parameter :name, "收货人姓名", require: false, scope: :address
+    parameter :name, "收货人姓名", required: false, scope: :address
     parameter :address_detail, "收货地址", require: false, scope: :address
-    parameter :phone, "收货人电话", require: false, scope: :address
+    parameter :phone, "收货人电话", required: false, scope: :address
 
     before do
       @user = create(:user)
