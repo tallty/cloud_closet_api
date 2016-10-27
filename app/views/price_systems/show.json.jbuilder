@@ -1,0 +1,1 @@
+json.partial! "price_systems/price_system", price_system: @price_system

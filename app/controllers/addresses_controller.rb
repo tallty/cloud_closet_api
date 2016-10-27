@@ -5,7 +5,7 @@ class AddressesController < ApplicationController
   acts_as_token_authentication_handler_for User
 
   before_action :set_address, only: [:update, :destroy, :set_default]
-  before_action :insure_default_address_exist
+  before_action :insure_default_address_exist, except: [:create]
 
   respond_to :json
 
@@ -49,7 +49,7 @@ class AddressesController < ApplicationController
     end
 
     def address_params
-      params.require(:address).permit(:id, :name, :address_detail, :phone)
+      params.require(:address).permit(:name, :address_detail, :phone)
     end
 
     def insure_default_address_exist
