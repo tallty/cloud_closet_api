@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   ############ Work Routes ############################ 
   namespace :work do
     resources :appointments, only: [:index, :show, :destroy, :update]
+    resources :price_systems, only: [:index, :show]
   end
   ######################################################## 
 
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
       resources :garments, only: [:index]
     end
     resources :garments, only: [:update, :show]
+    resources :price_systems
   end
   #########################################################
 
@@ -62,7 +64,4 @@ Rails.application.routes.draw do
   resources :purchase_logs, only: [:index,:show]
   #####################################################
 
-  ############ PriceSystem Routes #########################
-  resources :price_systems
-  #####################################################
 end

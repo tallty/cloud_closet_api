@@ -117,6 +117,8 @@ resource "工作台相关接口" do
       end
     end
 
+
+
     # get 'admin/appointment_item_groups/:appointment_item_group_id/garments' do
     #   let(:appointment_item_group_id) { @groups.first.id }
     #   example "管理员获取指定订单下面的订单组对应的衣服列表成功" do
@@ -158,6 +160,45 @@ resource "工作台相关接口" do
     #     expect(status).to eq 200
     #   end
     # end
+
+  end
+
+  describe '价格系统操作' do
+    worker_attrs = FactoryGirl.attributes_for(:worker)
+
+    header "X-User-Token", worker_attrs[:authentication_token]
+    header "X-User-Phone", worker_attrs[:phone]
+
+    before do
+      @worker = create(:worker)
+      @price_systems = create_list(:price_system, 5)
+    end
+
+    get 'work/price_systems' do
+
+      parameter :page, "当前页", required: false
+      parameter :per_page, "每页的数量", required: false
+
+      let(:page) {2}
+      let(:per_page) {2}
+
+      example "工作人员查询价目列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    get 'work/price_systems/:id' do
+
+      let(:id) {@price_systems.first.id}
+
+      example "工作人员查询某价目详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
   end
 
