@@ -61,4 +61,8 @@ Rails.application.routes.draw do
   ############ PurchaseLog Routes #########################
   resources :purchase_logs, only: [:index,:show]
   #####################################################
+
+  ############ PriceSystem Routes #########################
+  resources :price_systems
+  #####################################################
 end
