@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027024922) do
+ActiveRecord::Schema.define(version: 20161028130627) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -77,6 +77,17 @@ ActiveRecord::Schema.define(version: 20161027024922) do
     t.string   "seq"
     t.string   "aasm_state"
     t.index ["user_id"], name: "index_appointments_on_user_id"
+  end
+
+  create_table "bills", force: :cascade do |t|
+    t.decimal  "amount"
+    t.integer  "bill_type",  default: 0
+    t.string   "seq"
+    t.string   "sign"
+    t.integer  "user_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["user_id"], name: "index_bills_on_user_id"
   end
 
   create_table "distribution_items", force: :cascade do |t|

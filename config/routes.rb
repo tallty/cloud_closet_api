@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   end
   ###########################################
 
+  ####################Bill Routes#######################
+  resources :bills, only: [:show, :index, :create] do
+    collection do
+      get :deposit_bill
+      get :payment_bill
+    end
+  end
 
   ############ UserInfo Routes ###################
   resource :user_info, only: [:show, :update] do
