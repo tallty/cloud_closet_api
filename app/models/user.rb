@@ -46,6 +46,7 @@ class User < ApplicationRecord
   has_one :user_info, dependent: :destroy
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
+  has_many :bills,  dependent: :destroy
 
   delegate :nickname, :mail, to: :user_info, allow_nil: true
 
