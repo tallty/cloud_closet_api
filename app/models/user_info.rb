@@ -29,8 +29,8 @@ class UserInfo < ApplicationRecord
   def refresh_default_address
   #保证默认存在
       _default_id = self.default_address_id
-      unless _default_id and self.addresses.exists?(id: _default_id)
-        unless self.addresses.first
+      unless self.addresses.empty?
+        unless _default_id and self.addresses.exists?(id: _default_id)
           _default_id = self.addresses.first.id
           self.default_address_id = self.addresses.first.id
           self.save
