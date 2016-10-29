@@ -193,7 +193,7 @@ resource "管理后台相关接口" do
 
       let(:name) { "new 上衣" }
       let(:season) { "new 春夏" }
-      let(:price) { "new 32" }
+      let(:price) { "2333" }
 
       example "管理员修改某价目信息成功" do
         do_request

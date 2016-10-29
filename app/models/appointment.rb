@@ -69,11 +69,11 @@ class Appointment < ApplicationRecord
                 ##{group.garment.type}
     end
 
-    _purchase_log = self.user.user_info.purchase_logs.build(:change => _appointment_price,
-                                                      :detail => _detail,
-                                                      :operation_type => "消费",
-                                                      :operation => "购买衣橱???",
-                                                      :payment_method => "微信支付？余额？")
+    _purchase_log = self.user.user_info.purchase_logs.build(change: _appointment_price,
+                                                      detail: _detail,
+                                                      operation_type: "消费",
+                                                      operation: "购买衣橱???",
+                                                      payment_method: "微信支付？余额？")
     _purchase_log.save
   end
 
