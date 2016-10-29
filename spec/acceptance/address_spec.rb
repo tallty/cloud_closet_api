@@ -51,7 +51,7 @@ resource "用户收货地址查询修改" do
     let(:address_detail) { address_attrs[:address_detail] }
     let(:phone) { address_attrs[:phone] }
 
-    example "用户查询收货地址列表成功" do
+    example "用户创建收货地址成功" do
       do_request
       puts response_body
       expect(status).to eq(201)

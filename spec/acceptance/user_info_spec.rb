@@ -31,6 +31,8 @@ resource "用户信息查询修改" do
     parameter :nickname, "称谓", require: false, scope: :user_info
     parameter :mail, "邮箱", require: false, scope: :user_info
     parameter :avatar_attributes, "头像", require: false, scope: :user_info
+    # parameter :default_address_id, "默认地址id", require: false, scope: :user_info
+    # parameter :balance, "用户余额", require: false, scope: :user_info
 
     before do
       @user = create(:user)
