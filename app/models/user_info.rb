@@ -30,9 +30,11 @@ class UserInfo < ApplicationRecord
   #保证默认存在
       _default_id = self.default_address_id
       unless _default_id and self.addresses.exists?(id: _default_id)
+        unless self.addresses.first
           _default_id = self.addresses.first.id
           self.default_address_id = self.addresses.first.id
           self.save
+        end
       end
   end
   
