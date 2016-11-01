@@ -18,7 +18,7 @@
 class Address < ApplicationRecord
   belongs_to :user_info
 
-  def default?
+  def is_default
   	id == UserInfo.find(self.user_info_id).default_address_id
   end
 

@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: appointments
+#
+#  id         :integer          not null, primary key
+#  address    :string
+#  name       :string
+#  phone      :string
+#  number     :integer
+#  date       :date
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  seq        :string
+#  aasm_state :string
+#
+# Indexes
+#
+#  index_appointments_on_user_id  (user_id)
+#
+
 FactoryGirl.define do
   factory :appointment do
     address "黄浦区济南路260号12栋603号"

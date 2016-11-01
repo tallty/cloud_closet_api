@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: garments
+#
+#  id          :integer          not null, primary key
+#  user_id     :integer
+#  title       :string
+#  put_in_time :datetime
+#  expire_time :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  seq         :string
+#  row         :integer
+#  carbit      :integer
+#  place       :integer
+#
+# Indexes
+#
+#  index_garments_on_seq      (seq)
+#  index_garments_on_user_id  (user_id)
+#
+
 FactoryGirl.define do
   factory :garment do
     title "garment title"

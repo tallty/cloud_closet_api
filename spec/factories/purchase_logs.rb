@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: purchase_logs
+#
+#  id             :integer          not null, primary key
+#  operation_type :string
+#  operation      :string
+#  change         :float
+#  payment_method :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  user_info_id   :integer
+#  detail         :string
+#  balance        :float
+#
+# Indexes
+#
+#  index_purchase_logs_on_user_info_id  (user_info_id)
+#
+
 FactoryGirl.define do
   factory :purchase_log do
     operation_type "消费/在线支付"
