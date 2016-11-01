@@ -17,10 +17,12 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  authentication_token   :string(30)
+#  openid                 :string
 #
 # Indexes
 #
 #  index_users_on_authentication_token  (authentication_token) UNIQUE
+#  index_users_on_openid                (openid)
 #  index_users_on_phone                 (phone) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
