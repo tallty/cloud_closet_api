@@ -71,4 +71,7 @@ Rails.application.routes.draw do
   resources :purchase_logs, only: [:index,:show]
   #####################################################
 
+  ##test ping++##
+  get 'test_pingpp', to: 'test_pingpp#hahaha'
+
 end
