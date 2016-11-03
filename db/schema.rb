@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028130627) do
+ActiveRecord::Schema.define(version: 20161103101516) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -181,14 +181,23 @@ ActiveRecord::Schema.define(version: 20161028130627) do
     t.index ["phone"], name: "index_sms_tokens_on_phone"
   end
 
+  create_table "tests", force: :cascade do |t|
+    t.string   "test_id"
+    t.string   "aa"
+    t.string   "bb"
+    t.string   "cc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "nickname"
     t.string   "mail"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "default_address_id"
-    t.float    "balance"
+    t.float    "balance",            default: 0.0
     t.index ["user_id"], name: "index_user_infos_on_user_id"
   end
 

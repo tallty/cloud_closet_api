@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  amount     :decimal(, )
-#  bill_type  :integer          default(0)
+#  bill_type  :integer          default("deposit")
 #  seq        :string
 #  sign       :string
 #  user_id    :integer
