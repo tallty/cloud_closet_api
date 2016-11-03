@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   #####################################################
 
   ##test ping++##
-  get 'test_pingpp', to: 'test_pingpp#hahaha'
+  post 'test_pingpp', to: 'test_pingpp#hahaha'
+  get 'test_recharge', to: 'test_pingpp#recharge'
 
 end
