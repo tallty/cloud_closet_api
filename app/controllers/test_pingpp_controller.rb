@@ -10,12 +10,27 @@ class TestPingppController < ApplicationController
 
   def get_pingpp_result
   	#params[:charge_id]
-  	
+
   end
 #post 充值
-  def recharge
+  # def recharge
+  # 	@pay_order = Pingplusplus.get_pay_order(1, request.remote_ip)
+  # end
 
-  	@pay_order = Pingplusplus.get_pay_order(1, request.remote_ip)
+  def recharge_user_info_balance
+  	@user_info = User.find(params[:user_id]).user_info
+  	@user_info.balance += params[:amount]
+  	@user_info.save
 
+  	render json: @user_info.balance
   end
+
+  # def expense_user_info_balance
+  # 	@user_info = User.find(params[:user_id]).user_info
+  # 	@user_info.balance -= params[:amount]
+  # 	@user_info.save
+
+  # 	render json: @user_info.balance
+  # end
+
 end
