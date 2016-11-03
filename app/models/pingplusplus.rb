@@ -17,12 +17,13 @@ class Pingplusplus
 	 Pingpp::Charge.create(
                           :order_no  => Pingplusplus.new.create_order_no,
                           :app       => { :id => APP_ID },
-                          :channel   => 'wx',
+                          :channel   => 'wx_pub',
                           :amount    => 100,
                           :client_ip => client_ip, #Pingplusplus.new.get_client_id,
                           :currency  => "cny",
                           :subject   => "Your Subject",
                           :body      => "Your Body"
+                          :extra     => {:open_id => "olclvwNgQ3dpmuw_EZNwkph-J9vM"}
                         )
 		
 	end
@@ -31,5 +32,7 @@ class Pingplusplus
 		chars =  ('0'..'9').to_a #('a'..'z').to_a + ('A'..'Z').to_a
   	Array.new(8).collect{chars[rand(chars.size - 1)]}.join 
 	end
+
+	def self.get_pay_order
 
 end
