@@ -1,7 +1,7 @@
 require "pingpp"
 
 # api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-API_KEY = "sk_test_Te9SK0Cqn1yTy5OeDC104KGS"
+API_KEY = "sk_live_TCyDmTb9Km9Kav1iP4jvHeD8"
 # app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
 APP_ID = "app_TCGezLWzLe1K5Oar"
 # 设置 API key
