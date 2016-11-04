@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   #########################################################
 
   ############ Address Routes ##############################
-  resources :addresses, only: [:index, :create,:update, :destroy] do
+  resources :addresses, only: [:index, :show, :create,:update, :destroy] do
     post 'set_default', on: :member
   end
   ###########################################################   
