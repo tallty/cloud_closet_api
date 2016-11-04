@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103101516) do
+ActiveRecord::Schema.define(version: 20161104043809) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -150,6 +150,21 @@ ActiveRecord::Schema.define(version: 20161103101516) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "ping_requests", force: :cascade do |t|
+    t.string   "object_type"
+    t.string   "ping_id"
+    t.boolean  "complete"
+    t.integer  "amount"
+    t.string   "subject"
+    t.string   "body"
+    t.string   "client_ip"
+    t.string   "extra"
+    t.string   "order_no"
+    t.string   "channel"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "price_systems", force: :cascade do |t|
