@@ -12,6 +12,7 @@
 #  client_ip   :string
 #  extra       :string
 #  order_no    :string
+#  channel     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

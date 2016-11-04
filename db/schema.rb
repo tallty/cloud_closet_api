@@ -196,15 +196,6 @@ ActiveRecord::Schema.define(version: 20161104043809) do
     t.index ["phone"], name: "index_sms_tokens_on_phone"
   end
 
-  create_table "tests", force: :cascade do |t|
-    t.string   "test_id"
-    t.string   "aa"
-    t.string   "bb"
-    t.string   "cc"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "nickname"
