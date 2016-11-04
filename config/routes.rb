@@ -71,6 +71,11 @@ Rails.application.routes.draw do
   resources :purchase_logs, only: [:index,:show]
   #####################################################
 
+  ############# Pingpp ##################################
+  post 'get_pingpp_pay_order', to: 'pingpp#get_pay_order'
+  post 'get_pingpp_webhooks', to: 'pingpp#get_pingpp_webhooks'
+  #####################################################
+  
   ##test ping++##
   post 'test_pingpp', to: 'test_pingpp#hahaha'
   # post 'test_get_pingpp_result', to: 'test_pingpp#get_pingpp_result'
