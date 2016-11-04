@@ -31,6 +31,29 @@ resource "用户收货地址查询修改" do
 
   end
 
+  get 'addresses/:id' do
+    user_attrs = FactoryGirl.attributes_for(:user)
+
+    header "X-User-Token", user_attrs[:authentication_token]
+    header "X-User-Phone", user_attrs[:phone]
+
+    before do
+      @user = create(:user)
+      @user_info = create(:user_info, user: @user,
+                                      default_address_id: 0 
+                          )
+      @addresses = create_list(:address, 5, user_info: @user_info)
+    end
+
+    let(:id) {@addresses.first.id}
+
+    example "用户查询收货地址详情成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
+  end
+
   post '/addresses' do
     user_attrs = FactoryGirl.attributes_for(:user)
     address_attrs = FactoryGirl.attributes_for(:address)

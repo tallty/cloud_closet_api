@@ -3,27 +3,29 @@ class PingppController < ApplicationController
 
 	#得到支付凭证 创建ping_request对象
 	def get_pay_order 
-
+	
 		#选择支付方式
-		_channel = 'wx_pub' #params[:channel] || 'wx_pub'
+		_channel = params[:channel] || 'wx_pub'
 		_extra = {}
 		case _channel
 		when 'wx_pub'
-			_extra[:open_id] = params[:open_id] 
+			#ping++ 平台发起创建时  openid 需要下划线 open_id
+			_extra = {open_id: params[:openid]}
 		end
 
 		@ping_request = PingRequest.new(
 			order_no: PingRequest.create_order_no,
 			channel: _channel,
-			amount: params[:amount],
-			client_ip: "127.0.0.1",#request.remote_ip,
-			subject: params[:subject],
-			body: params[:body],
-			extra: _extra
+			client_ip: request.remote_ip,
+			extra: _extra,
+			amount: params['amount'],
+			subject: params['subject'],
+			body: params['body'],
+			openid: params['openid'] 
 			)
 
 		#在ping++平台创建一条记录
-		_charge = @ping_request.get_pay_order(_extra)
+		_charge = @ping_request.get_pay_order(_extra) 
 
 		if _charge 
 			@ping_request.ping_id = _charge[:id]
@@ -35,7 +37,6 @@ class PingppController < ApplicationController
               logger.error 'ping++平台创建订单失败'
               logger.error error.http_body
     render json: error
-
 	end
 
 
@@ -61,27 +62,32 @@ class PingppController < ApplicationController
     # pub_key_path ="#{Rails.root}/config/rsa_public_key.pem"
     # if verify_signature(raw_data, signature, pub_key_path)
            #处理接收的结果
-         event = JSON.parse(raw_data) 
-         #付款成功
-         if event["type"] == 'charge.succeeded'
+      event = JSON.parse(request.body.read) 
+       #付款成功
+      if event['type'] == 'charge.succeeded'
 
-          # 开发者在此处加入对支付异步通知的处理代码
-            ping_id = event['data']['object']['id']
-            ping_request = PingRequest.where(ping_id: ping_id).first
+        # 开发者在此处加入对支付异步通知的处理代码
+        ping_id = event['data']['object']['id']
+        @ping_request = PingRequest.where(ping_id: ping_id).first
 
-            if ping_request.present?
-                #更新字段
-                ping_request.complete = event['data']['object']['paid']  
+        if @ping_request.present?
+          #更新字段
+          @ping_request.complete = event['data']['object']['paid']  
 
-                #发送微信消息  
-                if ping_request.save
-                     status = 200
-                else
-                    status = 500
-                end
-            else
-                   logger.debug '数据库没有该条记录！'
+          if ping_request.save
+          	#发送微信消息  
+            case @ping_request.subject
+            when "充值"
+            	@ping_request.send_recharge_success_message
+
             end
+            status = 200
+          else
+            status = 500
+          end
+        else
+          logger.debug '数据库没有该条记录！'
+        end
 
           #退款成功
         # elsif event['type'] == 'refund.succeeded'
@@ -110,11 +116,7 @@ class PingppController < ApplicationController
       #    status = 403
       end
       render :nothing => true, :status => status
-    # end	
 	end
-
-
-
 
 
 

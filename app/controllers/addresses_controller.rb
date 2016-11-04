@@ -4,7 +4,7 @@ class AddressesController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_address, only: [:update, :destroy, :set_default]
+  before_action :set_address, only: [:show, :update, :destroy, :set_default]
   before_action :insure_default_address_exist, except: [:create]
 
   respond_to :json
@@ -16,9 +16,9 @@ class AddressesController < ApplicationController
     respond_with(@addresses)
   end
 
-  # def show
-  #   respond_with(@address)
-  # end
+  def show
+    respond_with(@address)
+  end
 
   def create
     @address = current_user.user_info.addresses.build(address_params)
