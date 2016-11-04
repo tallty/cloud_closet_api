@@ -59,22 +59,31 @@ class Appointment < ApplicationRecord
   end
 
   # 支付完成，展开预约订单，这时候可以生成相关的item和
-  def pay!
-    _appointment_price = 0.00
-    _detail = []
-    groups.each do |group|
-      group.pay!
-      _appointment_price += group.price
-      _detail += [ ["衣服类型???", "#{group.count}"] ]
-                ##{group.garment.type}
-    end
+  def pay! #？？
+     groups.each do |group|
+         group.pay!
+     end
 
-    _purchase_log = self.user.user_info.purchase_logs.build(change: _appointment_price,
-                                                      detail: _detail,
-                                                      operation_type: "消费",
-                                                      operation: "购买衣橱???",
-                                                      payment_method: "微信支付？余额？")
-    _purchase_log.save
+    #计算总价  _appointment_price
+    # _appointment_price = 0.00
+    # _detail = []
+    # groups.each do |group|
+    #   group.pay!
+    #   _appointment_price += group.price
+    #   _detail += [ ["衣服类型???", "#{group.count}"] ]
+    #             ##{group.garment.type}
+    # end
+
+    # #创建消费记录
+    # _purchase_log = self.user.user_info.purchase_logs.build(
+    #     change: _appointment_price,
+    #     detail: _detail,
+    #     operation_type: "消费",
+    #     operation: "购买衣橱???",
+    #     payment_method: "微信支付？余额？")
+    # _purchase_log.save
+
+
   end
 
   def create_template_message
