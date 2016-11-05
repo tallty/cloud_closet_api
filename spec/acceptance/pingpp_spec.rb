@@ -9,7 +9,7 @@ resource "ping++平台支付相关" do
   	parameter :amount, "金额, 100=1元", required: true
   	parameter :subject, "充值/消费/提现", required: true
   	parameter :body, "余额充值/购买衣橱/衣服配送/余额提现", required: true
-  	parameter :metadata, '{"detail":"裤子*2 衣服*4"}', required: false
+  	parameter :metadata, '其他描述，键值对，例：\'{"detail":"裤子*2 衣服*4"}\'', required: false
 
     let(:channel) { 'wx_pub' }
     let(:openid) { "olclvwHtOBENZ-rLA2NxsBCVZky0" }

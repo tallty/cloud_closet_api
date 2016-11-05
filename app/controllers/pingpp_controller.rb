@@ -65,7 +65,7 @@ class PingppController < ApplicationController
     # if verify_signature(raw_data, signature, pub_key_path)
            #处理接收的结果
       event = JSON.parse(request.body.read) 
-       #付款成功
+      #付款成功
       if event['type'] == 'charge.succeeded'
 
         # 开发者在此处加入对支付异步通知的处理代码
@@ -77,22 +77,11 @@ class PingppController < ApplicationController
           @ping_request.complete = event['data']['object']['paid']  
 
           if @ping_request.save
-          	#发送微信消息  
-            case @ping_request.subject
-            when "充值"
-            	@ping_request.send_recharge_success_message
-              # PurchaseLog.create(
-              #   operation_type: @ping_request.subject
-              #   change: (@ping_request.amount.to_f/100).round(2)
-              #   detail: @ping_request.body
-              #   user_info_id: User.where(openid: @ping_request.openid).first.user_info.id
+          	#发送微信消息 
+            @ping_request.send_message("http://closet.tallty.com/user","#{@ping_request.subject}成功!","#{@ping_request.body}成功!") 
+            #生成账单记录
+            PurchaseLog.create_one(@ping_request)
 
-              #   )
-            when "消费"
-
-            when "提现"
-
-            end
             status = 200
           else
             status = 500
