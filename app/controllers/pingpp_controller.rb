@@ -2,6 +2,7 @@ class PingppController < ApplicationController
 	respond_to :json
 
 	#得到支付凭证 创建ping_request对象
+  #post 'get_pingpp_pay_order'
 	def get_pay_order 
 	
 		#选择支付方式
@@ -18,10 +19,11 @@ class PingppController < ApplicationController
 			channel: _channel,
 			client_ip: request.remote_ip,
 			extra: _extra,
-			amount: params['amount'],
-			subject: params['subject'],
-			body: params['body'],
-			openid: params['openid'] 
+			amount: params[:amount],
+			subject: params[:subject],
+			body: params[:body],
+			openid: params[:openid],
+      metadata: params[:metadata]
 			)
 
 		#在ping++平台创建一条记录
@@ -30,7 +32,7 @@ class PingppController < ApplicationController
 		if _charge 
 			@ping_request.ping_id = _charge[:id]
 			@ping_request.save
-		  render json: _charge
+		  render json: _charge 
 		end
 
 		rescue Pingpp::PingppError => error
@@ -63,7 +65,7 @@ class PingppController < ApplicationController
     # if verify_signature(raw_data, signature, pub_key_path)
            #处理接收的结果
       event = JSON.parse(request.body.read) 
-       #付款成功
+      #付款成功
       if event['type'] == 'charge.succeeded'
 
         # 开发者在此处加入对支付异步通知的处理代码
@@ -74,13 +76,12 @@ class PingppController < ApplicationController
           #更新字段
           @ping_request.complete = event['data']['object']['paid']  
 
-          if ping_request.save
-          	#发送微信消息  
-            case @ping_request.subject
-            when "充值"
-            	@ping_request.send_recharge_success_message
+          if @ping_request.save 
+            #生成账单记录
+            _purchase_log = PurchaseLog.create_one(@ping_request)
+            #发送微信消息 
+            @ping_request.send_recharge_success_message(_purchase_log.balance)
 
-            end
             status = 200
           else
             status = 500
@@ -88,33 +89,8 @@ class PingppController < ApplicationController
         else
           logger.debug '数据库没有该条记录！'
         end
-
-          #退款成功
-        # elsif event['type'] == 'refund.succeeded'
-
-        #       # 开发者在此处加入对退款异步通知的处理代码
-        #     order_no = event['data']['object']['order_no']
-        #     order = Order.where(order_no: order_no).first
-        #     if order.present?
-        #         #更新字段
-        #         order.time_refunded = Time.at(event['data']['object']['time_succeed'])
-        #         if order.save
-        #             status = 200
-        #         else
-        #             status = 500
-        #         end
-        #     else
-        #           logger.debug '数据库没有该条记录！'
-        #     end
-
-        # else
-        #     logger.debug '付款回调返回未知操作！'
-        # end
-
-      # else
-      #    logger.debug '付款回调请求来源错误！'
-      #    status = 403
       end
+    # end
       render :nothing => true, :status => status
 	end
 
