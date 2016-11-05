@@ -54,7 +54,7 @@ class PingRequest < ApplicationRecord
           color: "#0A0A0A"
         },
         keyword1: {
-          value: "乐存好衣",
+          value: (self.amount.to_f/100).round(2),
           color: "#CCCCCC"
         },
         # keyword2: {
