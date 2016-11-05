@@ -1,0 +1,1 @@
+json.sevice_appointments @work_appointments, partial: 'appointments/appointment', as: :appointment

@@ -69,7 +69,7 @@ resource "工作台相关接口" do
       end
     end
 
-    get '/work/appointments/:id/accept' do
+    post '/work/appointments/:id/accept' do
       let(:id) { @appointments.first.id }
 
       example "工作接受指定预订订单成功" do
@@ -79,14 +79,34 @@ resource "工作台相关接口" do
       end
     end
 
-    put 'work/appointments/:appointment_id' do
-      # parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
-      # parameter :price, "存放的费用", require: true, scope: :appointment_item_group
-      # parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
+    get '/work/appointments/service' do
 
-      # let(:count) { 5 }
-      # let(:price) { 3000 }
-      # let(:store_month) { 6 }
+      example "工作人员查看服务中的预订订单列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    # get '/work/appointments/unpaid' do
+
+    #   example "工作人员查看未付款的预订订单列表成功" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(200)
+    #   end
+    # end
+
+    put 'work/appointments/:appointment_id' do
+      parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
+      parameter :price, "存放的费用", require: true, scope: :appointment_item_group
+      parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
+      parameter :tag_list, "存放的标签，可以输入多个标签，中间使用者‘,’分隔", require: true, scope: :appointment_item_group
+
+      let(:count) { 5 }
+      let(:price) { 3000 }
+      let(:store_month) { 6 }
+      let(:tag_list) { 6 }
       let(:appointment_id) { @appointments.first.id }
 
       example "工作人员修改指定订单下面的订单组成功" do
