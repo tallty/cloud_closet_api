@@ -32,7 +32,7 @@ class PingRequest < ApplicationRecord
                           :subject   => self.subject,
                           :body      => self.body,
                           :extra     => extra, #直接从数据库去除的是一个字符串 需要解成 hash
-                          :metadata  => JSON.parse(self.metadata)
+                          :metadata  => self.metadata ? JSON.parse(self.metadata) : {}
                            ) 
 	end
 
