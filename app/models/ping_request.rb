@@ -44,7 +44,7 @@ class PingRequest < ApplicationRecord
   def send_recharge_success_message balance
     openid = self.openid
     template = {
-      template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0"
+      template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0",
       url: "http://closet.tallty.com/user",
       topcolor: "#FF0000",
 
