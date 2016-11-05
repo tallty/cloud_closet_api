@@ -35,6 +35,10 @@ class Garment < ApplicationRecord
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
+  def garment_count #存库的数量
+    Garment.all.count 
+  end
+
   after_create :generate_seq
 
   private
