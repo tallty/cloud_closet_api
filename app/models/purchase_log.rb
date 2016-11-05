@@ -22,6 +22,23 @@ class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 	before_save :cut_payment
 
+	def self.create_one _ping_request
+		_metadata = JSON.parse(_ping_request.metadata) || ""
+		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
+
+		PurchaseLog.create(
+                operation_type: "充值",
+                operation: _ping_request.body,
+                change: (_ping_request.amount.to_f/100).round(2),
+                detail: _metadata['detail'] || "",
+                user_info: User.where(openid: _ping_request.openid).first.user_info,
+                payment_method: _channel
+                )
+		#operation 购买衣橱 衣服配送
+		#detail 衣服*3 裤子*4
+		#payment_method 微信支付
+	end
+
 	def change_output
 		case self.operation_type
 		when "充值"
@@ -69,7 +86,8 @@ class PurchaseLog < ApplicationRecord
 	private
 
 	def cut_payment
-		self.user_info.balance += self.change unless self.operation_type == "发票"
+		self.user_info.balance += self.change if self.operation_type == "充值"
+		self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
 		self.user_info.save
 		self.balance = self.user_info.balance
 	end

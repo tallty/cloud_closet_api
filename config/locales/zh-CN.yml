@@ -22,3 +22,5 @@ zh-CN:
       timeout: "登录超时，请重新登录."
       unauthenticated: "继续操作前请确保您已登录."
       unconfirmed: "继续操作前请先确认您的帐号."
+  pingpp_channel:
+    wx_pub: "微信支付"

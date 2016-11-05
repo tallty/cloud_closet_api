@@ -2,6 +2,7 @@ class PingppController < ApplicationController
 	respond_to :json
 
 	#得到支付凭证 创建ping_request对象
+  #post 'get_pingpp_pay_order'
 	def get_pay_order 
 	
 		#选择支付方式
@@ -18,10 +19,11 @@ class PingppController < ApplicationController
 			channel: _channel,
 			client_ip: request.remote_ip,
 			extra: _extra,
-			amount: params['amount'],
-			subject: params['subject'],
-			body: params['body'],
-			openid: params['openid'] 
+			amount: params[:amount],
+			subject: params[:subject],
+			body: params[:body],
+			openid: params[:openid],
+      metadata: params[:metadata]
 			)
 
 		#在ping++平台创建一条记录
@@ -30,7 +32,7 @@ class PingppController < ApplicationController
 		if _charge 
 			@ping_request.ping_id = _charge[:id]
 			@ping_request.save
-		  render json: _charge
+		  render json: _charge 
 		end
 
 		rescue Pingpp::PingppError => error
@@ -74,11 +76,21 @@ class PingppController < ApplicationController
           #更新字段
           @ping_request.complete = event['data']['object']['paid']  
 
-          if ping_request.save
+          if @ping_request.save
           	#发送微信消息  
             case @ping_request.subject
             when "充值"
             	@ping_request.send_recharge_success_message
+              # PurchaseLog.create(
+              #   operation_type: @ping_request.subject
+              #   change: (@ping_request.amount.to_f/100).round(2)
+              #   detail: @ping_request.body
+              #   user_info_id: User.where(openid: @ping_request.openid).first.user_info.id
+
+              #   )
+            when "消费"
+
+            when "提现"
 
             end
             status = 200
