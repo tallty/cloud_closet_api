@@ -28,4 +28,4 @@
 /vendor/*
 /config/database.yml
 
-/config/initializers/pingxx.rb
+
