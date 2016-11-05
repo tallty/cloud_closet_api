@@ -76,11 +76,11 @@ class PingppController < ApplicationController
           #更新字段
           @ping_request.complete = event['data']['object']['paid']  
 
-          if @ping_request.save
-          	#发送微信消息 
-            @ping_request.send_message("http://closet.tallty.com/user","#{@ping_request.subject}成功!","#{@ping_request.body}成功!") 
+          if @ping_request.save 
             #生成账单记录
-            PurchaseLog.create_one(@ping_request)
+            _purchase_log = PurchaseLog.create_one(@ping_request)
+            #发送微信消息 
+            @ping_request.send_recharge_success_message(_purchase_log.balance)
 
             status = 200
           else
@@ -89,33 +89,8 @@ class PingppController < ApplicationController
         else
           logger.debug '数据库没有该条记录！'
         end
-
-          #退款成功
-        # elsif event['type'] == 'refund.succeeded'
-
-        #       # 开发者在此处加入对退款异步通知的处理代码
-        #     order_no = event['data']['object']['order_no']
-        #     order = Order.where(order_no: order_no).first
-        #     if order.present?
-        #         #更新字段
-        #         order.time_refunded = Time.at(event['data']['object']['time_succeed'])
-        #         if order.save
-        #             status = 200
-        #         else
-        #             status = 500
-        #         end
-        #     else
-        #           logger.debug '数据库没有该条记录！'
-        #     end
-
-        # else
-        #     logger.debug '付款回调返回未知操作！'
-        # end
-
-      # else
-      #    logger.debug '付款回调请求来源错误！'
-      #    status = 403
       end
+    # end
       render :nothing => true, :status => status
 	end
 
