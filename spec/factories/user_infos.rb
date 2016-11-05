@@ -9,7 +9,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  default_address_id :integer
-#  balance            :float
+#  balance            :float            default(0.0)
 #
 # Indexes
 #
