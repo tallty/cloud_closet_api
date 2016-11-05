@@ -20,7 +20,7 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	before_save :cut_payment
+	after_creat :cut_payment
 
 	def self.create_one _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
@@ -86,9 +86,11 @@ class PurchaseLog < ApplicationRecord
 	private
 
 	def cut_payment
-		self.user_info.balance += (self.change).round(2) if self.operation_type == "充值"
-		self.user_info.balance -= (self.change).round(2) if self.operation_type == "消费" || self.operation_type == "提现"
+		self.user_info.balance += self.change if self.operation_type == "充值" || self.operation == "充值" 
+		self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
+		self.user_info.balance = self.user_info.balance.round(2)
 		self.user_info.save
 		self.balance = self.user_info.balance
+		self.save
 	end
 end
