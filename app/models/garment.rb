@@ -21,6 +21,10 @@
 #
 
 class Garment < ApplicationRecord
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  acts_as_taggable_on :tags, :skills
+  scope :by_join_date, order("created_at DESC")
+
   belongs_to :user
 
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
