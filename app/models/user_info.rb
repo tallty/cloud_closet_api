@@ -26,6 +26,10 @@ class UserInfo < ApplicationRecord
   has_one :avatar, -> { where photo_type: "avatar" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :avatar, allow_destroy: true
 
+  def balance_output
+    "%.2f"%self.balance
+  end
+
   def refresh_default_address
   #保证默认存在
       _default_id = self.default_address_id
