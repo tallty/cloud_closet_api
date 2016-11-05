@@ -23,11 +23,11 @@ class PurchaseLog < ApplicationRecord
 	before_save :cut_payment
 
 	def self.create_one _ping_request
-		_metadata = JSON.parse(_ping_request.metadata) || ""
+		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
 		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
 
 		PurchaseLog.create(
-                operation_type: "充值",
+                operation_type: _ping_request.subject,
                 operation: _ping_request.body,
                 change: (_ping_request.amount.to_f/100).round(2),
                 detail: _metadata['detail'] || "",
@@ -86,8 +86,8 @@ class PurchaseLog < ApplicationRecord
 	private
 
 	def cut_payment
-		self.user_info.balance += self.change if self.operation_type == "充值"
-		self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
+		self.user_info.balance += (self.change).round(2) if self.operation_type == "充值"
+		self.user_info.balance -= (self.change).round(2) if self.operation_type == "消费" || self.operation_type == "提现"
 		self.user_info.save
 		self.balance = self.user_info.balance
 	end
