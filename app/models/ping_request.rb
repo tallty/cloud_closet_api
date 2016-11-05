@@ -16,6 +16,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  openid      :string
+#  metadata    :string
 #
 
 class PingRequest < ApplicationRecord
@@ -30,7 +31,8 @@ class PingRequest < ApplicationRecord
                           :currency  => "cny",
                           :subject   => self.subject,
                           :body      => self.body,
-                          :extra     => extra #直接从数据库去除的是一个字符串 需要解成 hash
+                          :extra     => extra, #直接从数据库去除的是一个字符串 需要解成 hash
+                          :metadata  => self.metadata ? JSON.parse(self.metadata) : {}
                            ) 
 	end
 
@@ -39,14 +41,12 @@ class PingRequest < ApplicationRecord
     Array.new(8).collect{chars[rand(chars.size - 1)]}.join 
   end
 
-  def send_recharge_success_message 
+  def send_recharge_success_message balance
     openid = self.openid
     template = {
-      # ????????? template_id
-      template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
+      template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0",
       url: "http://closet.tallty.com/user",
       topcolor: "#FF0000",
-
 
       data: {
         first: {
@@ -54,27 +54,23 @@ class PingRequest < ApplicationRecord
           color: "#0A0A0A"
         },
         keyword1: {
+          value: (self.amount.to_f/100).round(2),
+          color: "#CCCCCC"
+        },
+        # keyword2: {
+        #   value: "你是谁",
+        #   color: "#CCCCCC"
+        # },#赠送金额
+        keyword3: {
           value: "乐存好衣",
           color: "#CCCCCC"
-        },
-        keyword2: {
-          value: "你是谁",
-          color: "#CCCCCC"
-        },
-        keyword3: {
-          value: "哈哈哈",
-          color: "#CCCCCC"
-        },
+        },#充值门店
         keyword4: {
-          value: "哈哈哈哈",
-          color: "#CCCCCC"
-        },
-        keyword5: {
-          value: "哈哈哈哈哈",
+          value: balance,
           color: "#CCCCCC"
         },
         remark: {
-          value: "哈哈哈哈哈哈",
+          value: "如有疑问，敬请咨询：8888-8888888.",
           color: "#173177"
         }
       }
@@ -84,7 +80,50 @@ class PingRequest < ApplicationRecord
     puts response.body
   end
 
-  # def send_message url,title,keyword2...
+  # def send_message url,title,keyword2
   #   self.subject
+
+  #   openid = self.openid
+  #   template = {
+  #     # ????????? template_id
+  #     template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
+  #     url: url,
+  #     topcolor: "#FF0000",
+
+
+  #     data: {
+  #       first: {
+  #         value: title,
+  #         color: "#0A0A0A"
+  #       },
+  #       keyword1: {
+  #         value: "乐存好衣",
+  #         color: "#CCCCCC"
+  #       },
+  #       keyword2: {
+  #         value: keyword2,
+  #         color: "#CCCCCC"
+  #       },
+  #       keyword3: {
+  #         value: "哈哈哈",
+  #         color: "#CCCCCC"
+  #       },
+  #       keyword4: {
+  #         value: "哈哈哈哈",
+  #         color: "#CCCCCC"
+  #       },
+  #       keyword5: {
+  #         value: "哈哈哈哈哈",
+  #         color: "#CCCCCC"
+  #       },
+  #       remark: {
+  #         value: "哈哈哈哈哈哈",
+  #         color: "#173177"
+  #       }
+  #     }
+  #   }
+  #   response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
+  #     { openid: openid, template: template}
+  #   puts response.body
   # end
 end
