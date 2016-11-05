@@ -4,7 +4,7 @@ class Work::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_work_appointment, only: [:show, :update, :destroy]
+  before_action :set_work_appointment, only: [:show, :update, :destroy, :accept]
 
   respond_to :json
 
@@ -23,13 +23,18 @@ class Work::AppointmentsController < ApplicationController
   #   respond_with(@work_appointment)
   # end
 
+  def accept
+   p @work_appointment.accept!
+    respond_with(@work_appointment)
+  end
+
   def update
     @work_appointment.groups.destroy_all
     appointment_item_group_params[:groups].each do |group_param|
       appointment_group = @work_appointment.groups.build(group_param)
       appointment_group.save
     end
-    @work_appointment.pay!
+    @work_appointment.create_group
 
     respond_with(@work_appointment, template: "work/appointments/show", status: 201)
   end

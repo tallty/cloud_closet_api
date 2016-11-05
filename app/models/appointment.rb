@@ -79,9 +79,9 @@ class Appointment < ApplicationRecord
     self.cancel
   end
   # 支付完成后，展开预约订单，这时候可以生成相关的item和
-  def pay! 
+  def create_group
      groups.each do |group|
-         group.pay!
+         group.create_item
      end
 
     #计算总价  _appointment_price
