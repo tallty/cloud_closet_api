@@ -58,26 +58,9 @@ class Appointment < ApplicationRecord
     I18n.t :"appointment_aasm_state.#{aasm_state}"
   end
 
-   ### 预约订单状态的改变　#########
-  def update_appointment_accept
-    self.accept
-  end
+  ### 预约订单状态筛选查询　#########
+  scope :appointment_state, -> (state) {where(aasm_state:state)}
   
-  def update_appointment_service
-    self.service
-  end
-
-  def update_appointment_pay
-    self.pay
-  end
-
-  def update_appointment_store
-    self.store
-  end
-
-  def update_appointment_cancel
-    self.cancel
-  end
   # 支付完成后，展开预约订单，这时候可以生成相关的item和
   def create_group
      groups.each do |group|

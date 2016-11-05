@@ -44,7 +44,9 @@ Rails.application.routes.draw do
   ############ Work Routes ############################ 
   namespace :work do
     resources :appointments, only: [:index, :show, :destroy, :update] do
-      get 'accept', on: :member
+      post 'accept', on: :member
+      get 'service', on: :collection
+      get 'unpaid', on: :collection
     end    
     resources :price_systems, only: [:index, :show]
   end

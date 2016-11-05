@@ -9,7 +9,7 @@ class Work::AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    @appointments_hash = Appointment.all.group_by(&:date)
+    @appointments_hash = Appointment.all.appointment_state("committed").group_by(&:date)
     respond_with(@appointments_hash)
   end
 
@@ -24,9 +24,20 @@ class Work::AppointmentsController < ApplicationController
   # end
 
   def accept
-   p @work_appointment.accept!
+    @work_appointment.accept!
+    @work_appointment.save
     respond_with(@work_appointment)
   end
+
+  def service
+    @work_appointments = Appointment.all.appointment_state( "accepted" ) 
+    respond_with(@work_appointment)
+  end
+
+  # def unpaid
+  #   @work_appointments = Appointment.all.appointment_state( "unpaid" ) 
+  #   respond_with(@work_appointment)
+  # end
 
   def update
     @work_appointment.groups.destroy_all
