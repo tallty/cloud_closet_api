@@ -60,7 +60,9 @@ gem 'faraday'
 # Read more: https://github.com/aasm/aasm
 # After installing AASM you can run generator: rails generate aasm NAME [COLUMN_NAME]
 gem 'aasm'
-
+# A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts.
+# Read More ：https://github.com/mbleigh/acts-as-taggable-on
+gem 'acts-as-taggable-on', '~> 4.0'
 ###############################################################################
 
 group :development, :test do
