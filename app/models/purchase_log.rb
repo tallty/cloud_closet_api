@@ -20,7 +20,7 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	after_creat :cut_payment
+	after_create :cut_payment
 
 	def self.create_one _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
