@@ -24,7 +24,7 @@ class Appointment < ApplicationRecord
 
   aasm do
     state :committed, initial: true
-    state :accepted, :unpaid, :paid, :stored, :canceled
+    state :accepted, :unpaid, :paid, :storing, :stored, :canceled
 
     event :accept do
       transitions from: :committed, to: :accepted
@@ -38,8 +38,12 @@ class Appointment < ApplicationRecord
       transitions from: :unpaid, to: :paid
     end
 
-    event :store do
-      transitions from: :paid, to: :store
+    event :begin_store do
+      transitions form: :paid, to: :storing
+    end
+
+    event :stored do
+      transitions from: :storing, to: :store
     end
 
     event :cancel do
@@ -67,7 +71,8 @@ class Appointment < ApplicationRecord
          group.create_item
      end
 
-    #计算总价  _appointment_price
+    #计算总价
+    # _appointment_price
     # _appointment_price = 0.00
     # _detail = []
     # groups.each do |group|

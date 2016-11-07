@@ -34,7 +34,7 @@ class PurchaseLog < ApplicationRecord
                 user_info: User.where(openid: _ping_request.openid).first.user_info,
                 payment_method: _channel
                 )
-		#operation 购买衣橱 衣服配送
+		#operation 购买衣橱 衣服配送  #现 不需要微信支付 		operation 与 detail
 		#detail 衣服*3 裤子*4
 		#payment_method 微信支付
 	end

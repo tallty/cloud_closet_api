@@ -4,7 +4,7 @@ class AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_appointment, only: [:show, :update, :destroy]
+  before_action :set_appointment, only: [:show, :update, :destroy, :pay_by_balance]
 
   respond_to :json
 
@@ -34,6 +34,10 @@ class AppointmentsController < ApplicationController
   #   @appointment.destroy
   #   respond_with(@appointment)
   # end
+
+  def pay_by_balance
+    
+  end
 
   private
     def set_appointment
