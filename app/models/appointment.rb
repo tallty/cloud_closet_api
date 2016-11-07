@@ -43,7 +43,7 @@ class Appointment < ApplicationRecord
     end
 
     event :stored do
-      transitions from: :storing, to: :store
+      transitions from: :storing, to: :stored
     end
 
     event :cancel do

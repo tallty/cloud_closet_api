@@ -41,7 +41,9 @@ resource "管理后台相关接口" do
     before do
       @user = create(:user)
       @admin = create(:admin)
-      @appointments = create_list(:appointment, 5, user: @user, aasm_state:"storing")
+      storing_appointments = create_list(:appointment, 5, user: @user, aasm_state:"storing")
+      stored_appointments = create_list(:appointment, 5, user: @user, aasm_state:"stored")
+      @appointments = storing_appointments.concat stored_appointments
       @appointments.each do |appointment|
         @groups = create_list(:appointment_item_group, 3, appointment: appointment)
       end
@@ -75,7 +77,7 @@ resource "管理后台相关接口" do
     post '/admin/appointments/:id/stored' do
       let(:id) { @appointments.first.id }
 
-      example "工作‘确认上架’指定预订订单成功" do
+      example "管理员‘确认上架’指定预订订单成功" do
         do_request
         puts response_body
         expect(status).to eq(200)

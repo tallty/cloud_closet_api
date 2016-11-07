@@ -4,7 +4,7 @@ class Admin::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin, except: [:check, :reset] 
 
-  before_action :set_admin_appointment, only: [:show, :update, :destroy]
+  before_action :set_admin_appointment, only: [:show, :update, :destroy, :stored]
 
   respond_to :json
 
@@ -43,7 +43,7 @@ class Admin::AppointmentsController < ApplicationController
 
   private
     def set_admin_appointment
-      @admin_appointment = Appointment.all.appointment_state("stored").find(params[:id])
+      @admin_appointment = Appointment.all.appointment_state("storing").find(params[:id])
     end
 
     def admin_appointment_params
