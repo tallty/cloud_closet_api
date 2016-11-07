@@ -1,6 +1,6 @@
 require 'acceptance_helper'
 
-resource "用户账户账单修改" do
+resource "用户账户账单查看" do
   header "Accept", "application/json"
 
   get '/purchase_logs' do
