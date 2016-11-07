@@ -22,7 +22,7 @@ class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 	after_create :cut_payment
 
-	def self.create_one _ping_request
+	def self.create_one_with_ping_request _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
 		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
 
@@ -34,9 +34,21 @@ class PurchaseLog < ApplicationRecord
                 user_info: User.where(openid: _ping_request.openid).first.user_info,
                 payment_method: _channel
                 )
-		#operation 购买衣橱 衣服配送  #现 不需要微信支付 		operation 与 detail
+		#现 不需要微信支付 		operation,deatil,metadata暂不需要
+		#operation 购买衣橱 衣服配送  
 		#detail 衣服*3 裤子*4
 		#payment_method 微信支付
+	end
+
+	def self.create_one_with_storing_garment appointment
+		PurchaseLog.create(
+			operation: "购买衣橱",
+			operation_type: "消费",
+			change: appointment.price,
+			detail: appointment.detail,
+			user_info: appointment.user.user_info,
+			payment_method: "余额支付"
+			)
 	end
 
 	def change_output

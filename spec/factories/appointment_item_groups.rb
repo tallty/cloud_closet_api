@@ -20,5 +20,6 @@ FactoryGirl.define do
     count 5
     store_month 3
     price 1.5
+    type_name "上衣"
   end
 end

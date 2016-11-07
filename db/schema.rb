@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161105031830) do
+ActiveRecord::Schema.define(version: 20161107021928) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20161105031830) do
     t.float    "price"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "type_name"
     t.index ["appointment_id"], name: "index_appointment_item_groups_on_appointment_id"
   end
 
@@ -72,10 +73,12 @@ ActiveRecord::Schema.define(version: 20161105031830) do
     t.integer  "number"
     t.date     "date"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "seq"
     t.string   "aasm_state"
+    t.float    "price",      default: 0.0
+    t.string   "detail"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
@@ -221,6 +224,15 @@ ActiveRecord::Schema.define(version: 20161105031830) do
     t.string  "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string   "test_id"
+    t.string   "aa"
+    t.string   "bb"
+    t.string   "cc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_infos", force: :cascade do |t|

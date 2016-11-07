@@ -26,5 +26,7 @@ FactoryGirl.define do
     phone "18617671987"
     number 50
     date "2016-09-24"
+    price	"100.00"
+    detail "衣服*2"
   end
 end
