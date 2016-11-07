@@ -36,6 +36,7 @@ class Work::AppointmentsController < ApplicationController
   end
 
   def update
+    # @work_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
     @work_appointment.groups.destroy_all
     appointment_item_group_params[:groups].each do |group_param|
       appointment_group = @work_appointment.groups.build(group_param)
@@ -47,13 +48,14 @@ class Work::AppointmentsController < ApplicationController
   end
 
   def destroy
+    # @work_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
     @work_appointment.destroy
     respond_with(@work_appointment)
   end
 
   private
     def set_work_appointment
-      @work_appointment = Appointment.all.appointment_state("committed").find(params[:id])
+      @work_appointment = Appointment.find(params[:id])
     end
 
     def work_appointment_params
