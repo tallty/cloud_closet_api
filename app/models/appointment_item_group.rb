@@ -19,9 +19,8 @@ class AppointmentItemGroup < ApplicationRecord
   belongs_to :appointment
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :garments, through: :items
-
+  
   def create_item
-    count.times do
       item = self.items.build(
         store_month: self.store_month,
         appointment: appointment
