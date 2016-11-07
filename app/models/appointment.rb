@@ -70,7 +70,8 @@ class Appointment < ApplicationRecord
      groups.each do |group|
          group.create_item
      end
-
+    self.service!
+    # self.save
     #计算总价
     # _appointment_price
     # _appointment_price = 0.00

@@ -12,7 +12,6 @@
 #  user_info_id   :integer
 #  detail         :string
 #  balance        :float
-#  metadata       :string
 #
 # Indexes
 #

@@ -11,7 +11,7 @@ class Admin::AppointmentsController < ApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 10
-    @admin_appointments = Appointment.paginate(page: page, per_page: per_page)
+    @admin_appointments = Appointment.all.appointment_state("stored").paginate(page: page, per_page: per_page)
     respond_with(@admin_appointments)
   end
 
@@ -37,7 +37,7 @@ class Admin::AppointmentsController < ApplicationController
 
   private
     def set_admin_appointment
-      @admin_appointment = Appointment.find(params[:id])
+      @admin_appointment = Appointment.all.appointment_state("stored").find(params[:id])
     end
 
     def admin_appointment_params
