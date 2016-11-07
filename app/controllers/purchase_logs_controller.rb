@@ -9,9 +9,7 @@ class PurchaseLogsController < ApplicationController
   respond_to :json
 
   def index
-    page = params[:page] || 1
-    per_page = params[:per_page] || 10
-    @purchase_logs = current_user.user_info.purchase_logs.paginate(page: page, per_page: per_page)
+    @purchase_logs = current_user.user_info.purchase_logs
     respond_with(@purchase_logs)
   end
 
