@@ -16,7 +16,7 @@ class Admin::AppointmentsController < ApplicationController
   end
 
   def show
-    respond_with(@admin_appointment)
+    respond_with @appointment, template: "appointments/show", status: 200
   end
 
   def stored
@@ -26,27 +26,28 @@ class Admin::AppointmentsController < ApplicationController
   end
 
   def create
-    @admin_appointment = Admin::Appointment.new(admin_appointment_params)
-    @admin_appointment.save
-    respond_with(@admin_appointment)
+    @appointment = Admin::Appointment.new(appointment_params)
+    @appointment.save
+    respond_with @appointment, template: "appointments/show", status: 201
   end
 
   def update
-    @admin_appointment.update(admin_appointment_params)
-    respond_with(@admin_appointment)
+    @appointment.update(appointment_params)
+    respond_with @appointment, template: "appointments/show", status: 201
   end
 
   def destroy
-    @admin_appointment.destroy
-    respond_with(@admin_appointment)
+    @appointment.destroy
+    respond_with @appointment, template: "appointments/show", status: 204
   end
 
   private
+
     def set_admin_appointment
       @admin_appointment = Appointment.all.appointment_state("storing").find(params[:id])
     end
 
-    def admin_appointment_params
-      params[:admin_appointment]
+    def appointment_params
+      params[:appointment]
     end
 end
