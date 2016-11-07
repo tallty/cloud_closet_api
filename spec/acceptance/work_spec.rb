@@ -101,13 +101,21 @@ resource "工作台相关接口" do
       parameter :count, "存放衣服的数量", require: true, scope: :appointment_item_group
       parameter :price, "存放的费用", require: true, scope: :appointment_item_group
       parameter :store_month, "存放的月份数", require: true, scope: :appointment_item_group
+      parameter :type_name, "价目名称，如\"上衣\"，\"裙装\"", require: true, scope: :appointment_item_group
       parameter :tag_list, "存放的标签，可以输入多个标签，中间使用者‘,’分隔", require: true, scope: :appointment_item_group
+
+      before do
+        @appointments.first.accept!
+      end
 
       let(:count) { 5 }
       let(:price) { 3000 }
       let(:store_month) { 6 }
+      let(:type_name) { "上衣" }
       let(:tag_list) { 6 }
       let(:appointment_id) { @appointments.first.id }
+      
+
 
       example "工作人员修改指定订单下面的订单组成功" do
         params = {
@@ -117,17 +125,20 @@ resource "工作台相关接口" do
               {
                 count: 5,
                 price: 100,
-                store_month: 3
+                store_month: 3,
+                type_name: "上衣"
               },
               {
                 count: 2,
                 price: 300,
-                store_month: 6
+                store_month: 6,
+                type_name: "裤装"
               },
               {
                 count: 3,
                 price: 200,
-                store_month: 12
+                store_month: 12,
+                type_name: '裙装'
               },
             ]
           }

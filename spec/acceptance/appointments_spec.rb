@@ -74,4 +74,52 @@ resource "预约存入衣服到我的衣橱" do
     end
   end
 
+  post 'appointments/:id/pay_by_balance' do
+    user_attrs = FactoryGirl.attributes_for(:user)
+
+    header "X-User-Token", user_attrs[:authentication_token]
+    header "X-User-Phone", user_attrs[:phone]
+
+    before do
+      @user = create(:user)
+      @user_info = create(:user_info, user: @user)
+      @appointments = create_list(:appointment, 5, user: @user)
+      @appointment = @appointments.first
+      @appointment.accept!
+      @appointment.service!
+    end
+
+    let(:id) { @appointment.id }
+
+    example "用使用余额支付成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+    end
+  end
+
+  post 'appointments/:id/pay_by_balance' do
+    user_attrs = FactoryGirl.attributes_for(:user)
+
+    header "X-User-Token", user_attrs[:authentication_token]
+    header "X-User-Phone", user_attrs[:phone]
+
+    before do
+      @user = create(:user)
+      @user_info = create(:user_info, user: @user, balance: 100.00)
+      @appointments = create_list(:appointment, 5, user: @user, price: 30000)
+      @appointment = @appointments.first
+      @appointment.accept!
+      @appointment.service!
+    end
+
+    let(:id) { @appointment.id }
+
+    example "用户余额不足，用使用余额支付失败" do
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+    end
+  end
+
 end
