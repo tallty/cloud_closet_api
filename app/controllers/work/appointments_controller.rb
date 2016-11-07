@@ -4,7 +4,7 @@ class Work::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_work_appointment, only: [:show, :update, :destroy, :accept]
+  before_action :set_work_appointment, only: [:show, :update, :destroy, :accept, :storing, :cancel]
 
   respond_to :json
 
@@ -27,6 +27,18 @@ class Work::AppointmentsController < ApplicationController
     @work_appointment.accept!
     @work_appointment.save
     respond_with(@work_appointment)
+  end
+
+  def storing
+    @work_appointment.storing!
+    @work_appointment.save
+    respond_with(@work_appointment, template: "work/appointments/accept", status: 200)
+  end
+
+  def cancel
+    @work_appointment.cancel!
+    @work_appointment.save
+    respond_with(@work_appointment, template: "work/appointments/accept", status: 200)
   end
 
   def state_query
