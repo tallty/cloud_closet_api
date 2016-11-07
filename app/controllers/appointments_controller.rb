@@ -36,8 +36,28 @@ class AppointmentsController < ApplicationController
   # end
 
   def pay_by_balance
-    
+    @user_info = current_user.user_info
+    if @user_info.balance < @appointment.price
+      _insufficient = "%.2f"%(@appointment.price - @user_info.balance)
+
+      @error = "余额不足, 需充值#{_insufficient}元"
+      render @error, template: "error", status: 201
+      #render json: {error: '余额不足'}  missing template
+    else
+      #生成消费记录 并扣费
+      @purchase_log = PurchaseLog.create_one_with_storing_garment(@appointment)
+
+      if @purchase_log
+        @appointment.pay!
+        
+        respond_with @appointment, status: 201
+      else
+        @error = '余额扣费失败'
+        render @error, template: "error", status: 201
+      end
+    end
   end
+
 
   private
     def set_appointment
@@ -46,7 +66,7 @@ class AppointmentsController < ApplicationController
 
     def appointment_params
       params.require(:appointment).permit(
-        :address, :name, :phone, :number, :date
+        :address, :name, :phone, :number, :date#,:detail 提供详情可修改
         )
     end
 end
