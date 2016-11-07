@@ -45,7 +45,11 @@ Rails.application.routes.draw do
   ############ Work Routes ############################ 
   namespace :work do
     resources :appointments, only: [:index, :show, :destroy, :update] do
-      post 'accept', on: :member
+      member do
+        post 'accept'
+        post 'storing'
+        post 'cancel'
+      end
       get 'state_query', on: :collection
     end    
     resources :price_systems, only: [:index, :show]
@@ -55,6 +59,7 @@ Rails.application.routes.draw do
   ############ Admin Routes ###############################
   namespace :admin do
     resources :appointments, only: [:index, :show] do
+      post 'stored', on: :member
       resources :appointment_item_groups, only: [:index]
     end
     resources :appointment_item_groups, only: [:show] do

@@ -38,7 +38,7 @@ class Appointment < ApplicationRecord
       transitions from: :unpaid, to: :paid
     end
 
-    event :begin_store do
+    event :storing do
       transitions form: :paid, to: :storing
     end
 

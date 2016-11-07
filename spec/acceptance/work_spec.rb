@@ -62,7 +62,7 @@ resource "工作台相关接口" do
     get 'work/appointments/:id' do
       let(:id) { @appointments.first.id }
 
-      example "工作人员查看指定‘提交状态’预订订单详情成功" do
+      example "工作人员查看指定预订订单详情成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -72,7 +72,27 @@ resource "工作台相关接口" do
     post '/work/appointments/:id/accept' do
       let(:id) { @appointments.first.id }
 
-      example "工作接受指定预订订单成功" do
+      example "工作人员’接受‘指定预订订单成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    post '/work/appointments/:id/storing' do
+      let(:id) { @appointments.first.id }
+
+      example "工作人员‘确认入库’指定预订订单成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    post '/work/appointments/:id/cancel' do
+      let(:id) { @appointments.first.id }
+
+      example "工作人员‘取消’指定预订订单成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
