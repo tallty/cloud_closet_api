@@ -41,7 +41,7 @@ resource "管理后台相关接口" do
     before do
       @user = create(:user)
       @admin = create(:admin)
-      @appointments = create_list(:appointment, 5, user: @user)
+      @appointments = create_list(:appointment, 5, user: @user, aasm_state:"stored")
       @appointments.each do |appointment|
         @groups = create_list(:appointment_item_group, 3, appointment: appointment)
       end
@@ -55,7 +55,7 @@ resource "管理后台相关接口" do
       parameter :page, "当前页", require: false
       parameter :per_page, "每页的数量", require: false
 
-      example "管理员查询所有预订订单的列表" do
+      example "管理员查询所有‘已上架状态’的预订订单的列表成功" do
         do_request
         puts response_body
         expect(status).to eq 200
@@ -65,7 +65,7 @@ resource "管理后台相关接口" do
     get 'admin/appointments/:id' do
       let(:id) { @appointments.first.id }
 
-      example "管理员查看指定预订订单详情成功" do
+      example "管理员查看指定‘已上架状态’的预订订单详情成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -74,7 +74,7 @@ resource "管理后台相关接口" do
 
     get 'admin/appointments/:appointment_id/appointment_item_groups' do
       let(:appointment_id) { @appointments.first.id }
-      example "管理员获取指定订单下面的所有订单组成功" do
+      example "管理员获取指定‘已上架状态’的订单下面的所有订单组成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -83,7 +83,7 @@ resource "管理后台相关接口" do
 
     get 'admin/appointment_item_groups/:appointment_item_group_id/garments' do
       let(:appointment_item_group_id) { @groups.first.id }
-      example "管理员获取指定订单下面的订单组对应的衣服列表成功" do
+      example "管理员获取指定‘已上架状态’的订单下面的订单组对应的衣服列表成功" do
         do_request
         puts response_body
         expect(status).to eq(200)

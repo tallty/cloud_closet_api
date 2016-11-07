@@ -8,7 +8,7 @@ zh-CN:
     accepted: "服务中"
     unpaid: "待付款"
     paid: "已支付"
-    storing: '入库中'
+    storing: "入库中"
     stored: "已上架"
     canceled: "已取消"
       

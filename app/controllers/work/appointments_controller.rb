@@ -29,15 +29,11 @@ class Work::AppointmentsController < ApplicationController
     respond_with(@work_appointment)
   end
 
-  def service
-    @work_appointments = Appointment.all.appointment_state( "accepted" ) 
-    respond_with(@work_appointment)
+  def state_query
+    @query_state = params[:query_state].present? ? "accepted" : "query_state"
+    @work_appointments = Appointment.all.appointment_state(@query_state) 
+    respond_with(@work_appointments, template: "work/appointments/state_query", status: 200)
   end
-
-  # def unpaid
-  #   @work_appointments = Appointment.all.appointment_state( "unpaid" ) 
-  #   respond_with(@work_appointment)
-  # end
 
   def update
     @work_appointment.groups.destroy_all
@@ -47,7 +43,7 @@ class Work::AppointmentsController < ApplicationController
     end
     @work_appointment.create_group
 
-    respond_with(@work_appointment, template: "work/appointments/show", status: 201)
+    respond_with(@work_appointment, template: "work/appointments/show", status: 200)
   end
 
   def destroy
@@ -57,7 +53,7 @@ class Work::AppointmentsController < ApplicationController
 
   private
     def set_work_appointment
-      @work_appointment = Appointment.find(params[:id])
+      @work_appointment = Appointment.all.appointment_state("committed").find(params[:id])
     end
 
     def work_appointment_params
