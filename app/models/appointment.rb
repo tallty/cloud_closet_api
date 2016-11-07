@@ -13,8 +13,6 @@
 #  updated_at :datetime         not null
 #  seq        :string
 #  aasm_state :string
-#  price      :float            default(0.0)
-#  detail     :string
 #
 # Indexes
 #
@@ -94,25 +92,7 @@ class Appointment < ApplicationRecord
     #     payment_method: "微信支付？余额？")
     # _purchase_log.save
 
-     # groups.each do |group|
-     #     group.create_item
-     # end
 
-    # 总价
-    self.price = 0.00
-    _detail = []
-    
-    groups.each do |group|
-      group.create_item
-      self.price += group.price
-      _detail += [ ["#{group.type_name}", "#{group.count}"] ]
-                ##{group.garment.type}
-      # _detail = _detail.join
-    end
-    self.detail = _detail
-    self.service!
-    self.save
->>>>>>> 72b3ee1e3da45f5d192e448d0fe140ac0b97352e
   end
 
   def create_template_message
