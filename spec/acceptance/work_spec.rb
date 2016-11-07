@@ -183,7 +183,7 @@ resource "工作台相关接口" do
     end
   end
 
-    get '/work/appointments/state_query' do
+  get '/work/appointments/state_query' do
 
       worker_attrs = FactoryGirl.attributes_for(:worker)
 
@@ -214,7 +214,7 @@ resource "工作台相关接口" do
         puts response_body
         expect(status).to eq(200)
       end
-    end
+  end
 
   describe '价格系统操作' do
     worker_attrs = FactoryGirl.attributes_for(:worker)
