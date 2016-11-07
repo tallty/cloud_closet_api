@@ -91,7 +91,7 @@ resource "预约存入衣服到我的衣橱" do
 
     let(:id) { @appointment.id }
 
-    example "用使用余额支付成功" do
+    example "用户使用余额支付成功" do
       do_request
       puts response_body
       expect(status).to eq(201)
