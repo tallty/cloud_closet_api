@@ -26,6 +26,7 @@ class AppointmentItem < ApplicationRecord
   	belongs_to :appointment_item_group
 
   	before_create :create_relate_garment
+  	before_create :update_status_storing
 
   	enum status: {
   		unstore: 0,
@@ -47,12 +48,12 @@ class AppointmentItem < ApplicationRecord
   		end
   	end
 
-  	def update_status_store
+  	def update_status_storing
   		self.store!
   	end
 
-  	def update_status_success
-  		self.store!
+  	def update_status_stored
+  		self.success!
   	end
 
   	private
