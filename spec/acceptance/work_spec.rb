@@ -51,7 +51,7 @@ resource "工作台相关接口" do
     end
 
     get 'work/appointments' do
-
+      
       example "工作人员查询所有‘提交状态’的预订订单列表成功" do
         do_request
         puts response_body
@@ -223,6 +223,12 @@ resource "工作台相关接口" do
         @groups = create_list(:appointment_item_group, 3, appointment: appointment)
       end
     end
+
+      parameter :page, "当前页", require: false
+      parameter :per_page, "每页的数量", require: false
+
+      let(:page) {1}
+      let(:per_page){15}
 
       parameter :query_state, "输入查询的状态(accepted: 服务中,unpaid: 待付款, paid: 已支付,storing: 入库中，canceled: 已取消)", require: false
       let(:query_state) {"accepted"}
