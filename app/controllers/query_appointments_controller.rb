@@ -3,10 +3,9 @@ class QueryAppointmentsController < ApplicationController
 	#参数 状态 逗号隔开
 	#committed,accepted,unpaid,paid,storing,stored,canceled
 	def query_appointments
-		_state = 
 		_state_array = params[:state] ? params[:state].split(",") : ["committed","accepted","unpaid","paid","storing","stored","canceled"]
 
-		@query_result = Appointment.appointment_state(_state_array)
+		p @query_result = Appointment.appointment_state(_state_array)
 		
 		page = params[:page] || 1
     per_page = params[:per_page] || 10

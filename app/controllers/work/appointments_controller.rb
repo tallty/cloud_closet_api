@@ -9,7 +9,7 @@ class Work::AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    @appointments_hash = Appointment.all.appointment_state("committed").group_by(&:date)
+    @appointments_hash = Appointment.all.group_by(&:date)
     respond_with(@appointments_hash)
   end
 
