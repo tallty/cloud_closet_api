@@ -43,6 +43,10 @@ class Garment < ApplicationRecord
     Garment.all.count 
   end
 
+  def row_carbit_place
+    "#{self.row}-#{self.carbit}-#{self.place}"  
+  end
+
   after_create :generate_seq
 
   private
