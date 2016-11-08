@@ -224,11 +224,11 @@ resource "工作台相关接口" do
       end
     end
 
-      parameter :page, "当前页", require: false
-      parameter :per_page, "每页的数量", require: false
+      # parameter :page, "当前页", require: false
+      # parameter :per_page, "每页的数量", require: false
 
-      let(:page) {1}
-      let(:per_page){15}
+      # let(:page) {1}
+      # let(:per_page){15}
 
       parameter :query_state, "输入查询的状态(accepted: 服务中,unpaid: 待付款, paid: 已支付,storing: 入库中，canceled: 已取消)", require: false
       let(:query_state) {"accepted"}

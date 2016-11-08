@@ -226,15 +226,6 @@ ActiveRecord::Schema.define(version: 20161107021928) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "tests", force: :cascade do |t|
-    t.string   "test_id"
-    t.string   "aa"
-    t.string   "bb"
-    t.string   "cc"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "user_infos", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "nickname"
