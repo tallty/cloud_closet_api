@@ -52,7 +52,7 @@ resource "工作台相关接口" do
 
     get 'work/appointments' do
       
-      example "工作人员查询所有‘提交状态’的预订订单列表成功" do
+      example "工作人员查询所有 预订订单 列表成功" do
         do_request
         puts response_body
         expect(status).to eq 200
