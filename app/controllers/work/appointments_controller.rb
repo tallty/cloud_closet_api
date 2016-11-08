@@ -42,7 +42,7 @@ class Work::AppointmentsController < ApplicationController
   end
 
   def state_query
-    @query_state = params[:query_state].present? ? "accepted" : "query_state"
+    @query_state = params[:query_state].present? ? "query_state" : "accepted" 
     @work_appointments = Appointment.all.appointment_state(@query_state) 
     respond_with(@work_appointments, template: "work/appointments/state_query", status: 200)
   end
