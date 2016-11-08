@@ -68,6 +68,14 @@ class User < ApplicationRecord
     Worker.wokrer? self
   end
 
+  def self.user_count
+    User.count
+  end
+
+  def self.new_user_count_today
+    User.where('created_at > ?', Time.zone.now.midnight).count
+  end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false

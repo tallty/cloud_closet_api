@@ -41,6 +41,7 @@ resource "预约存入衣服到我的衣橱" do
 
     before do
       @user = create(:user)
+      create(:user1, created_at: Time.now-1.day)
       @appointments = create_list(:appointment, 5, user: @user)
     end
 
