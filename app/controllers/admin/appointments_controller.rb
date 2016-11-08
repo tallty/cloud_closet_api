@@ -17,7 +17,7 @@ class Admin::AppointmentsController < ApplicationController
   end
 
   def show
-    respond_with @appointment, template: "appointments/show", status: 200
+    respond_with(@admin_appointment)
   end
 
   def stored
@@ -45,7 +45,7 @@ class Admin::AppointmentsController < ApplicationController
   private
 
     def set_admin_appointment
-      @admin_appointment = Appointment.all.appointment_state("storing").find(params[:id])
+      @admin_appointment = Appointment.find(params[:id])
     end
 
     def appointment_params
