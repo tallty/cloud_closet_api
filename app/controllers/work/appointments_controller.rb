@@ -9,9 +9,7 @@ class Work::AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    page = params[:page] || 1
-    per_page = params[:per_page] || 10
-    @appointments_hash = Appointment.all.appointment_state("committed").group_by(&:date).paginate(page: page, per_page: per_page)
+    @appointments_hash = Appointment.all.appointment_state("committed").group_by(&:date)
     respond_with(@appointments_hash)
   end
 
@@ -46,8 +44,8 @@ class Work::AppointmentsController < ApplicationController
   def state_query
     page = params[:page] || 1
     per_page = params[:per_page] || 10
-    @query_state = params[:query_state].present? ? "query_state" : "accepted" 
-    @work_appointments = Appointment.all.appointment_state(@query_state).paginate(page: page, per_page: per_page) 
+    @query_state = params[:query_state].present? ? params[:query_state] : "accepted" 
+   p @work_appointments = Appointment.all.appointment_state(@query_state).by_join_date.paginate(page: page, per_page: per_page) 
     respond_with(@work_appointments, template: "work/appointments/state_query", status: 200)
   end
 
