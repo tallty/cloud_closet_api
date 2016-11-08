@@ -57,6 +57,9 @@ resource "管理后台相关接口" do
       parameter :page, "当前页", require: false
       parameter :per_page, "每页的数量", require: false
 
+      parameter :query_state, "输入查询的状态(storing: 入库中，stored: 已上架)", require: false
+      let(:query_state) {"stored"}
+
       example "管理员查询所有‘已上架状态’的预订订单的列表成功" do
         do_request
         puts response_body
