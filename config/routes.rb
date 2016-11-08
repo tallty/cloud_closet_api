@@ -86,7 +86,11 @@ Rails.application.routes.draw do
   #####################################################
   
   ################ QueryAppointments Routes ################
-  get 'query_appointments', to: 'query_appointments#query_appointment'
+  get 'query_appointments', to: 'query_appointments#query_appointments'
+  ############################################################
+
+  ################ QueryPriceSystems Routes ################
+  get 'query_price_systems', to: 'query_price_systems#query_price_systems'
   ############################################################
   
 end

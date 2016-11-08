@@ -9,9 +9,7 @@ class Work::PriceSystemsController < ApplicationController
   respond_to :json
 
   def index
-    page = params[:page] || 1
-    per_page = params[:per_page] || 10
-    @price_systems = PriceSystem.all.paginate(page: page, per_page: per_page)
+    @price_systems = PriceSystem.all
     respond_with @price_systems, template: "price_systems/index", status: 200
   end
 

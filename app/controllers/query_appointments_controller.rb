@@ -2,7 +2,7 @@ class QueryAppointmentsController < ApplicationController
 
 	#参数 状态 逗号隔开
 	#committed,accepted,unpaid,paid,storing,stored,canceled
-	def query_appointment
+	def query_appointments
 		_state_array = params[:state].split(",") || [committed,accepted,unpaid,paid,storing,stored,canceled]
  
 		@query_result = Appointment.appointment_state(_state_array)
