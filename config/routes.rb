@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   ############ Appointment Routes ###################
   resources :appointments, only: [:create, :index, :show] do
+    post 'cancel', on: :member
     post 'pay_by_balance', on: :member
     resources :appointment_item_groups, only: [:index]
   end

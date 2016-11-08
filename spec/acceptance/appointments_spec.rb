@@ -74,6 +74,26 @@ resource "预约存入衣服到我的衣橱" do
     end
   end
 
+  post 'appointments/:id/cancel' do
+    user_attrs = FactoryGirl.attributes_for(:user)
+
+    header "X-User-Token", user_attrs[:authentication_token]
+    header "X-User-Phone", user_attrs[:phone]
+
+    before do
+      @user = create(:user)
+      @appointments = create_list(:appointment, 5, user: @user)
+    end
+
+    let(:id) { @appointments.first.id }
+
+    example "用户 取消 指定预约 成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+    end
+  end
+
   post 'appointments/:id/pay_by_balance' do
     user_attrs = FactoryGirl.attributes_for(:user)
 

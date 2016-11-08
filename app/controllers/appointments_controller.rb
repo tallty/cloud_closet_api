@@ -4,7 +4,7 @@ class AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_appointment, only: [:show, :update, :destroy, :pay_by_balance]
+  before_action :set_appointment, only: [:show, :update, :destroy, :pay_by_balance, :cancel]
 
   respond_to :json
 
@@ -56,6 +56,10 @@ class AppointmentsController < ApplicationController
         render @error, template: "error", status: 201
       end
     end
+  end
+  def cancel
+    @appointment.cancel!
+    respond_with @appointment, template: "appointments/show", status: 201
   end
 
 
