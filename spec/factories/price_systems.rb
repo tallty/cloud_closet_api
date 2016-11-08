@@ -12,8 +12,8 @@
 
 FactoryGirl.define do
   factory :price_system do
-    name "上衣"
-    season "春夏"
+  	sequence(:name,0) {|n| "上衣#{n}"}
+  	sequence(:season,0) {|n| "春#{n}"}
     price 32
     association :icon_image, factory: :image, photo_type: "icon"
   end
