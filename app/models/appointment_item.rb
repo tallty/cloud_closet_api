@@ -20,15 +20,40 @@
 #
 
 class AppointmentItem < ApplicationRecord
-  belongs_to :garment
-  belongs_to :appointment
-  belongs_to :appointment_item_group
+	include AASM
+  	belongs_to :garment
+  	belongs_to :appointment
+  	belongs_to :appointment_item_group
 
-  before_create :create_relate_garment
+  	before_create :create_relate_garment
 
-  private
-    def create_relate_garment
-      garment = Garment.create(user: appointment.try(:user))
-      self.garment = garment
-    end
+  	enum status: {
+  		unstore: 0,
+   		storing: 1,
+   		stored: 2
+  	}
+  
+# 　　	aasm :column => :status, :enum => true do
+#   		state :unstore, :initial => true	
+#   		state :storing
+#   		state :stored
+
+#   		event :store do
+#   			transitions :frome => :unstore, :to => storing
+#   		end
+
+#   		event :success do
+#   			transitions :frome => :storing, :to => stored
+#   		end
+
+#   		event :failuer do
+#   			transitions :frome => :stored, :to => unstore
+#   		end
+#   	end
+  	
+  	private
+    	def create_relate_garment
+      		garment = Garment.create(user: appointment.try(:user))
+      		self.garment = garment
+    	end
 end
