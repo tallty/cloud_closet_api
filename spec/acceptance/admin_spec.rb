@@ -41,8 +41,8 @@ resource "管理后台相关接口" do
     before do
       @user = create(:user)
       @admin = create(:admin)
-      storing_appointments = create_list(:appointment, 5, user: @user, aasm_state:"storing")
-      stored_appointments = create_list(:appointment, 5, user: @user, aasm_state:"stored")
+      storing_appointments = create_list(:appointment, 3, user: @user, aasm_state:"storing")
+      stored_appointments = create_list(:appointment, 3, user: @user, aasm_state:"stored")
       @appointments = storing_appointments.concat stored_appointments
       @appointments.each do |appointment|
         @groups = create_list(:appointment_item_group, 3, appointment: appointment)
@@ -60,7 +60,7 @@ resource "管理后台相关接口" do
       parameter :query_state, "输入查询的状态(storing: 入库中，stored: 已上架)", require: false
       let(:query_state) {"stored"}
 
-      example "管理员查询所有‘已上架状态’的预订订单的列表成功" do
+      example "管理员查询所有‘已上架'或者‘入库中‘的预订订单的列表成功" do
         do_request
         puts response_body
         expect(status).to eq 200
@@ -70,7 +70,7 @@ resource "管理后台相关接口" do
     get 'admin/appointments/:id' do
       let(:id) { @appointments.first.id }
 
-      example "管理员查看指定‘入库中状态’的预订订单详情成功" do
+      example "管理员查看指定的预订订单详情成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -89,7 +89,7 @@ resource "管理后台相关接口" do
 
     get 'admin/appointments/:appointment_id/appointment_item_groups' do
       let(:appointment_id) { @appointments.first.id }
-      example "管理员获取指定‘入库中状态’的订单下面的所有订单组成功" do
+      example "管理员获取指定的订单下面的所有订单组成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -98,7 +98,7 @@ resource "管理后台相关接口" do
 
     get 'admin/appointment_item_groups/:appointment_item_group_id/garments' do
       let(:appointment_item_group_id) { @groups.first.id }
-      example "管理员获取指定‘入库中状态’的订单下面的订单组对应的衣服列表成功" do
+      example "管理员获取指定的订单下面的订单组对应的衣服列表成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
