@@ -66,7 +66,7 @@ class Appointment < ApplicationRecord
 
   ### 预约订单状态筛选查询　#########
   scope :appointment_state, -> (state) {where(aasm_state:state)}
-  scope :by_join_date, -> {order("created_at DESC")}
+  scope :by_join_date, -> {order("created_at DESC")} #降序
   
   # 支付完成后，展开预约订单，这时候可以生成相关的item和
   def create_group
