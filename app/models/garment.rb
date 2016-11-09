@@ -51,19 +51,30 @@ class Garment < ApplicationRecord
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
-  def garment_count #存库的数量
+  #存库的数量
+  def garment_count 
     User.find(self.user_id).garments.count 
   end
 
-  def storing_garment_count #入库中的数量
+  #入库中的数量
+  def storing_garment_count
     User.find(self.user_id).garments.where(status: 'storing').count
   end
 
+  #管理员入库衣服后 衣服状态改为 已入库
   def do_finish_storing 
     self.finish_storing! unless self.status == 'stored'
   end
 
-  def row_carbit_place
+  #设置 入库时间 与 过期时间
+  def set_put_in_time_and_expire_time store_month
+    self.put_in_time = Time.zone.now
+    self.expire_time = self.put_in_time + store_month.to_i.month
+    self.save
+  end
+
+  #行 柜 位
+  def row_carbit_place 
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
 

@@ -20,11 +20,11 @@ class Admin::AppointmentsController < ApplicationController
     respond_with(@admin_appointment)
   end
 
-  # def stored
-  #   @admin_appointment.stored!
-  #   @admin_appointment.save
-  #   respond_with(@admin_appointment, template: "admin/appointments/show", status: 200)
-  # end
+  def stored
+    @admin_appointment.stored!
+    @admin_appointment.save
+    respond_with(@admin_appointment, template: "admin/appointments/show", status: 200)
+  end
 
   def create
     @appointment = Admin::Appointment.new(appointment_params)

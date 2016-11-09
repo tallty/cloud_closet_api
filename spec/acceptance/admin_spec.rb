@@ -108,7 +108,8 @@ resource "管理后台相关接口" do
     put 'admin/garments/:id' do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
-      parameter :appointment_id, "当前订单id", require: true
+      parameter :appointment_id, "当前订单id", required: true
+      parameter :store_month, "储存月份数", required: true
 
       parameter :title, "衣服描述信息", require: false, scope: :garment
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
@@ -118,7 +119,7 @@ resource "管理后台相关接口" do
       parameter :detail_images_attributes, "衣服的详细图片", require: false, scope: :garment
 
       let(:appointment_id) { @appointments.first.id }
-      
+      let(:store_month) { 12 }
       let(:id) { @groups.first.garments.first.id }
       let(:title) { "garemnt title" }
       let(:row) { 1 }
@@ -130,7 +131,6 @@ resource "管理后台相关接口" do
       example "管理员完善衣服的详细信息成功" do
         do_request
         puts response_body
-         p  @appointments.first.groups.first.items
         expect(status).to eq(201)
       end
     end

@@ -26,10 +26,13 @@ class Admin::GarmentsController < ApplicationController
 
   def update
     @garment.update(garment_params)
-    @garment.do_finish_storing
-    
+
+    @garment.do_finish_storing #管理员入库衣服后 衣服状态改为 已入库
+
+    @garment.set_put_in_time_and_expire_time(params[:store_month]) #设置 入库时间 与 过期时间
+
     @appointment = Appointment.find(params[:appointment_id])
-    @appointment.do_stored_if_its_garments_are_all_stored 
+    @appointment.do_stored_if_its_garments_are_all_stored
 
     respond_with @garment, template: "garments/show", status: 201
   end
