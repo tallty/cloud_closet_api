@@ -139,13 +139,13 @@ resource "工作台相关接口" do
                 price: 200,
                 store_month: 12,
                 type_name: '裙装'
-              },
+              }
             ]
           }
         }
         do_request params
         puts response_body
-        expect(status).to eq 200
+        expect(status).to eq(200)
       end
     end
 
@@ -233,11 +233,11 @@ resource "工作台相关接口" do
       # parameter :query_state, "输入查询的状态(accepted: 服务中,unpaid: 待付款, paid: 已支付,storing: 入库中，canceled: 已取消)", require: false
       # let(:query_state) {"accepted"}
 
-      example "工作人员查看某个(‘服务中’,‘未付款’,‘已付款’,’入库中‘,'已取消')状态的预订订单列表成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
+    example "工作人员查看某个(‘服务中’,‘未付款’,‘已付款’,’入库中‘,'已取消')状态的预订订单列表成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
   end
 
   describe '价格系统操作' do

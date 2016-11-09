@@ -45,9 +45,6 @@ resource "预约存入衣服到我的衣橱" do
       @appointments = create_list(:appointment, 5, user: @user)
     end
 
-    parameter :page, "当前页", require: false
-    parameter :per_page, "每页的数量", require: false
-
     example "用户获取预约列表成功" do
       do_request
       puts response_body

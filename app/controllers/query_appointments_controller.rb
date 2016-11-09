@@ -5,11 +5,7 @@ class QueryAppointmentsController < ApplicationController
 	def query_appointments
 		_state_array = params[:state] ? params[:state].split(",") : ["committed","accepted","unpaid","paid","storing","stored","canceled"]
 
-		p @query_result = Appointment.appointment_state(_state_array)
-		
-		page = params[:page] || 1
-    per_page = params[:per_page] || 10
-    @appointments = @query_result.paginate(page: page, per_page: per_page)
+		@appointments = Appointment.appointment_state(_state_array)
 
 		respond_with @appointments, template: "appointments/index", status: 200
 
