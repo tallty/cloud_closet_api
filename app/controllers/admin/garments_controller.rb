@@ -26,6 +26,7 @@ class Admin::GarmentsController < ApplicationController
 
   def update
     @garment.update(garment_params)
+    @garment.success!
     respond_with @garment, template: "garments/show", status: 201
   end
 

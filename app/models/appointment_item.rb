@@ -11,6 +11,7 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
+#  aasm_state                :string           default("storing")
 #
 # Indexes
 #
@@ -34,8 +35,8 @@ class AppointmentItem < ApplicationRecord
   	}
       
       aasm :column => :status, :enum => true do
-        state :unstore, :initial => true
-        state :storing
+        state :unstore 
+        state :storing, :initial => true
         state :stored
 
         event :store do
@@ -47,13 +48,13 @@ class AppointmentItem < ApplicationRecord
         end
       end
 
-  	def r
+  	def item_status
   		I18n.t :"appointment_itme_status.#{status}"
   	end
 
   	private
     	def create_relate_garment
-      		garment = Garment.create(user: appointment.try(:user))
+      		garment = Garment.create(user: self.appointment.try(:user))
       		self.garment = garment
       		# self.success!
     	end

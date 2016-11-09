@@ -25,7 +25,7 @@ class AppointmentItemGroup < ApplicationRecord
     count.times do
       item = self.items.build(
         store_month: self.store_month,
-        appointment: appointment
+        appointment: self.appointment
         )
       item.save
     end

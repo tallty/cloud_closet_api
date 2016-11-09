@@ -13,6 +13,8 @@
 #  row         :integer
 #  carbit      :integer
 #  place       :integer
+#  aasm_state  :string           default("storing")
+#  status      :string
 #
 # Indexes
 #
@@ -21,6 +23,7 @@
 #
 
 class Garment < ApplicationRecord
+  include AASM
   acts_as_taggable # Alias for acts_as_taggable_on :tags
   acts_as_taggable_on :tags, :skills
   scope :by_join_date, -> {order("created_at DESC")}
@@ -35,16 +38,33 @@ class Garment < ApplicationRecord
 
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
 
+  aasm :column => :status do
+    state :storing, :initial => true
+    state :stored
+
+    event :success do
+      transitions :from => :storing, :to => :stored
+    end
+  end
+
   def is_new
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
   def garment_count #存库的数量
-    Garment.all.count 
+    User.find(self.user_id).garments.count 
+  end
+
+  def storing_garment_count #入库中的数量
+    User.find(self.user_id).garments.where(status: 'storing').count
   end
 
   def row_carbit_place
     "#{self.row}-#{self.carbit}-#{self.place}"  
+  end
+
+  def garment_status
+      I18n.t :"appointment_itme_status.#{status}"
   end
 
   after_create :generate_seq
