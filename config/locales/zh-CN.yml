@@ -11,6 +11,11 @@ zh-CN:
     storing: "入库中"
     stored: "已上架"
     canceled: "已取消"
+
+  appointment_itme_status:
+    unstore: "未入库"
+    storing: "入库中"
+    stored: "已入库"
       
   devise:
     failure:
