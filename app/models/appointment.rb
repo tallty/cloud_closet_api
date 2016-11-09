@@ -85,6 +85,18 @@ class Appointment < ApplicationRecord
     self.service!
   end
 
+  def do_stored_if_its_garments_are_all_stored 
+    unless self.aasm_state == 'store'
+      _un_stored_count = 0
+      _items = self.items
+      _items.each do |item|
+        item.garment.status == 'stored'
+        _un_stored_count += 1
+      end
+      self.stored! if _un_stored_count == _items.count
+    end
+  end
+
   def create_template_message
     openid = user.try(:openid)
     return if openid.blank?

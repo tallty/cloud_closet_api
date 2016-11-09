@@ -25,6 +25,6 @@ FactoryGirl.define do
     appointment nil
     store_month 1
     price 1.5
-    status "unstore"
+
   end
 end

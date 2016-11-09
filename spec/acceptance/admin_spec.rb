@@ -45,10 +45,10 @@ resource "管理后台相关接口" do
       stored_appointments = create_list(:appointment, 3, user: @user, aasm_state:"stored")
       @appointments = storing_appointments.concat stored_appointments
       @appointments.each do |appointment|
-        @groups = create_list(:appointment_item_group, 3, appointment: appointment)
+        @groups = create_list(:appointment_item_group, 5, appointment: appointment)
       end
       @groups.each do |group|
-        @items = create_list(:appointment_item, 3, appointment_item_group: group, appointment: group.appointment)
+        @items = create_list(:appointment_item, 5, appointment_item_group: group, appointment: group.appointment)
       end
     end
 
@@ -108,6 +108,8 @@ resource "管理后台相关接口" do
     put 'admin/garments/:id' do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
+      parameter :appointment_id, "当前订单id", require: true
+
       parameter :title, "衣服描述信息", require: false, scope: :garment
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
@@ -115,6 +117,8 @@ resource "管理后台相关接口" do
       parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
       parameter :detail_images_attributes, "衣服的详细图片", require: false, scope: :garment
 
+      let(:appointment_id) { @appointments.first.id }
+      
       let(:id) { @groups.first.garments.first.id }
       let(:title) { "garemnt title" }
       let(:row) { 1 }
@@ -126,6 +130,7 @@ resource "管理后台相关接口" do
       example "管理员完善衣服的详细信息成功" do
         do_request
         puts response_body
+         p  @appointments.first.groups.first.items
         expect(status).to eq(201)
       end
     end
