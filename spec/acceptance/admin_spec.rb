@@ -48,7 +48,7 @@ resource "管理后台相关接口" do
         @groups = create_list(:appointment_item_group, 3, appointment: appointment)
       end
       @groups.each do |group|
-        @items = create_list(:appointment_item, 3, appointment_item_group: group)
+        @items = create_list(:appointment_item, 3, appointment_item_group: group, appointment: group.appointment)
       end
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107021928) do
+ActiveRecord::Schema.define(version: 20161109071044) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -58,9 +58,10 @@ ActiveRecord::Schema.define(version: 20161107021928) do
     t.integer  "store_month"
     t.float    "price"
     t.integer  "status"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.integer  "appointment_item_group_id"
+    t.string   "aasm_state",                default: "storing"
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["garment_id"], name: "index_appointment_items_on_garment_id"
@@ -131,12 +132,14 @@ ActiveRecord::Schema.define(version: 20161107021928) do
     t.string   "title"
     t.datetime "put_in_time"
     t.datetime "expire_time"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "seq"
     t.integer  "row"
     t.integer  "carbit"
     t.integer  "place"
+    t.string   "aasm_state",  default: "storing"
+    t.string   "status"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
   end
@@ -224,6 +227,15 @@ ActiveRecord::Schema.define(version: 20161107021928) do
     t.string  "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string   "test_id"
+    t.string   "aa"
+    t.string   "bb"
+    t.string   "cc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_infos", force: :cascade do |t|
