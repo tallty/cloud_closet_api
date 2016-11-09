@@ -13,6 +13,8 @@
 #  updated_at :datetime         not null
 #  seq        :string
 #  aasm_state :string
+#  price      :float            default(0.0)
+#  detail     :string
 #
 # Indexes
 #

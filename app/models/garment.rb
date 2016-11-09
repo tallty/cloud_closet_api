@@ -13,6 +13,7 @@
 #  row         :integer
 #  carbit      :integer
 #  place       :integer
+#  aasm_state  :string
 #
 # Indexes
 #
@@ -21,6 +22,7 @@
 #
 
 class Garment < ApplicationRecord
+  include AASM
   acts_as_taggable # Alias for acts_as_taggable_on :tags
   acts_as_taggable_on :tags, :skills
   scope :by_join_date, -> {order("created_at DESC")}
@@ -32,14 +34,37 @@ class Garment < ApplicationRecord
 
   has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_images, allow_destroy: true
-
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
+  after_create :update_aasm_state
+      
+  aasm do
+    state :storing, :initial => true
+    state :stored
+      
+    event :store do
+      transitions :from => :storing, :to => :stored
+    end
+  end
+
+  def update_aasm_state
+    self.store!
+  end
+
+  def state
+    I18n.t :"garment_aasm_state.#{aasm_state}"
+  end
 
   def is_new
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
-  def garment_count #存库的数量
+  scope :garment_state, -> (state) {where(aasm_state:state)}
+
+  def storing_garment_count#入库中的数量
+    Garment.all.garment_state("storing").count 
+  end
+
+  def stored_garment_count #存库的数量
     Garment.all.count 
   end
 
@@ -53,6 +78,5 @@ class Garment < ApplicationRecord
     def generate_seq
       self.seq = "G#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
       self.save
-    end
-  
+    end  
 end
