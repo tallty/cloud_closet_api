@@ -126,7 +126,7 @@ resource "管理后台相关接口" do
       example "管理员完善衣服的详细信息成功" do
         do_request
         puts response_body
-        expect(status).to eq 201
+        expect(status).to eq(201)
       end
     end
 
@@ -136,7 +136,7 @@ resource "管理后台相关接口" do
       example "管理员查看衣服的详细信息成功" do
         do_request
         puts response_body
-        expect(status).to eq 200
+        expect(status).to eq(200)
       end
     end
   end
