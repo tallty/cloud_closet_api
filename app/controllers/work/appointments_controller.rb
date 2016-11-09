@@ -44,9 +44,15 @@ class Work::AppointmentsController < ApplicationController
   def state_query
     # page = params[:page] || 1
     # per_page = params[:per_page] || 10
-    @query_state = params[:query_state].present? ? params[:query_state] : "accepted" 
-    @work_appointments = Appointment.all.appointment_state(@query_state).group_by(&:date)#.by_join_date.paginate(page: page, per_page: per_page) 
-    respond_with(@work_appointments, template: "work/appointments/state_query", status: 200)
+    # @query_state = params[:query_state].present? ? params[:query_state] : "accepted" 
+    # (accepted: 服务中,unpaid: 待付款, paid: 已支付,storing: 入库中，canceled: 已取消)
+    @accepted_appointments = Appointment.all.appointment_state("accepted").group_by(&:date)#.by_join_date.paginate(page: page, per_page: per_page) 
+    @unpaid_appointments = Appointment.all.appointment_state("unpaid").group_by(&:date)
+    @paid_appointments = Appointment.all.appointment_state("paid").group_by(&:date)
+    @storing_appointments = Appointment.all.appointment_state("storing").group_by(&:date)
+    @canceled_appointments = Appointment.all.appointment_state("canceled").group_by(&:date)
+    respond_with(@accepted_appointments, @unpaid_appointments, @paid_appointments, @storing_appointments, 
+                 @canceled_appointments, template: "work/appointments/state_query", status: 200)
   end
 
   def update

@@ -83,6 +83,7 @@ class Appointment < ApplicationRecord
     end
     self.detail = _detail
     self.service!
+    self.items.store!
 
   end
 
