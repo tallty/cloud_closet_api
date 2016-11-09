@@ -83,9 +83,6 @@ class Appointment < ApplicationRecord
     end
     self.detail = _detail
     self.service!
-    self.items.each do |item|
-      item.store!
-    end
   end
 
   def create_template_message
