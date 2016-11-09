@@ -47,7 +47,7 @@ class AppointmentItem < ApplicationRecord
         end
       end
 
-  	def itme_state
+  	def r
   		I18n.t :"appointment_itme_status.#{status}"
   	end
 
@@ -55,6 +55,6 @@ class AppointmentItem < ApplicationRecord
     	def create_relate_garment
       		garment = Garment.create(user: appointment.try(:user))
       		self.garment = garment
-      		self.success!
+      		# self.success!
     	end
 end
