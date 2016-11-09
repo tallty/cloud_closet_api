@@ -9,9 +9,7 @@ class AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    page = params[:page] || 1
-    per_page = params[:per_page] || 10
-    @appointments = current_user.appointments.paginate(page: page, per_page: per_page)
+    @appointments = current_user.appointments
     respond_with(@appointments)
   end
 
