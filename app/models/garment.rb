@@ -42,7 +42,7 @@ class Garment < ApplicationRecord
     state :storing, :initial => true
     state :stored
 
-    event :success do
+    event :finish_storing do
       transitions :from => :storing, :to => :stored
     end
   end
@@ -59,12 +59,16 @@ class Garment < ApplicationRecord
     User.find(self.user_id).garments.where(status: 'storing').count
   end
 
+  def do_finish_storing 
+    self.finish_storing! unless self.status == 'stored'
+  end
+
   def row_carbit_place
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
 
   def garment_status
-      I18n.t :"appointment_itme_status.#{status}"
+    I18n.t :"appointment_itme_status.#{status}"
   end
 
   after_create :generate_seq

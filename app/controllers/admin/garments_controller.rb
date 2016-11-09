@@ -26,7 +26,11 @@ class Admin::GarmentsController < ApplicationController
 
   def update
     @garment.update(garment_params)
-    @garment.success!
+    @garment.do_finish_storing
+    
+    @appointment = Appointment.find(params[:appointment_id])
+    @appointment.do_stored_if_its_garments_are_all_stored 
+
     respond_with @garment, template: "garments/show", status: 201
   end
 

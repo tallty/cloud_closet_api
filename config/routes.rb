@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   ############ Admin Routes ###############################
   namespace :admin do
     resources :appointments, only: [:index, :show] do
-      post 'stored', on: :member
+      # post 'stored', on: :member
       resources :appointment_item_groups, only: [:index]
     end
     resources :appointment_item_groups, only: [:show] do
