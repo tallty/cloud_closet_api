@@ -13,6 +13,8 @@
 #  row         :integer
 #  carbit      :integer
 #  place       :integer
+#  aasm_state  :string           default("storing")
+#  status      :string
 #
 # Indexes
 #

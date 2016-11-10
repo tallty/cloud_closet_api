@@ -85,7 +85,7 @@ class Work::AppointmentsController < ApplicationController
 
     def appointment_item_group_params
       params.require(:appointment_item).permit(
-          groups: [:count, :price, :store_month, :type_name]
+          groups: [:count, :price, :store_month, :type_name, :season]
         )
     end
 end
