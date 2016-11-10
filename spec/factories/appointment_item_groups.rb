@@ -9,6 +9,8 @@
 #  price          :float
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  type_name      :string
+#  season         :string
 #
 # Indexes
 #
@@ -21,5 +23,6 @@ FactoryGirl.define do
     store_month 3
     price 1.5
     type_name "上衣"
+    season "秋"
   end
 end

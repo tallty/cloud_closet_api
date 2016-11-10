@@ -10,6 +10,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  type_name      :string
+#  season         :string
 #
 # Indexes
 #
