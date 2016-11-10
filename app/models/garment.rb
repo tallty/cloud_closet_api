@@ -24,8 +24,8 @@
 
 class Garment < ApplicationRecord
   include AASM
-  acts_as_taggable # Alias for acts_as_taggable_on :tags
-  acts_as_taggable_on :tags, :skills
+  # acts_as_taggable # Alias for acts_as_taggable_on :tags
+  # acts_as_taggable_on :tags, :skills
   scope :by_join_date, -> {order("created_at DESC")}
 
   belongs_to :user

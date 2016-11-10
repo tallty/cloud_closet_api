@@ -26,7 +26,10 @@ class Admin::GarmentsController < ApplicationController
 
   def update
     @garment.update(garment_params)
-
+    #更新时可不传图片
+    @garment.update(cover_image_params)
+    @garment.update(detail_image_params)
+###多图时候？？？
     @garment.do_finish_storing #管理员入库衣服后 衣服状态改为 已入库
 
     @garment.set_put_in_time_and_expire_time(params[:store_month]) #设置 入库时间 与 过期时间
@@ -49,9 +52,20 @@ class Admin::GarmentsController < ApplicationController
 
     def garment_params
       params.require(:garment).permit(
-        :title, :row, :carbit, :place, 
-        cover_image_attributes: [:id, :photo, :_destroy],
+        :title, :row, :carbit, :place 
+        )
+    end
+
+    def cover_image_params
+      params.require(:garment).permit(
+        cover_image_attributes: [:id, :photo, :_destroy]
+        )
+    end
+
+    def detail_image_params
+      params.require(:garment).permit(
         detail_images_attributes: [:id, :photo, :_destroy]
         )
     end
+
 end
