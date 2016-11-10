@@ -74,7 +74,7 @@ class Appointment < ApplicationRecord
     self.price = 0.00
     _detail = []
 
-    groups.each do |group|
+    groups.each do |group| #####groups!!!!!!
       group.create_item
       self.price += group.price
       _detail += [ ["#{group.type_name}", "#{group.count}"] ]
