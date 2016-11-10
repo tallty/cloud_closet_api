@@ -53,7 +53,7 @@ class Garment < ApplicationRecord
 
   #存库的数量
   def garment_count 
-    User.find(self.user_id).garments.count 
+    User.find(self.user_id).garments.where(status: 'stored').count 
   end
 
   #入库中的数量
