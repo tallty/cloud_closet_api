@@ -90,8 +90,7 @@ class Appointment < ApplicationRecord
       _un_stored_count = 0
       _items = self.items
       _items.each do |item|
-        item.garment.status == 'stored'
-        _un_stored_count += 1
+        _un_stored_count += 1 if item.garment.status == 'stored'
       end
       self.stored! if _un_stored_count == _items.count
     end
