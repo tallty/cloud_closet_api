@@ -50,7 +50,7 @@ class UserInfosController < ApplicationController
         avatar_attributes: [:id, :photo, :_destroy]
         )
     end
-    
+
 
     def bind_params
       params.require(:user).permit(
