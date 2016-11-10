@@ -60,6 +60,7 @@ class Work::AppointmentsController < ApplicationController
     @work_appointment.groups.destroy_all
     appointment_item_group_params[:groups].each do |group_param|
       appointment_group = @work_appointment.groups.build(group_param)
+      appointment_group.type_name.strip! if appointment_group.type_name
       appointment_group.save
     end
     @work_appointment.create_group
