@@ -77,7 +77,7 @@ class Appointment < ApplicationRecord
     groups.each do |group| #####groups!!!!!!
       group.create_item
       self.price += group.price
-      _detail += [ ["#{group.type_name}", "#{group.count}"] ]
+      _detail += [ ["#{group.type_name}".strip, "#{group.count}"] ]
                 ##{group.garment.type}
       # _detail = _detail.join
     end
@@ -86,7 +86,7 @@ class Appointment < ApplicationRecord
   end
 
   def do_stored_if_its_garments_are_all_stored 
-    unless self.aasm_state == 'store'
+    unless self.aasm_state == 'stored'
       _un_stored_count = 0
       _items = self.items
       _items.each do |item|
@@ -134,6 +134,11 @@ class Appointment < ApplicationRecord
         }
       }
     }
+    if state == 'stored'
+      template[:url] = 'http://closet.tallty.com/MyCloset' 
+      template[:keyword3] = nil
+    end
+    
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
       { openid: openid, template: template}
     puts response.body
