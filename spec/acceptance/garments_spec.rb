@@ -12,6 +12,7 @@ resource "我的衣橱" do
     before do
       @user = create(:user)
       create_list(:garment, 5, user: @user,status:'stored')
+      create_list(:garment, 1, user: @user,status:'storing')
     end
 
     parameter :page, "当前页", require: false
