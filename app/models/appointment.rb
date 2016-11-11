@@ -72,14 +72,12 @@ class Appointment < ApplicationRecord
   def create_group
     # 总价
     self.price = 0.00
-    _detail = []
+    _detail = ""
 
     groups.each do |group| #####groups!!!!!!
       group.create_item
       self.price += group.price
-      _detail += [ ["#{group.type_name}".strip, "#{group.count}"] ]
-                ##{group.garment.type}
-      # _detail = _detail.join
+      _detail += "#{group.type_name.strip},#{group.count};"
     end
     self.detail = _detail
     self.service!
