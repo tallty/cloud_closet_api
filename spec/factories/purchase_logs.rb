@@ -24,7 +24,7 @@ FactoryGirl.define do
     operation "购买衣橱"
     change -2000.00
     payment_method "微信支付"
-    detail "裤子×2 衣服×3"
+    detail "裤子,2;衣服,3;"
     sequence(:created_at,0) {|n| Time.now - n.day}
   end
 end

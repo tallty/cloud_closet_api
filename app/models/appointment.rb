@@ -111,7 +111,7 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         keyword2: {
-          value: user.phone,
+          value: user.phone,#商家电话？？？？！！！！
           color: "#CCCCCC"
         },
         keyword3: {
@@ -134,8 +134,8 @@ class Appointment < ApplicationRecord
     }
     if state == 'stored'
       template[:url] = 'http://closet.tallty.com/MyCloset' 
-      template[:keyword3] = nil
-      template[:remark] = nil
+      template[:data][:keyword3] = nil
+      template[:data][:remark] = nil
     end
     
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',

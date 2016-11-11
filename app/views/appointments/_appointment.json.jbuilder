@@ -1,4 +1,4 @@
-json.extract! appointment, :id, :address, :seq, :name, :phone, :number, :date, :created_at, :state, :price, :detail
+json.extract! appointment, :id, :address, :seq, :name, :phone, :number, :date, :created_at, :state, :price
 
 if appointment.detail
 	_detail = appointment.detail.split(";")
