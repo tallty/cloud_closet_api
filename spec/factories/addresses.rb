@@ -20,5 +20,7 @@ FactoryGirl.define do
     name "consignee_name"
     address_detail "consignee_address"
     phone "13813813811"
+    house_number '11-111'
+    sex 'man'
   end
 end
