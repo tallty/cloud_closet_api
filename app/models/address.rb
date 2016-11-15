@@ -9,6 +9,8 @@
 #  phone          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  house_number   :string
+#  sex            :integer
 #
 # Indexes
 #
@@ -17,6 +19,11 @@
 
 class Address < ApplicationRecord
   belongs_to :user_info
+
+  enum sex: {
+  	man: 0,
+  	women: 1
+  }
 
   def is_default
   	self.id == UserInfo.find(self.user_info_id).default_address_id
