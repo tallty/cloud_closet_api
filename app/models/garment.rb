@@ -33,8 +33,17 @@ class Garment < ApplicationRecord
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
 
-  has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :detail_images, allow_destroy: true
+  # has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
+  # accepts_nested_attributes_for :detail_images, allow_destroy: true
+
+  has_one :detail_image_1, -> { where photo_type: "detail_1" }, class_name: "Image", as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :detail_image_1, allow_destroy: true
+
+  has_one :detail_image_2, -> { where photo_type: "detail_2" }, class_name: "Image", as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :detail_image_2, allow_destroy: true
+
+  has_one :detail_image_3, -> { where photo_type: "detail_3" }, class_name: "Image", as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :detail_image_3, allow_destroy: true
 
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
 
@@ -70,13 +79,18 @@ class Garment < ApplicationRecord
   def set_put_in_time_and_expire_time store_month
     self.put_in_time = Time.zone.now
     self.expire_time = self.put_in_time + store_month.to_i.month
-    self.save
+    self.save!
   end
 
   #行 柜 位
   def row_carbit_place 
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
+
+  # #detail_image id数组
+  # def detail_image_id_array
+  #   self.detail_images.collect(&:id)
+  # end
 
   def garment_status
     I18n.t :"appointment_itme_status.#{status}"
