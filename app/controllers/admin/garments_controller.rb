@@ -4,7 +4,7 @@ class Admin::GarmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin 
 
-  before_action :set_admin_garment, only: [:show, :update, :destroy]
+  before_action :set_admin_garment, only: [:show, :update, :destroy, :delete_detail]
 
   respond_to :json
 
@@ -26,17 +26,27 @@ class Admin::GarmentsController < ApplicationController
 
   def update
     @garment.update(garment_params)
-    #更新时可不传图片
+    ##更新时可不传图片
+    #大图 cover_image
     @garment.update(cover_image_params)
-    @garment.update(detail_image_params)
-###多图时候？？？
-    @garment.do_finish_storing #管理员入库衣服后 衣服状态改为 已入库
-
-    @garment.set_put_in_time_and_expire_time(params[:store_month]) #设置 入库时间 与 过期时间
+    #detail_image, 3图
+    @garment.update(detail_image_1_params)
+    @garment.update(detail_image_2_params)
+    @garment.update(detail_image_3_params)
+    #管理员入库衣服后 衣服状态改为 已入库
+    @garment.do_finish_storing 
+    #设置 入库时间 与 过期时间
+    @garment.set_put_in_time_and_expire_time(params[:store_month]) 
 
     @appointment = Appointment.find(params[:appointment_id])
     @appointment.do_stored_if_its_garments_are_all_stored
 
+    respond_with @garment, template: "garments/show", status: 201
+  end
+
+  def delete_detail #detail_image_id
+    @detail_image = @garment.detail_images.find(params[:detail_image_id])
+    @detail_image.destroy
     respond_with @garment, template: "garments/show", status: 201
   end
 
@@ -62,10 +72,28 @@ class Admin::GarmentsController < ApplicationController
         )
     end
 
-    def detail_image_params
+    def detail_image_1_params
       params.require(:garment).permit(
-        detail_images_attributes: [:id, :photo, :_destroy]
+        detail_image_1_attributes: [:id, :photo, :_destroy]
         )
     end
+
+    def detail_image_2_params
+      params.require(:garment).permit(
+        detail_image_2_attributes: [:id, :photo, :_destroy]
+        )
+    end
+
+    def detail_image_3_params
+      params.require(:garment).permit(
+        detail_image_3_attributes: [:id, :photo, :_destroy]
+        )
+    end
+
+    # def detail_image_params
+    #   params.require(:garment).permit(
+    #     detail_images_attributes: [:id, :photo, :_destroy]
+    #     )
+    # end
 
 end
