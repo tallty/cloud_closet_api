@@ -93,7 +93,7 @@ class Appointment < ApplicationRecord
 
   #选择的衣柜总价格
   def do_chest (chests)
-    slef.price = 0.00
+    self.price = 0.00
     unless chests.nil?
       chests.each do |chest|
         case classify

@@ -29,3 +29,8 @@ zh-CN:
       unconfirmed: "继续操作前请先确认您的帐号."
   pingpp_channel:
     wx_pub: "微信支付"
+
+  chest_classify:
+    small_chest: "小型衣橱"
+    middle_chest: "中型衣橱"
+    big_chest: "大型衣橱"

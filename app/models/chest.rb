@@ -36,17 +36,22 @@ class Chest < ApplicationRecord
   def check_chest_type
     case classify
       when "small_chest"
-        self.surplus = 10 - self.item.count
+        # self.surplus = 10 - self.item.count
         self.description = "可以存10件，价格100元整"
         self.save
       when "middle_chest"
-        self.surplus = 20 - self.item.count
+        # self.surplus = 20 - self.item.count
         self.description = "可以存20件，价格200元整"
         self.save
       when "big_chest"
-        self.surplus = 50 - self.item.count
+        # self.surplus = 50 - self.item.count
         self.description = "可以存50件，价格500元整"
         self.save
     end
+  end
+
+  #衣柜别名
+  def classify_alias
+    I18n.t :"chest_classify.#{classify}"
   end
 end

@@ -19,12 +19,15 @@ resource "预约存入衣服到我的衣橱" do
     parameter :phone, "联系电话", require: true, scope: :appointment
     parameter :number, "衣服数量", require: true, scope: :appointment
     parameter :date, "预约日期", require: true, scope: :appointment
+    parameter :select_chests, "预约的衣橱：(此处粗腰传入一个数组：'small_chest',
+                              'middle_chest','big_chest')", require: true, scope: :appointment
 
     let(:address) {appointment_attrs[:address]}
     let(:name) {appointment_attrs[:name]}
     let(:phone) {appointment_attrs[:phone]}
     let(:number) {appointment_attrs[:number]}
     let(:date) {appointment_attrs[:date]}
+    let(:select_chests) {["small_chest", "middle_chest"]}
 
     example "用户预约存入衣服到我的衣橱成功" do
       do_request
