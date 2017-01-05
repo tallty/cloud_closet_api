@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 20161109132158) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "appointment_item_group_id"
-    t.string   "aasm_state"
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["garment_id"], name: "index_appointment_items_on_garment_id"
