@@ -24,7 +24,7 @@
 
 class Appointment < ApplicationRecord
   include AASM
-  attr_accessor :chest_array
+  attr_accessor :select_chests
 
   aasm do
     state :committed, initial: true
@@ -74,12 +74,12 @@ class Appointment < ApplicationRecord
   # 支付完成后，展开预约订单，这时候可以生成相关的item和
   def create_group
     # 总价
-    self.price = 0.00
+    # self.price = 0.00
     _detail = []
 
     groups.each do |group|
       group.create_item
-      self.price += group.price
+      # self.price += group.price
       _detail += [ ["#{group.type_name}", "#{group.count}"] ]
                 ##{group.garment.type}
       # _detail = _detail.join
@@ -91,6 +91,38 @@ class Appointment < ApplicationRecord
     end
   end
 
+  #选择的衣柜总价格
+  def do_chest (chests)
+    slef.price = 0.00
+    unless chests.nil?
+      chests.each do |chest|
+        case classify
+        when "small_chest"
+          self.price += 100.00
+          self.create_chest("small_chest")
+        when "middle_chest"
+          self.price += 200.00
+          self.create_chest("middle_chest")
+        when "big_chest"
+          self.price += 500.00
+          self.create_chest("big_chest")
+        end
+        self.select_chest << "##{chest}"
+      end
+      self.save
+    end
+  end
+
+  #创建衣柜
+  def create_chest(classify)
+    _chest = self.chests.create(
+                                user_id: self.user_id,
+                                appointment_id: self.id
+                                )
+    _chest.save
+  end
+
+  #创建通知消息
   def create_template_message
     openid = user.try(:openid)
     return if openid.blank?

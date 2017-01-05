@@ -11,11 +11,13 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
+#  chest_id                  :integer
 #
 # Indexes
 #
 #  index_appointment_items_on_appointment_id             (appointment_id)
 #  index_appointment_items_on_appointment_item_group_id  (appointment_item_group_id)
+#  index_appointment_items_on_chest_id                   (chest_id)
 #  index_appointment_items_on_garment_id                 (garment_id)
 #
 
@@ -24,6 +26,7 @@ class AppointmentItem < ApplicationRecord
   	belongs_to :garment
   	belongs_to :appointment
   	belongs_to :appointment_item_group
+    belongs_to :chest
 
   	before_create :create_relate_garment
 
@@ -47,7 +50,7 @@ class AppointmentItem < ApplicationRecord
         end
       end
 
-  	def r
+  	def status_alias
   		I18n.t :"appointment_itme_status.#{status}"
   	end
 

@@ -31,3 +31,4 @@ class AppointmentItemGroup < ApplicationRecord
     end
   end
 end
+π

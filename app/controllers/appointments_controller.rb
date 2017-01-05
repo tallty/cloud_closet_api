@@ -18,8 +18,10 @@ class AppointmentsController < ApplicationController
   end
 
   def create
+    _chests = appointment_params[:select_chests]
     @appointment = current_user.appointments.build(appointment_params)
     @appointment.save
+    @appointment.do_chest(_chests)#
     respond_with @appointment, template: "appointments/show", status: 201
   end
 
@@ -67,7 +69,7 @@ class AppointmentsController < ApplicationController
     end
 
     def appointment_params
-      params.require(:appointment).permit(
+      params.require(:appointment).permit(:select_chests,
         :address, :name, :phone, :number, :date#,:detail 提供详情可修改
         )
     end
