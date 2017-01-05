@@ -13,6 +13,7 @@
 #  row         :integer
 #  carbit      :integer
 #  place       :integer
+#  aasm_state  :string
 #
 # Indexes
 #

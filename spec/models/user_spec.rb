@@ -34,4 +34,5 @@ RSpec.describe User, type: :model do
   it { should have_many(:garments) } 
   it { should have_many(:appointments) } 
   it { should have_many(:bills) }
+  it { should have_many(:chests) }
 end

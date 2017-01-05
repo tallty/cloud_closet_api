@@ -1,9 +1,26 @@
+# == Schema Information
+#
+# Table name: chests
+#
+#  id             :integer          not null, primary key
+#  user_id        :integer
+#  appointment_id :integer
+#  classify       :integer
+#  surplus        :integer
+#  description    :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_chests_on_appointment_id  (appointment_id)
+#  index_chests_on_user_id         (user_id)
+#
+
 FactoryGirl.define do
   factory :chest do
-    user nil
-    appointment nil
-    classify 1
-    surplus 1
-    description "MyString"
+    sequence(:user_id) { |n| "#{n}" }
+    sequence(:appointment_id) { |n| "#{n}" }
+    classify "small_chest"
   end
 end

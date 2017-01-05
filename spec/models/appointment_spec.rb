@@ -27,4 +27,5 @@ RSpec.describe Appointment, type: :model do
   it { should belong_to(:user) } 
   it { should have_many(:items) } 
   it { should have_many(:groups) } 
+  it { should have_many(:chests) }
 end
