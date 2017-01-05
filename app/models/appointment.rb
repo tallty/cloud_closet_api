@@ -23,6 +23,7 @@
 
 class Appointment < ApplicationRecord
   include AASM
+  attr_accessor :chest_array
 
   aasm do
     state :committed, initial: true
@@ -56,6 +57,7 @@ class Appointment < ApplicationRecord
   belongs_to :user
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
+  has_many :chests, dependent: :destroy
 
   after_create :generate_seq
   after_save :create_template_message, if: :aasm_state_changed?
