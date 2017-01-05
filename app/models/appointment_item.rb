@@ -26,7 +26,7 @@ class AppointmentItem < ApplicationRecord
   	belongs_to :garment
   	belongs_to :appointment
   	belongs_to :appointment_item_group
-    belongs_to :chest
+    has_many :items, class_name: "ChestItem", dependent: :destroy
 
   	before_create :create_relate_garment
 

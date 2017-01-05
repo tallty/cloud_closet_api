@@ -20,7 +20,7 @@
 class Chest < ApplicationRecord
   belongs_to :user
   belongs_to :appointment
-  has_many :items, class_name: "AppointmentItem", dependent: :destroy
+  has_many :items, class_name: "ChestItem", dependent: :destroy
 
   ########## valideate ############
   after_create :check_chest_type
@@ -36,15 +36,15 @@ class Chest < ApplicationRecord
   def check_chest_type
     case classify
       when "small_chest"
-        # self.surplus = 10 - self.item.count
+        self.surplus = 10 - self.items.count
         self.description = "可以存10件，价格100元整"
         self.save
       when "middle_chest"
-        # self.surplus = 20 - self.item.count
+        self.surplus = 20 - self.items.count
         self.description = "可以存20件，价格200元整"
         self.save
       when "big_chest"
-        # self.surplus = 50 - self.item.count
+        self.surplus = 50 - self.items.count
         self.description = "可以存50件，价格500元整"
         self.save
     end

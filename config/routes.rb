@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   ############ Chest Routes#################
-  resources :chests, only: [:index, :show, :destroy]
+  resources :chests, only: [:index, :show, :destroy] do
+    resources :chest_items, only: [:index, :show, :destroy]
+  end
 
   ############ SMS Routes ###################
   resources :sms_tokens, only: [:show]  do

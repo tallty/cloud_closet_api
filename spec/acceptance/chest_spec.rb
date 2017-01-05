@@ -13,7 +13,11 @@ resource "我选择的的衣橱 相关api" do
     before do
       @user = create(:user)
       @appointment = create(:appointment)
+      @garment = create(:garment)
       @chests = create_list(:chest, 5, user: @user, appointment: @appointment)
+      @chests.each do |chest|
+        @items = create_list(:chest_item, 5, chest: chest, garment: @garment)
+      end
     end
     
     ################# index #################
@@ -48,4 +52,6 @@ resource "我选择的的衣橱 相关api" do
       end
     end
   end  
+
+
 end

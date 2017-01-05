@@ -1,0 +1,1 @@
+json.partial! "chest_items/chest_item", chest_item: @chest_item

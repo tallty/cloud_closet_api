@@ -1,0 +1,1 @@
+json.chest_items @chest_items, partial: 'chest_items/chest_item', as: :chest_item
