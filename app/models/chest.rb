@@ -10,6 +10,7 @@
 #  description    :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  price          :float            default(0.0)
 #
 # Indexes
 #
@@ -32,22 +33,24 @@ class Chest < ApplicationRecord
     dress_chest: 2
   }
 
-
+  #衣橱类型相关操作
   def check_chest_type
-    case classify
+    self.price = 0.00 
+    case self.classify
       when "hang_chest"
+        self.price += 100.00
         self.surplus = 20 - self.items.count
         self.description = "可以存10件，价格100元整"
-        self.save
       when "preserver"
+        self.price += 100.00
         self.surplus = 30 - self.items.count
         self.description = "可以存20件，价格100元整"
-        self.save
       when "dress_chest"
+        self.price += self.items.count * 50.00
         self.surplus = 20 - self.items.count
         self.description = "可以存20件，价格500元整"
-        self.save
     end
+    self.save
   end
 
   #衣柜别名

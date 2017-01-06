@@ -75,6 +75,12 @@ class Garment < ApplicationRecord
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
 
+  #把衣服存入衣橱 ######
+  # def create_relate_chest_item
+  #   _item = self.items.create(garment_id: self.id,
+  #                            chest_id: )
+  #   _item.save
+  # end
   after_create :generate_seq
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105110450) do
+ActiveRecord::Schema.define(version: 20170106113655) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -111,8 +111,9 @@ ActiveRecord::Schema.define(version: 20170105110450) do
     t.integer  "classify"
     t.integer  "surplus"
     t.string   "description"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.float    "price",          default: 0.0
     t.index ["appointment_id"], name: "index_chests_on_appointment_id"
     t.index ["user_id"], name: "index_chests_on_user_id"
   end
