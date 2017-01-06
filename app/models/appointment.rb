@@ -72,19 +72,25 @@ class Appointment < ApplicationRecord
   def create_group
     # 总价
     self.price = 0.00
-    _detail = []
+    _detail = ""
 
-    groups.each do |group|
+    groups.each do |group| #####groups!!!!!!
       group.create_item
       self.price += group.price
-      _detail += [ ["#{group.type_name}", "#{group.count}"] ]
-                ##{group.garment.type}
-      # _detail = _detail.join
+      _detail += "#{group.type_name.strip},#{group.count};"
     end
     self.detail = _detail
     self.service!
-    self.items.each do |item|
-      item.store!
+  end
+
+  def do_stored_if_its_garments_are_all_stored 
+    unless self.aasm_state == 'stored'
+      _un_stored_count = 0
+      _items = self.items
+      _items.each do |item|
+        _un_stored_count += 1 if item.garment.status == 'stored'
+      end
+      self.stored! if _un_stored_count == _items.count
     end
   end
 
@@ -105,7 +111,7 @@ class Appointment < ApplicationRecord
           color: "#CCCCCC"
         },
         keyword2: {
-          value: user.phone,
+          value: user.phone,#商家电话？？？？！！！！
           color: "#CCCCCC"
         },
         keyword3: {
@@ -126,6 +132,12 @@ class Appointment < ApplicationRecord
         }
       }
     }
+    if state == 'stored'
+      template[:url] = 'http://closet.tallty.com/MyCloset' 
+      template[:data][:keyword3] = nil
+      template[:data][:remark] = nil
+    end
+    
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
       { openid: openid, template: template}
     puts response.body

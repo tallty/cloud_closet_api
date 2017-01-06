@@ -45,10 +45,10 @@ resource "管理后台相关接口" do
       stored_appointments = create_list(:appointment, 3, user: @user, aasm_state:"stored")
       @appointments = storing_appointments.concat stored_appointments
       @appointments.each do |appointment|
-        @groups = create_list(:appointment_item_group, 3, appointment: appointment)
+        @groups = create_list(:appointment_item_group, 5, appointment: appointment)
       end
       @groups.each do |group|
-        @items = create_list(:appointment_item, 3, appointment_item_group: group)
+        @items = create_list(:appointment_item, 5, appointment_item_group: group, appointment: group.appointment)
       end
     end
 
@@ -108,25 +108,34 @@ resource "管理后台相关接口" do
     put 'admin/garments/:id' do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
+      parameter :appointment_id, "当前订单id", required: true
+      parameter :store_month, "储存月份数", required: true
+
       parameter :title, "衣服描述信息", require: false, scope: :garment
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
       parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
-      parameter :detail_images_attributes, "衣服的详细图片", require: false, scope: :garment
+      parameter :detail_image_1_attributes, "衣服的详细图片1", require: false, scope: :garment
+      parameter :detail_image_2_attributes, "衣服的详细图片2", require: false, scope: :garment
+      parameter :detail_image_3_attributes, "衣服的详细图片3", require: false, scope: :garment
 
+      let(:appointment_id) { @appointments.first.id }
+      let(:store_month) { 12 }
       let(:id) { @groups.first.garments.first.id }
       let(:title) { "garemnt title" }
       let(:row) { 1 }
       let(:carbit) { 3 }
       let(:place) { 2 }
       let(:cover_image_attributes) { image_attrs }
-      let(:detail_images_attributes) { [image_attrs, image_attrs] }
+      let(:detail_image_1_attributes) { image_attrs }
+      let(:detail_image_2_attributes) { image_attrs }
+      let(:detail_image_3_attributes) { image_attrs }
 
       example "管理员完善衣服的详细信息成功" do
         do_request
         puts response_body
-        expect(status).to eq 201
+        expect(status).to eq(201)
       end
     end
 
@@ -136,7 +145,7 @@ resource "管理后台相关接口" do
       example "管理员查看衣服的详细信息成功" do
         do_request
         puts response_body
-        expect(status).to eq 200
+        expect(status).to eq(200)
       end
     end
   end

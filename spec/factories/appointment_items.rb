@@ -11,7 +11,7 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
-#  aasm_state                :string
+#  aasm_state                :string           default("storing")
 #
 # Indexes
 #
@@ -26,6 +26,6 @@ FactoryGirl.define do
     appointment nil
     store_month 1
     price 1.5
-    status "unstore"
+
   end
 end
