@@ -1,0 +1,1 @@
+json.partial! "admin_chest_items/admin_chest_item", admin_chest_item: @admin_chest_item
