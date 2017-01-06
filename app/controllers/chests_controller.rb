@@ -14,8 +14,13 @@ class ChestsController < ApplicationController
   end
 
   def destroy
-    @chest.destroy
-    respond_with(@chest)
+    if @chest.items.nil?
+      @chest.destroy
+      respond_with(@chest)  
+    else
+      @error = "衣橱不为空，所以不能移除衣橱 ！"
+      respond_with(@error, template: "error", status: 201)
+    end
   end
 
   private

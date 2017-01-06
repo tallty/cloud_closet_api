@@ -36,19 +36,19 @@ class AppointmentItem < ApplicationRecord
    		stored: 2
   	}
       
-      aasm :column => :status, :enum => true do
-        state :unstore, :initial => true
-        state :storing
-        state :stored
+    aasm :column => :status, :enum => true do
+      state :unstore, :initial => true
+      state :storing
+      state :stored
 
-        event :store do
-          transitions :from => :unstore, :to => :storing
-        end
-
-        event :success do
-          transitions :from => :storing, :to => :stored
-        end
+      event :store do
+        transitions :from => :unstore, :to => :storing
       end
+
+      event :success do
+        transitions :from => :storing, :to => :stored
+      end
+    end
 
   	def status_alias
   		I18n.t :"appointment_itme_status.#{status}"

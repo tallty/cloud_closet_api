@@ -21,6 +21,6 @@ FactoryGirl.define do
   factory :chest do
     sequence(:user_id) { |n| "#{n}" }
     sequence(:appointment_id) { |n| "#{n}" }
-    classify "small_chest"
+    classify "hang_chest"
   end
 end

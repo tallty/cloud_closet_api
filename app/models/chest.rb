@@ -27,25 +27,25 @@ class Chest < ApplicationRecord
 
   ########## enum 衣柜类型 #########
   enum classify: {
-    small_chest: 0,
-    middle_chest: 1,
-    big_chest: 2
+    hang_chest: 0,
+    preserver: 1,
+    dress_chest: 2
   }
 
 
   def check_chest_type
     case classify
-      when "small_chest"
-        self.surplus = 10 - self.items.count
+      when "hang_chest"
+        self.surplus = 20 - self.items.count
         self.description = "可以存10件，价格100元整"
         self.save
-      when "middle_chest"
-        self.surplus = 20 - self.items.count
-        self.description = "可以存20件，价格200元整"
+      when "preserver"
+        self.surplus = 30 - self.items.count
+        self.description = "可以存20件，价格100元整"
         self.save
-      when "big_chest"
-        self.surplus = 50 - self.items.count
-        self.description = "可以存50件，价格500元整"
+      when "dress_chest"
+        self.surplus = 20 - self.items.count
+        self.description = "可以存20件，价格500元整"
         self.save
     end
   end

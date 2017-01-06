@@ -19,22 +19,6 @@ class GarmentsController < ApplicationController
     respond_with(@garment)
   end
 
-  # def create
-  #   @garment = Garment.new(garment_params)
-  #   @garment.save
-  #   respond_with(@garment)
-  # end
-
-  # def update
-  #   @garment.update(garment_params)
-  #   respond_with(@garment)
-  # end
-
-  # def destroy
-  #   @garment.destroy
-  #   respond_with(@garment)
-  # end
-
   private
     def set_garment
       @garment = current_user.garments.find(params[:id])

@@ -13,6 +13,7 @@ zh-CN:
     canceled: "已取消"
 
   garment_aasm_state:
+    unstore: "待入库"
     storing: "入库中"
     stored: "已入库"
       
@@ -31,6 +32,6 @@ zh-CN:
     wx_pub: "微信支付"
 
   chest_classify:
-    small_chest: "小型衣橱"
-    middle_chest: "中型衣橱"
-    big_chest: "大型衣橱"
+    hang_chest: "挂柜"
+    preserver: "储藏柜"
+    dress_chest: "礼服柜"

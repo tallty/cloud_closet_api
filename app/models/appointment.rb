@@ -96,16 +96,16 @@ class Appointment < ApplicationRecord
     self.price = 0.00
     unless chests.nil?
       chests.each do |chest|
-        case classify
-        when "small_chest"
+        case chest
+        when "hang_chest"
           self.price += 100.00
-          self.create_chest("small_chest")
-        when "middle_chest"
+          self.create_chest("hang_chest")
+        when "preserver"
+          self.price += 100.00
+          self.create_chest("preserver")
+        when "dress_chest"
           self.price += 200.00
-          self.create_chest("middle_chest")
-        when "big_chest"
-          self.price += 500.00
-          self.create_chest("big_chest")
+          self.create_chest("dress_chest")
         end
         self.select_chest << "##{chest}"
       end

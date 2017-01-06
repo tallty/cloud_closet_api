@@ -34,7 +34,10 @@ class Garment < ApplicationRecord
 
   has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_images, allow_destroy: true
+
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
+  has_many :items, class_name: "ChestItem", dependent: :destroy
+
   after_create :update_aasm_state
       
   aasm do
@@ -58,7 +61,7 @@ class Garment < ApplicationRecord
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
-  scope :garment_state, -> (state) {where(aasm_state:state)}
+  scope :garment_state, -> (state) {where(aasm_state: state)}
 
   def storing_garment_count#入库中的数量
     Garment.all.garment_state("storing").count 
