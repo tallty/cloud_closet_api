@@ -3,13 +3,13 @@
 # Table name: bills
 #
 #  id         :integer          not null, primary key
-#  amount     :decimal(, )
-#  bill_type  :integer          default("deposit")
+#  bill_type  :integer          default(0)
 #  seq        :string
 #  sign       :string
 #  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  price      :float            default(0.0)
 #
 # Indexes
 #
@@ -18,7 +18,7 @@
 
 FactoryGirl.define do
   factory :bill do
-    amount "9.99"
+    price "9.99"
     bill_type 1
     seq "MyString"
     sign "MyString"

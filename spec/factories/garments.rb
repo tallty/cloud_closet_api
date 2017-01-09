@@ -14,6 +14,7 @@
 #  carbit      :integer
 #  place       :integer
 #  aasm_state  :string
+#  status      :string
 #
 # Indexes
 #

@@ -12,6 +12,16 @@
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
 #  chest_id                  :integer
+#  aasm_state                :string
+#
+# Indexes
+#
+#  index_appointment_items_on_appointment_id             (appointment_id)
+#  index_appointment_items_on_appointment_item_group_id  (appointment_item_group_id)
+#  index_appointment_items_on_chest_id                   (chest_id)
+#  index_appointment_items_on_garment_id                 (garment_id)
+#
+
 #
 # Indexes
 #

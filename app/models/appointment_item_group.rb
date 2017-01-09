@@ -10,6 +10,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  type_name      :string
+#  season         :string
 #
 # Indexes
 #
@@ -25,7 +26,7 @@ class AppointmentItemGroup < ApplicationRecord
     count.times do
       item = self.items.build(
         store_month: self.store_month,
-        appointment: appointment
+        appointment: self.appointment
         )
       item.save
     end

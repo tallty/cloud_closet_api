@@ -49,7 +49,7 @@ class User < ApplicationRecord
   has_many :bills,  dependent: :destroy
   has_many :chests, dependent: :destroy
 
-  delegate :nickname, :mail, to: :user_info, allow_nil: true
+  delegate :nickname, :mail, :balance, to: :user_info, allow_nil: true
 
   # 绑定用户信息和openid信息
   # 微信信息和系统用户是一一对应的，所以如果一个用户绑定，需要清空这个微信原有的绑定关系
@@ -83,7 +83,7 @@ class User < ApplicationRecord
   end
 
   ######## create_bill############# 每月1号定时创建账单 
-  def create_bill
+  def self.create_bill
     _chests = Chest.all.where(user_id: self.id)
     if _chests.present?
       _bill = self.bills.create(user_id: self.id)

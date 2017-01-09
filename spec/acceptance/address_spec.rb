@@ -69,10 +69,14 @@ resource "用户收货地址查询修改" do
     parameter :name, "收货人姓名", required: true, scope: :address
     parameter :address_detail, "收货地址", required: true, scope: :address
     parameter :phone, "收货人电话", required: true, scope: :address
+    parameter :house_number, "门牌号", required: true, scope: :address
+    parameter :sex, "收货人性别(man,woman)", required: true, scope: :address
 
     let(:name) { address_attrs[:name] }
     let(:address_detail) { address_attrs[:address_detail] }
     let(:phone) { address_attrs[:phone] }
+    let(:house_number) { '11-111' }
+    let(:sex) { 'man' }
 
     example "用户创建收货地址成功" do
       do_request

@@ -14,6 +14,7 @@
 #  carbit      :integer
 #  place       :integer
 #  aasm_state  :string
+#  status      :string
 #
 # Indexes
 #
@@ -25,7 +26,9 @@ require 'rails_helper'
 
 RSpec.describe Garment, type: :model do
   it { should belong_to(:user) } 
-  it { should have_one(:cover_image) } 
-  it { should have_many(:detail_images) } 
+  it { should have_one(:cover_image) }  
   it { should have_many(:logs) } 
+  it { should have_one(:detail_image_1) }
+  it { should have_one(:detail_image_2) }
+  it { should have_one(:detail_image_3) }
 end

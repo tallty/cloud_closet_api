@@ -12,6 +12,7 @@
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
 #  chest_id                  :integer
+#  aasm_state                :string
 #
 # Indexes
 #
@@ -30,33 +31,28 @@ class AppointmentItem < ApplicationRecord
 
   	before_create :create_relate_garment
 
-  	enum status: {
-  		unstore: 0,
-   		storing: 1,
-   		stored: 2
-  	}
+  	# enum status: {
+  	# 	unstore: 0, ###!!!
+   # 		storing: 1,
+   # 		stored: 2
+  	# }
       
-    aasm :column => :status, :enum => true do
-      state :unstore, :initial => true
-      state :storing
-      state :stored
+   #    aasm :column => :status, :enum => true do
+   #      state :storing, :initial => true
+   #      state :stored
 
-      event :store do
-        transitions :from => :unstore, :to => :storing
-      end
+   #      event :finish_storing do
+   #        transitions :from => :storing, :to => :stored
+   #      end
+   #    end
 
-      event :success do
-        transitions :from => :storing, :to => :stored
-      end
-    end
-
-  	def status_alias
-  		I18n.t :"appointment_itme_status.#{status}"
-  	end
+  	# def item_status
+  	# 	I18n.t :"appointment_itme_status.#{status}"
+  	# end
 
   	private
     	def create_relate_garment
-      		garment = Garment.create(user: appointment.try(:user))
+      		garment = Garment.create(user: self.appointment.try(:user))
       		self.garment = garment
       		# self.success!
     	end

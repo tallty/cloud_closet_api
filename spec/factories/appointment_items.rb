@@ -12,6 +12,7 @@
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
 #  chest_id                  :integer
+#  aasm_state                :string
 #
 # Indexes
 #
@@ -28,6 +29,6 @@ FactoryGirl.define do
   	sequence(:chest_id) { |n| "#{n}" }
     store_month 1
     price 1.5
-    status "unstore"
+
   end
 end

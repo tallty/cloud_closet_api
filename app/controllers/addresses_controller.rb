@@ -49,7 +49,7 @@ class AddressesController < ApplicationController
     end
 
     def address_params
-      params.require(:address).permit(:name, :address_detail, :phone)
+      params.require(:address).permit(:name, :address_detail, :phone, :house_number, :sex)
     end
 
     def insure_default_address_exist

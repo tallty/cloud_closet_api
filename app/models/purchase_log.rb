@@ -10,8 +10,8 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_info_id   :integer
-#  detail         :string
-#  balance        :float
+#  detail         :string 
+#  balance        :float 
 #
 # Indexes
 #
@@ -43,7 +43,7 @@ class PurchaseLog < ApplicationRecord
 	def self.create_one_with_storing_garment appointment
 		PurchaseLog.create(
 			operation: "购买衣橱",
-			operation_type: "消费",
+			operation_type: "充值",
 			change: appointment.price,
 			detail: appointment.detail,
 			user_info: appointment.user.user_info,
@@ -99,7 +99,7 @@ class PurchaseLog < ApplicationRecord
 
 	def cut_payment
 		self.user_info.balance += self.change if self.operation_type == "充值" || self.operation == "充值" 
-		self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
+		# self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
 		self.user_info.balance = self.user_info.balance.round(2)
 		self.user_info.save
 		self.balance = self.user_info.balance

@@ -14,6 +14,7 @@ class UserInfosController < ApplicationController
 
   def update
     @user_info.update(user_info_params)
+    @user_info.update(avatar_attributes_params)
     respond_with @user_info, template: "user_infos/show", status: 201
   end
 
@@ -40,10 +41,16 @@ class UserInfosController < ApplicationController
 
     def user_info_params
       params.require(:user_info).permit(
-        :nickname, :mail,
+        :nickname, :mail
+        )
+    end
+
+    def avatar_attributes_params
+      params.require(:user_info).permit(
         avatar_attributes: [:id, :photo, :_destroy]
         )
     end
+
 
     def bind_params
       params.require(:user).permit(

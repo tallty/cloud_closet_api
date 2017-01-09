@@ -60,6 +60,7 @@ class Work::AppointmentsController < ApplicationController
     @work_appointment.groups.destroy_all
     appointment_item_group_params[:groups].each do |group_param|
       appointment_group = @work_appointment.groups.build(group_param)
+      appointment_group.type_name.strip! if appointment_group.type_name
       appointment_group.save
     end
     @work_appointment.create_group
@@ -84,7 +85,7 @@ class Work::AppointmentsController < ApplicationController
 
     def appointment_item_group_params
       params.require(:appointment_item).permit(
-          groups: [:count, :price, :store_month, :type_name]
+          groups: [:count, :price, :store_month, :type_name, :season]
         )
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170106113655) do
+ActiveRecord::Schema.define(version: 20170109071628) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20170106113655) do
     t.string   "phone"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "house_number"
+    t.integer  "sex"
     t.index ["user_info_id"], name: "index_addresses_on_user_info_id"
   end
 
@@ -49,6 +51,7 @@ ActiveRecord::Schema.define(version: 20170106113655) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "type_name"
+    t.string   "season"
     t.index ["appointment_id"], name: "index_appointment_item_groups_on_appointment_id"
   end
 
@@ -62,6 +65,7 @@ ActiveRecord::Schema.define(version: 20170106113655) do
     t.datetime "updated_at",                null: false
     t.integer  "appointment_item_group_id"
     t.integer  "chest_id"
+    t.string   "aasm_state"
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["chest_id"], name: "index_appointment_items_on_chest_id"
@@ -86,13 +90,13 @@ ActiveRecord::Schema.define(version: 20170106113655) do
   end
 
   create_table "bills", force: :cascade do |t|
-    t.decimal  "amount"
     t.integer  "bill_type",  default: 0
     t.string   "seq"
     t.string   "sign"
     t.integer  "user_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.float    "price",      default: 0.0
     t.index ["user_id"], name: "index_bills_on_user_id"
   end
 
@@ -163,6 +167,7 @@ ActiveRecord::Schema.define(version: 20170106113655) do
     t.integer  "carbit"
     t.integer  "place"
     t.string   "aasm_state"
+    t.string   "status"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
   end

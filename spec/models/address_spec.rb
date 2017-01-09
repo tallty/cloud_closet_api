@@ -9,6 +9,8 @@
 #  phone          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  house_number   :string
+#  sex            :integer
 #
 # Indexes
 #
