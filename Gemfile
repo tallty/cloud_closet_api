@@ -25,6 +25,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'rack-cors'
 
 ###############################################################################
+gem 'rufus-scheduler'
+# Cron jobs in Ruby, Read more: https://github.com/javan/whenever
+gem 'whenever', :require => false
 # Automatically generate API documentation from RSpec, Read more: https://github.com/zipmark/rspec_api_documentation
 gem 'rspec_api_documentation'
 # A set of Rails responders to dry up your application, Read more: https://github.com/plataformatec/responders

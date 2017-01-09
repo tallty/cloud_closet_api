@@ -53,6 +53,7 @@ GEM
     builder (3.2.2)
     byebug (9.0.5)
     china_sms (0.0.7)
+    chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -183,6 +184,8 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0, >= 3.0.0)
+    rufus-scheduler (3.3.2)
+      tzinfo
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     simple_token_authentication (1.14.0)
@@ -214,6 +217,8 @@ GEM
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     will_paginate (3.1.0)
 
 PLATFORMS
@@ -242,6 +247,7 @@ DEPENDENCIES
   responders
   rspec-rails (~> 3.5)
   rspec_api_documentation
+  rufus-scheduler
   shoulda-matchers (~> 3.1)
   simple_token_authentication (~> 1.0)
   spring
@@ -249,7 +255,8 @@ DEPENDENCIES
   sqlite3
   thin
   tzinfo-data
+  whenever
   will_paginate (~> 3.1.0)
 
 BUNDLED WITH
-   1.13.1
+   1.13.6

@@ -82,7 +82,7 @@ class User < ApplicationRecord
     false
   end
 
-  ######## create_bill############# 定时创建账单
+  ######## create_bill############# 每月1号定时创建账单 
   def create_bill
     _chests = Chest.all.where(user_id: self.id)
     if _chests.present?
