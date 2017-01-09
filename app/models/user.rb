@@ -82,6 +82,15 @@ class User < ApplicationRecord
     false
   end
 
+  ######## create_bill############# 定时创建账单
+  def create_bill
+    _chests = Chest.all.where(user_id: self.id)
+    if _chests.present?
+      _bill = self.bills.create(user_id: self.id)
+      _bill.save
+    end
+  end
+  #################################
   private
     def sms_token_validate
       return if sms_token == "1981"

@@ -28,7 +28,7 @@ class Bill < ApplicationRecord
   	 payment: 1
   }
   ########### where-bills ########
-  scope :state_bill,->(num){ where(bill_type:num)}
+  scope :state_bill,->(num){ where(bill_type: num)}
   ############ surpplus ##########
   def bill_surplus
   	if self.bill_type.present? && self.bill_type == 0
@@ -48,6 +48,28 @@ class Bill < ApplicationRecord
   def self.payment_record
   	  self.state_bill(1)
   end
+
+
+
+  ############## Bill#################
+  after_create :total_price
+  def total_price
+    self.price = 0.00 
+    _chests = Chest.all.where(user_id: self.user_id)
+    if _chests.present?
+      _chests.each do |chest|
+        _days = Time.days_in_month(Time.zone.now.month) - Time.zone.today.day #当天到月末的天数
+        _day = Time.days_in_month(Time.zone.now.month) #本月的天数
+        if _days < 29
+          self.price += chest.price / _day
+        else
+          self.price += chest.price
+        end  
+      end
+    end
+    self.save
+  end
+  ###################################
   
   private
     ############## bill_seq ############
