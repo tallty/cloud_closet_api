@@ -27,7 +27,7 @@ resource "预约存入衣服到我的衣橱" do
     let(:phone) {appointment_attrs[:phone]}
     let(:number) {appointment_attrs[:number]}
     let(:date) {appointment_attrs[:date]}
-    let(:select_chests) {["small_chest", "middle_chest"]}
+    let(:select_chests) {"hang_chest"}
 
     example "用户预约存入衣服到我的衣橱成功" do
       do_request

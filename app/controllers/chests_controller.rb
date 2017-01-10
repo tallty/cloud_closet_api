@@ -6,7 +6,7 @@ class ChestsController < ApplicationController
 
   def index
     @chests = current_user.chests
-    respond_with(@chests)
+    respond_with(@chests, template: "chests/index", status: 200)
   end
 
   def show

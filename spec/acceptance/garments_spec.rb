@@ -47,5 +47,4 @@ resource "我的衣橱" do
       expect(status).to eq(200)
     end
   end
-
 end

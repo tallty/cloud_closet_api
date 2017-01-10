@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   ############ Chest Routes#################
   resources :chests, only: [:index, :show, :destroy] do
-    resources :chest_items, only: [:index, :show]
+    resources :chest_items, only: [:index, :create, :destroy]
   end
 
   ############ SMS Routes ###################
@@ -64,8 +64,6 @@ Rails.application.routes.draw do
 
   ############ Admin Routes ###############################
   namespace :admin do
-    resources :chest_items, only: [:index, :show, :create, :destroy]
-    
     resources :appointments, only: [:index, :show] do
       post 'stored', on: :member
       resources :appointment_item_groups, only: [:index]

@@ -1,6 +1,6 @@
 class ChestItemsController < ApplicationController
   acts_as_token_authentication_handler_for User
-  before_action :set_chest_item, only: [:show, :destroy]
+  before_action :set_chest_item, only: [:destroy]
 
   respond_to :json
 
@@ -8,19 +8,20 @@ class ChestItemsController < ApplicationController
     @chest = current_user.chests.find(params[:chest_id])
     page = params[:page] || 1
     per_page = params[:per_page] || 15
-    @chest_items = @chest.chest_items.paginate(page: page, per_page: per_page)
+    @chest_items = @chest.items.paginate(page: page, per_page: per_page)
     respond_with(@chest_items)
   end
 
-  def show
-    respond_with(@chest_item)
-  end
-
-  # def create
-  #   @chest_item = ChestItem.new(chest_item_params)
-  #   @chest_item.save
+  # def show
   #   respond_with(@chest_item)
   # end
+
+  def create
+    @chest = current_user.chests.find(params[:chest_id])
+    @chest_item = @chest.items.build(chest_item_params)
+    @chest_item.save
+    respond_with(@chest_item)
+  end
 
   def destroy
     @chest_item.destroy
@@ -32,7 +33,7 @@ class ChestItemsController < ApplicationController
       @chest_item = ChestItem.find(params[:id])
     end
 
-    # def chest_item_params
-    #   params.require(:chest_item).permit(:chest_id, :appointment_item_id)
-    # end
+    def chest_item_params
+      params.require(:chest_item).permit(:chest_id, :garment_id)
+    end
 end

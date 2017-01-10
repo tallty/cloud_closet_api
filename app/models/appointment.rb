@@ -75,16 +75,17 @@ class Appointment < ApplicationRecord
   def create_group
     # 总价
     # self.price = 0.00
-    _detail = []
+    # _detail = []
 
     groups.each do |group| #####groups!!!!!!
       group.create_item
       # self.price += group.price
-      _detail += [ ["#{group.type_name}", "#{group.count}"] ]
+      # _detail += [ ["#{group.type_name}", "#{group.count}"] ]
                 ##{group.garment.type}
       # _detail = _detail.join
     end
-    self.detail = _detail
+    # self.detail = _detai
+    #
     self.service!
   end
 
@@ -102,21 +103,27 @@ class Appointment < ApplicationRecord
   #选择的衣柜总价格
   def do_chest (chests)
     self.price = 0.00
+    self.select_chest = ""
+    _detail = []
     unless chests.nil?
       chests.each do |chest|
         case chest
         when "hang_chest"
           self.price += 100.00
           self.create_chest("hang_chest")
+          _detail << [挂柜:100.00]
         when "preserver"
           self.price += 100.00
           self.create_chest("preserver")
+          _detail << [储藏柜:100.00]
         when "dress_chest"
           self.price += 200.00
           self.create_chest("dress_chest")
+          _detail << [礼服柜:200.00]
         end
         self.select_chest << "##{chest}"
       end
+      self.detail = _detail
       self.save
     end
   end
@@ -125,7 +132,8 @@ class Appointment < ApplicationRecord
   def create_chest(classify)
     _chest = self.chests.create(
                                 user_id: self.user_id,
-                                appointment_id: self.id
+                                appointment_id: self.id,
+                                classify: classify
                                 )
     _chest.save
   end

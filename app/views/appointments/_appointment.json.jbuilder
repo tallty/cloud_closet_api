@@ -12,3 +12,7 @@ end
 json.appointment_item_groups appointment.groups do |group|
   json.partial! "appointment_item_groups/appointment_item_group", appointment_item_group: group
 end
+
+json.chests appointment.chests do |chest|
+	json.partial! "chests/chest", chest: chest
+end

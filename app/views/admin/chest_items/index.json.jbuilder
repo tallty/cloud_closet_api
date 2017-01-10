@@ -1,1 +1,0 @@
-json.array! @admin_chest_items, partial: 'admin_chest_items/admin_chest_item', as: :admin_chest_item

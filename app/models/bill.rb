@@ -61,6 +61,7 @@ class Bill < ApplicationRecord
         _day = Time.days_in_month(Time.zone.now.month) #本月的天数
         if _days < 29
           self.price += chest.price / _day
+          self.price.round(2)
         else
           self.price += chest.price 
         end  

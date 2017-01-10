@@ -18,7 +18,7 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    _chests = appointment_params[:select_chests]
+    _chests = appointment_params[:select_chests].split(",")
     @appointment = current_user.appointments.build(appointment_params)
     @appointment.save
     @appointment.do_chest(_chests)#
