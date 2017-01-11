@@ -1,4 +1,3 @@
 json.extract! chest_item, :id, :chest_id, :garment_id, :created_at, :updated_at
 json.chest chest_item.chest.try(:classify_alias)
 json.garment chest_item.garment.try(:title)
-# json.url chest_item_url(chest_item, format: :json)

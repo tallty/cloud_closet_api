@@ -1,4 +1,6 @@
 class ChestItemsController < ApplicationController
+  include ActionView::Layouts
+  include ActionController::MimeResponds
   acts_as_token_authentication_handler_for User
   before_action :set_chest_item, only: [:destroy]
 
@@ -20,7 +22,7 @@ class ChestItemsController < ApplicationController
     @chest = current_user.chests.find(params[:chest_id])
     @chest_item = @chest.items.build(chest_item_params)
     @chest_item.save
-    respond_with(@chest_item)
+    respond_with(@chest_item, template: "chest_items/show", status:201)
   end
 
   def destroy

@@ -1,1 +1,1 @@
-# json.partial! "chests/chest", chest: @chest
+json.partial! "chests/chest", chest: @chest

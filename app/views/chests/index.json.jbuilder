@@ -1,1 +1,1 @@
-# json.chests @chests, partial: 'chests/chest', as: :chest
+json.chests @chests, partial: 'chests/chest', as: :chest

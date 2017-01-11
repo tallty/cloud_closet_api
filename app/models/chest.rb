@@ -21,7 +21,7 @@
 class Chest < ApplicationRecord
   belongs_to :user
   belongs_to :appointment
-  has_many :items, class_name: "ChestItem", dependent: :destroy
+  has_many :items, class_name: "ChestItem"
 
   ########## valideate ############
   after_create :check_chest_type
