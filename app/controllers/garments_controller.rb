@@ -9,9 +9,10 @@ class GarmentsController < ApplicationController
   respond_to :json
 
   def index
+    tag = params[:garment_tag] #查询标签的参数
     page = params[:page] || 1
     per_page = params[:per_page] || 10
-    @garments = current_user.garments.where(status: 'stored').paginate(page: page, per_page: per_page)
+    @garments = current_user.garments.where(status: 'stored').tag_list(tag).paginate(page: page, per_page: per_page)
     respond_with(@garments)
   end
 

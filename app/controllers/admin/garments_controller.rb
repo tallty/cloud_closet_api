@@ -4,7 +4,7 @@ class Admin::GarmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin 
 
-  before_action :set_admin_garment, only: [:show, :update, :destroy, :delete_detail]
+  before_action :set_admin_garment, only: [:show, :update, :destroy, :delete_detail, :add_tag, :remove_tag]
 
   respond_to :json
 
@@ -16,6 +16,30 @@ class Admin::GarmentsController < ApplicationController
 
   def show
     respond_with @garment, template: "garments/show"
+  end
+
+  #添加衣服的标签
+  def add_tag
+    _tag = params[:garment_tag]
+    if _tag.present?
+      @garment.tag_list.add(_tag, parse: true)
+      respond_with(@garment, template: "admin/garments/show", status:201)
+    else
+      @error = "要添加的 衣服标签为空!"
+      respond_with(@error, template: "error")
+    end
+  end
+
+  #删除衣服的标签
+  def remove_tag
+    _tag = params[:garment_tag]
+    if _tag.present?
+      @garment.tag_list.remove(_tag, parse: true)
+      respond_with(@garment, template: "admin/garments/show", status:201)
+    else
+      @error = "要移除的 衣服标签为空!"
+      respond_with(@error, template: "error")
+    end
   end
 
   # def create
@@ -62,7 +86,7 @@ class Admin::GarmentsController < ApplicationController
 
     def garment_params
       params.require(:garment).permit(
-        :title, :row, :carbit, :place 
+        :title, :row, :carbit, :place, :tag_list
         )
     end
 

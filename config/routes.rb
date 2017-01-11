@@ -71,7 +71,12 @@ Rails.application.routes.draw do
     resources :appointment_item_groups, only: [:show] do
       resources :garments, only: [:index]
     end
-    resources :garments, only: [:update, :show]
+    resources :garments, only: [:update, :show] do
+      member do
+        post :add_tag
+        post :remove_tag
+      end
+    end
     resources :price_systems
   end
   #########################################################

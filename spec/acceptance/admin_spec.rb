@@ -138,18 +138,49 @@ resource "管理后台相关接口" do
         expect(status).to eq(201)
       end
     end
-
+    
+    ############# garment_show##################
     get 'admin/garments/:id' do
       let(:id) { @groups.first.garments.first.id }
-
+     
       example "管理员查看衣服的详细信息成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
       end
     end
+
+    ############# garment_add_tag##################
+    post 'admin/garments/:id/add_tag' do
+      let(:id) { @groups.first.garments.first.id }
+
+      parameter :garment_tag, "要添加的 衣服标签（如：‘A‘, ‘B‘）", require: false
+      let(:garment_tag) {"衣服"}
+
+      example "管理员 给衣服 添加标签 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
+    ############# garment_remove_tag##################
+    post 'admin/garments/:id/remove_tag' do
+      let(:id) { @groups.first.garments.first.id }
+
+      parameter :garment_tag, "要删除 的衣服标签（如：’A’）", require: false
+
+      let(:garment_tag) {["衣服"]}
+
+      example "管理员 删除衣服标签 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
   end
 
+  ################### price_systems ######################
   describe '价格系统操作' do
     admin_attrs = FactoryGirl.attributes_for(:admin)
     price_system_attrs = FactoryGirl.attributes_for(:price_system)

@@ -24,8 +24,9 @@
 
 class Garment < ApplicationRecord
   include AASM
-  # acts_as_taggable # Alias for acts_as_taggable_on :tags
-  # acts_as_taggable_on :tags, :skills
+  #标签配置
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  acts_as_taggable_on :skills, :interests
   scope :by_join_date, -> {order("created_at DESC")}
 
   belongs_to :user
@@ -70,6 +71,12 @@ class Garment < ApplicationRecord
   
   # #查询状态
   # scope :garment_state, -> (state) {where(status: state)}
+
+  #按标签查询
+  scope :tag_list, -> (tag) {
+    return all if tag.blank?
+    self.tagged_with(tag, :any => true)#返回标签对应的所有对象
+  }
 
   #状态机  
   aasm :column => :status do

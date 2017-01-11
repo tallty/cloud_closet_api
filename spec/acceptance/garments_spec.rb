@@ -15,9 +15,11 @@ resource "我的衣橱" do
       create_list(:garment, 1, user: @user,status:'storing')
     end
 
+    parameter :garment_tag, "标签参数", require: false
     parameter :page, "当前页", require: false
     parameter :per_page, "每页的数量", require: false
 
+    let(:garment_tag) {""}
     let(:page) {2}
     let(:per_page) {2}
 
