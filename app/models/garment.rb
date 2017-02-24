@@ -52,7 +52,7 @@ class Garment < ApplicationRecord
     state :stored
 
     event :finish_storing do
-      transitions :from => :storing, :to => :stored
+      transitions :from => :storing, :to => :stored, :after => :release_its_chest
     end
   end
 
@@ -76,11 +76,11 @@ class Garment < ApplicationRecord
   end
 
   #设置 入库时间 与 过期时间
-  def set_put_in_time_and_expire_time store_month
-    self.put_in_time = Time.zone.now
-    self.expire_time = self.put_in_time + store_month.to_i.month
-    self.save!
-  end
+  # def set_put_in_time_and_expire_time store_month
+  #   self.put_in_time = Time.zone.now
+  #   self.expire_time = self.put_in_time + store_month.to_i.month
+  #   self.save!
+  # end
 
   #行 柜 位
   def row_carbit_place 

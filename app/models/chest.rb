@@ -2,16 +2,17 @@
 #
 # Table name: chests
 #
-#  id              :integer          not null, primary key
-#  title           :string
-#  chest_type      :string
-#  max_count       :integer
-#  user_id         :integer
-#  price_system_id :integer
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  end_day         :date
-#  start_day       :date
+#  id                     :integer          not null, primary key
+#  title                  :string
+#  chest_type             :string
+#  max_count              :integer
+#  user_id                :integer
+#  price_system_id        :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  end_day                :date
+#  start_day              :date
+#  last_time_inc_by_month :integer
 #
 # Indexes
 #
@@ -27,27 +28,37 @@ class Chest < ApplicationRecord
   	state :using, :will_expire, :expire
 
   	event :release do 
-  		transitions from: :waiting, to: :using
+  		transitions from: :waiting, to: :using, :after => :set_rent_time_range
 		end
 
 		event :turn_to_will_expire do 
-			transitions from: :using, to: :will_expire, :after => :send_notice
+			transitions from: :using, to: :will_expire, :after => :send_will_expire_notice
 		end
 
 	end
   belongs_to :user
   belongs_to :price_system
+  has_many :chest_items
 
   before_save :fit_price_system
+  before_destroy :hs_items?
 
+  delegate :price, to: :price_system
   # schu ... 
   # every day 检查 will_expire
   def self.check_end_time
   	
   end
   
-  def send_notice
+  # 即将到期发送提示
+  def send_will_expire_notice
   	
+  end
+
+  def send_rent_time_range
+  	self.start_day = Time.zone.today
+  	self.end_day = self.start_day + self.last_time_inc_by_month.month	
+  	self.save
   end
 
   private
@@ -55,5 +66,9 @@ class Chest < ApplicationRecord
   		_price_system = self.price_system
   		self.max_count = _price_system.max_count
   		self.chest_type = _price_system.title
+  	end
+
+  	def has_items?
+  		raise "衣柜中仍有衣服" if self.chest_items.any?
   	end
 end

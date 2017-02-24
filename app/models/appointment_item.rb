@@ -26,7 +26,7 @@ class AppointmentItem < ApplicationRecord
   	belongs_to :appointment
   	belongs_to :appointment_item_group
 
-    # 出错在工作人员确认订单时 报错比较合理
+    # 出错在工作人员确认订单时而不在用户确认付款时 报错比较合理
   	before_create :create_relate_garment
 
   	private

@@ -20,4 +20,9 @@ class ChestItem < ApplicationRecord
   belongs_to :price_system
   belongs_to :chest
   belongs_to :garment
+
+  # 在对应衣橱显示未上架占位
+  def is_storing
+  	self.garment.storing?
+  end
 end

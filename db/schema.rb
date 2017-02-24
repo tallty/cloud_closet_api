@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224031703) do
+ActiveRecord::Schema.define(version: 20170224034149) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -121,10 +121,11 @@ ActiveRecord::Schema.define(version: 20170224031703) do
     t.integer  "max_count"
     t.integer  "user_id"
     t.integer  "price_system_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.date     "end_day"
     t.date     "start_day"
+    t.integer  "last_time_inc_by_month"
     t.index ["price_system_id"], name: "index_chests_on_price_system_id"
     t.index ["user_id"], name: "index_chests_on_user_id"
   end

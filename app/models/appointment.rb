@@ -94,6 +94,13 @@ class Appointment < ApplicationRecord
       self.groups.each do |group| 
         _chest = user.chests.build(price_system_id: group.price_system_id)
         raise "衣橱创建失败" unless _chest.save
+        group.items.each do |appointment_item|
+          _chest_item = _chest.chest_items.build(
+            price_system: group.price_system,
+            garment: appointment_item.garment
+            )
+          raise "衣橱子项创建失败" unless _chest_item.save
+        end
       end
     end
   end

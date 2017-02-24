@@ -26,6 +26,8 @@ class AppointmentItemGroup < ApplicationRecord
   has_many :items, class_name: "AppointmentItem", dependent: :destroy
   has_many :garments, through: :items
 
+  validate :check_count
+
   def create_item
     count.times do
       item = self.items.build(
@@ -35,4 +37,9 @@ class AppointmentItemGroup < ApplicationRecord
       item.save!
     end
   end
+
+  private
+    def check_count
+      errors.add(:count, '数量错误') if self.count > self.price_system.max_count || self.count < 1
+    end
 end
