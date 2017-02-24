@@ -54,7 +54,6 @@ class Appointment < ApplicationRecord
     end
 
     event :cancel do
-      # 当worker 确认完成订单 user 却不支付订单， 是否删除已创建chest and garment
       transitions from: [:committed, :accepted, :unpaid], to: :canceled
     end
   end
@@ -92,7 +91,10 @@ class Appointment < ApplicationRecord
 
   def create_relate_chest
     ActiveRecord::Base.transaction do
-      self.groups.each {|group| user.chest.create!(price_system_id: group.price_system_id)}
+      self.groups.each do |group| 
+        _chest = user.chests.build(price_system_id: group.price_system_id)
+        raise "衣橱创建失败" unless _chest.save
+      end
     end
   end
 ## !!!
