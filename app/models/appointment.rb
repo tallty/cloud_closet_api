@@ -38,7 +38,7 @@ class Appointment < ApplicationRecord
     end
 
     event :service do
-      transitions from: :accepted, to: :unpaid, enter_before: :expand_group
+      transitions from: :accepted, to: :unpaid, :before_enter => :expand_group
     end
 
     event :pay do
@@ -85,7 +85,6 @@ class Appointment < ApplicationRecord
       _detail += "#{group.type_name.strip},#{group.count};"
     end
     self.detail = _detail
-    self.save!
   end
 
   def do_stored_if_its_garments_are_all_stored 
