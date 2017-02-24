@@ -54,8 +54,16 @@ class Chest < ApplicationRecord
   def send_will_expire_notice
   	
   end
+  # 某月账单  默认上一月
+  def get_monthly_rent_charge year_num=(Time.zone.now - 1.month).year, month_num=(Time.zone.now - 1.month).month
+  	return 0 if self.end_day < self.start_day || self.end_day.before_the_month(year_num, month_num) || self.start_day.behind_the_month(year_num, month_num)
+  	_start = self.start_day.in_last_month? ? self.start_day.day : 1
+  	_end = self.end_day.in_last_month? ? self.end_day.day : Time.days_in_month((Time.zone.now - 1.month).month)
+  	(( _end - _start + 1 ) * self.price).round(2)
+  end
 
-  def send_rent_time_range
+
+  def set_rent_time_range
   	self.start_day = Time.zone.today
   	self.end_day = self.start_day + self.last_time_inc_by_month.month	
   	self.save

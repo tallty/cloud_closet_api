@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224034149) do
+ActiveRecord::Schema.define(version: 20170224085240) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -228,7 +228,7 @@ ActiveRecord::Schema.define(version: 20170224034149) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "user_info_id"
-    t.string   "detail"
+    t.text     "detail"
     t.float    "balance"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end

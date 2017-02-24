@@ -92,7 +92,7 @@ class Appointment < ApplicationRecord
   def create_relate_chest
     ActiveRecord::Base.transaction do
       self.groups.each do |group| 
-        _chest = user.chests.build(price_system_id: group.price_system_id)
+        _chest = user.chests.build(price_system_id: group.price_system_id, last_time_inc_by_month: group.store_month)
         raise "衣橱创建失败" unless _chest.save
         group.items.each do |appointment_item|
           _chest_item = _chest.chest_items.build(

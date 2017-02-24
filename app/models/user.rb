@@ -76,9 +76,10 @@ class User < ApplicationRecord
     User.where('created_at > ?', Time.zone.now.midnight).count
   end
 
-  def create_monthy_bill
-    # self.chests.map {|chest| [chest.type_name, chest.price] }
+  def create_monthy_bill_info
+    self.chests.map { |chest| [chest.title, chest.chest_type, chest.get_monthly_rent_charge] }
   end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false

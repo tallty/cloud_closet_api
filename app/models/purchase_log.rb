@@ -10,7 +10,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_info_id   :integer
-#  detail         :string
+#  detail         :text
 #  balance        :float
 #
 # Indexes
@@ -40,15 +40,29 @@ class PurchaseLog < ApplicationRecord
 		#payment_method 微信支付
 	end
 
-	def self.create_one_with_storing_garment appointment
-		PurchaseLog.create(
-			operation: "购买衣橱",
-			operation_type: "消费",
-			change: appointment.price,
-			detail: appointment.detail,
-			user_info: appointment.user.user_info,
-			payment_method: "余额支付"
-			)
+	# def self.create_one_with_storing_garment appointment
+	# 	PurchaseLog.create(
+	# 		operation: "购买衣橱",
+	# 		operation_type: "消费",
+	# 		change: appointment.price,
+	# 		detail: appointment.detail,
+	# 		user_info: appointment.user.user_info,
+	# 		payment_method: "余额支付"
+	# 		)
+	# end
+
+	# detail: "chest.title@,@chest.chest_type@,@chest.get_monthly_rent_charge@;@"
+	def self.create_monthly_bill
+		User.all.each do |user|
+			# 缺少错误处理
+			user.purchase_logs.create(
+				operation_type: "消费",
+				detail: user.create_monthly_bill_info.join("@;@").join("@,@"),
+				detail: user.create_monthly_bill_info.join("\t").join("\n"),
+				operation: "租用衣柜"
+				)
+			# send template message here
+		end
 	end
 
 	def change_output
