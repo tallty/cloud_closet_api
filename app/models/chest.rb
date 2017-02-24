@@ -20,4 +20,13 @@
 class Chest < ApplicationRecord
   belongs_to :user
   belongs_to :price_system
+
+  before_save :fit_price_system
+
+  private
+  	def fit_price_system
+  		_price_system = self.price_system
+  		self.max_count = _price_system.max_count
+  		self.chest_type = _price_system.title
+  	end
 end

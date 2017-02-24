@@ -42,7 +42,7 @@ class Appointment < ApplicationRecord
     end
 
     event :pay do
-      transitions from: :unpaid, to: :paid
+      transitions from: :unpaid, to: :paid, :before_enter => :create_relate_chest
     end
 
     event :storing do
@@ -54,6 +54,7 @@ class Appointment < ApplicationRecord
     end
 
     event :cancel do
+      # 当worker 确认完成订单 user 却不支付订单， 是否删除已创建chest and garment
       transitions from: [:committed, :accepted, :unpaid], to: :canceled
     end
   end
@@ -89,8 +90,14 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def create_relate_chest
+    ActiveRecord::Base.transaction do
+      self.groups.each {|group| user.chest.create!(price_system_id: group.price_system_id)}
+    end
+  end
+## !!!
   def do_stored_if_its_garments_are_all_stored 
-      self.stored! unless self.aasm_state == 'stored' &&  self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
+    self.stored! unless self.aasm_state == 'stored' || self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
   end
 
   def create_template_message
