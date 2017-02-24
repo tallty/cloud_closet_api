@@ -52,6 +52,7 @@ class PurchaseLog < ApplicationRecord
 	# end
 
 	# detail: "chest.title@,@chest.chest_type@,@chest.get_monthly_rent_charge@;@"
+	# every month at day 1 
 	def self.create_monthly_bill
 		User.all.each do |user|
 			# 缺少错误处理

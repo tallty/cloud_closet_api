@@ -13,7 +13,6 @@
 #  end_day                :date
 #  start_day              :date
 #  last_time_inc_by_month :integer
-#  aasm_state             :string
 #
 # Indexes
 #
@@ -48,13 +47,14 @@ class Chest < ApplicationRecord
   # schu ... 
   # every day 检查 will_expire
   def self.check_end_time
-  	
+  	Chest.using.each {|chest| chest.turn_to_will_expire! if Time.zone.now > chest.end_time - 7.day }
   end
   
   # 即将到期发送提示
   def send_will_expire_notice
   	
   end
+
   # 某月账单  默认上一月
   def get_monthly_rent_charge year_num=(Time.zone.now - 1.month).year, month_num=(Time.zone.now - 1.month).month
   	return 0 if self.end_day < self.start_day || self.end_day.before_the_month(year_num, month_num) || self.start_day.behind_the_month(year_num, month_num)
