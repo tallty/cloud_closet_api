@@ -38,7 +38,7 @@ class Appointment < ApplicationRecord
     end
 
     event :service do
-      transitions from: :accepted, to: :unpaid
+      transitions from: :accepted, to: :unpaid, enter_before: :expand_group
     end
 
     event :pay do
@@ -73,30 +73,23 @@ class Appointment < ApplicationRecord
   scope :appointment_state, -> (state) {where(aasm_state:state)}
   scope :by_join_date, -> {order("created_at DESC")} #降序
   
-  # 支付完成后，展开预约订单，这时候可以生成相关的item和
-  def create_group
+  # 工作人员统计完成后，展开预约订单，这时候可以生成相关的item
+  def expand_group
     # 总价
     self.price = 0.00
     _detail = ""
 
-    groups.each do |group| #####groups!!!!!!
+    groups.each do |group| 
       group.create_item
       self.price += group.price
       _detail += "#{group.type_name.strip},#{group.count};"
     end
     self.detail = _detail
-    self.service!
+    self.save!
   end
 
   def do_stored_if_its_garments_are_all_stored 
-    unless self.aasm_state == 'stored'
-      _un_stored_count = 0
-      _items = self.items
-      _items.each do |item|
-        _un_stored_count += 1 if item.garment.status == 'stored'
-      end
-      self.stored! if _un_stored_count == _items.count
-    end
+      self.stored! unless self.aasm_state == 'stored' &&  self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
   end
 
   def create_template_message

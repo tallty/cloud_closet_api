@@ -63,7 +63,7 @@ class Work::AppointmentsController < ApplicationController
       appointment_group.type_name.strip! if appointment_group.type_name
       appointment_group.save
     end
-    @work_appointment.create_group
+    @work_appointment.service!
 
     respond_with(@work_appointment, template: "work/appointments/show", status: 200)
   end
