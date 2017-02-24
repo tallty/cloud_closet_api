@@ -32,7 +32,7 @@ class AppointmentItemGroup < ApplicationRecord
         store_month: self.store_month,
         appointment: self.appointment
         )
-      item.save
+      item.save!
     end
   end
 end

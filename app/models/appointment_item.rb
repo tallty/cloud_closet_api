@@ -26,26 +26,8 @@ class AppointmentItem < ApplicationRecord
   	belongs_to :appointment
   	belongs_to :appointment_item_group
 
+    # 出错在工作人员确认订单时 报错比较合理
   	before_create :create_relate_garment
-
-  	# enum status: {
-  	# 	unstore: 0, ###!!!
-   # 		storing: 1,
-   # 		stored: 2
-  	# }
-      
-   #    aasm :column => :status, :enum => true do
-   #      state :storing, :initial => true
-   #      state :stored
-
-   #      event :finish_storing do
-   #        transitions :from => :storing, :to => :stored
-   #      end
-   #    end
-
-  	# def item_status
-  	# 	I18n.t :"appointment_itme_status.#{status}"
-  	# end
 
   	private
     	def create_relate_garment

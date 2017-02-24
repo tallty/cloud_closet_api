@@ -78,13 +78,15 @@ class Appointment < ApplicationRecord
     # 总价
     self.price = 0.00
     _detail = ""
-
-    groups.each do |group| 
-      group.create_item
-      self.price += group.price
-      _detail += "#{group.type_name.strip},#{group.count};"
+    ActiveRecord::Base.transaction do
+      groups.each do |group| 
+        group.create_item
+        self.price += group.price
+        _detail += "#{group.type_name.strip},#{group.count};"
+      end
+      self.detail = _detail
+      self.save!
     end
-    self.detail = _detail
   end
 
   def do_stored_if_its_garments_are_all_stored 

@@ -66,6 +66,8 @@ class Work::AppointmentsController < ApplicationController
     @work_appointment.service!
 
     respond_with(@work_appointment, template: "work/appointments/show", status: 200)
+  rescue => error
+    render :json => {error: error}, status: 422
   end
 
   def destroy
