@@ -13,6 +13,7 @@
 #  end_day                :date
 #  start_day              :date
 #  last_time_inc_by_month :integer
+#  aasm_state             :string
 #
 # Indexes
 #

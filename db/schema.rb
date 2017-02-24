@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224085240) do
+ActiveRecord::Schema.define(version: 20170224090919) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20170224085240) do
     t.date     "end_day"
     t.date     "start_day"
     t.integer  "last_time_inc_by_month"
+    t.string   "aasm_state"
     t.index ["price_system_id"], name: "index_chests_on_price_system_id"
     t.index ["user_id"], name: "index_chests_on_user_id"
   end
