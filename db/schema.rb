@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170225064651) do
+ActiveRecord::Schema.define(version: 20170225072930) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170225064651) do
     t.datetime "updated_at",                                    null: false
     t.integer  "appointment_item_group_id"
     t.string   "aasm_state",                default: "storing"
+    t.string   "store_mode"
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["garment_id"], name: "index_appointment_items_on_garment_id"

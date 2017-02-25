@@ -12,6 +12,7 @@
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
 #  aasm_state                :string           default("storing")
+#  store_mode                :string
 #
 # Indexes
 #
@@ -31,7 +32,7 @@ class AppointmentItem < ApplicationRecord
 
   	private
     	def create_relate_garment
-    		garment = Garment.create(user: self.appointment.try(:user))
+    		garment = Garment.create(user: self.appointment.try(:user), store_mode: self.store_mode)
     		self.garment = garment
     	end
 end
