@@ -31,8 +31,7 @@ class AppointmentItem < ApplicationRecord
 
   	private
     	def create_relate_garment
-      		garment = Garment.create(user: self.appointment.try(:user))
-      		self.garment = garment
-      		# self.success!
+    		garment = Garment.create(user: self.appointment.try(:user))
+    		self.garment = garment
     	end
 end

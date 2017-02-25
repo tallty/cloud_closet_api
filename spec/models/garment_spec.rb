@@ -15,11 +15,13 @@
 #  place       :integer
 #  aasm_state  :string           default("storing")
 #  status      :string
+#  chest_id    :integer
 #
 # Indexes
 #
-#  index_garments_on_seq      (seq)
-#  index_garments_on_user_id  (user_id)
+#  index_garments_on_chest_id  (chest_id)
+#  index_garments_on_seq       (seq)
+#  index_garments_on_user_id   (user_id)
 #
 
 require 'rails_helper'

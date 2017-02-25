@@ -13,6 +13,7 @@
 #  end_day                :date
 #  start_day              :date
 #  last_time_inc_by_month :integer
+#  aasm_state             :string
 #
 # Indexes
 #
@@ -21,6 +22,8 @@
 #
 
 class Chest < ApplicationRecord
+  # chest_type -> price_system.title
+  # 
   include AASM
 
   aasm do 
@@ -38,12 +41,14 @@ class Chest < ApplicationRecord
 	end
   belongs_to :user
   belongs_to :price_system
-  has_many :chest_items
+
+  has_many :garments
 
   before_save :fit_price_system
-  before_destroy :hs_items?
+  before_destroy :has_garment?
 
   delegate :price, to: :price_system
+
   # schu ... 
   # every day 检查 will_expire
   def self.check_end_time
@@ -77,7 +82,7 @@ class Chest < ApplicationRecord
   		self.chest_type = _price_system.title
   	end
 
-  	def has_items?
-  		raise "衣柜中仍有衣服" if self.chest_items.any?
+  	def has_garment?
+  		raise "衣柜中仍有衣服" if self.garments.any?
   	end
 end

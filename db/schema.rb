@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224090919) do
+ActiveRecord::Schema.define(version: 20170225015815) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -53,7 +53,9 @@ ActiveRecord::Schema.define(version: 20170224090919) do
     t.string   "type_name"
     t.string   "season"
     t.integer  "price_system_id"
+    t.integer  "chest_id"
     t.index ["appointment_id"], name: "index_appointment_item_groups_on_appointment_id"
+    t.index ["chest_id"], name: "index_appointment_item_groups_on_chest_id"
     t.index ["price_system_id"], name: "index_appointment_item_groups_on_price_system_id"
   end
 
@@ -177,6 +179,8 @@ ActiveRecord::Schema.define(version: 20170224090919) do
     t.integer  "place"
     t.string   "aasm_state",  default: "storing"
     t.string   "status"
+    t.integer  "chest_id"
+    t.index ["chest_id"], name: "index_garments_on_chest_id"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
   end

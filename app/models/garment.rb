@@ -15,11 +15,13 @@
 #  place       :integer
 #  aasm_state  :string           default("storing")
 #  status      :string
+#  chest_id    :integer
 #
 # Indexes
 #
-#  index_garments_on_seq      (seq)
-#  index_garments_on_user_id  (user_id)
+#  index_garments_on_chest_id  (chest_id)
+#  index_garments_on_seq       (seq)
+#  index_garments_on_user_id   (user_id)
 #
 
 class Garment < ApplicationRecord
@@ -29,6 +31,7 @@ class Garment < ApplicationRecord
   scope :by_join_date, -> {order("created_at DESC")}
 
   belongs_to :user
+  belongs_to :chest
 
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
@@ -56,6 +59,8 @@ class Garment < ApplicationRecord
     end
   end
 
+  after_create :generate_seq
+
   def is_new
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
@@ -76,27 +81,21 @@ class Garment < ApplicationRecord
   end
 
   #设置 入库时间 与 过期时间
-  # def set_put_in_time_and_expire_time store_month
-  #   self.put_in_time = Time.zone.now
-  #   self.expire_time = self.put_in_time + store_month.to_i.month
-  #   self.save!
-  # end
+  def set_put_in_time_and_expire_time store_month
+    self.put_in_time = Time.zone.now
+    # self.expire_time = self.put_in_time + store_month.to_i.month
+    self.save!
+  end
 
   #行 柜 位
   def row_carbit_place 
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
 
-  # #detail_image id数组
-  # def detail_image_id_array
-  #   self.detail_images.collect(&:id)
-  # end
 
   def garment_status
     I18n.t :"appointment_itme_status.#{status}"
   end
-
-  after_create :generate_seq
 
   private
     def generate_seq

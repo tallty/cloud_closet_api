@@ -2,12 +2,13 @@
 #
 # Table name: price_systems
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  season     :string
-#  price      :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :integer          not null, primary key
+#  price         :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  item_type     :integer
+#  max_count_per :integer
+#  title         :string
 #
 
 FactoryGirl.define do

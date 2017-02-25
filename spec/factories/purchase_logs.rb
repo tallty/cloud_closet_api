@@ -10,7 +10,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_info_id   :integer
-#  detail         :string
+#  detail         :text
 #  balance        :float
 #
 # Indexes
