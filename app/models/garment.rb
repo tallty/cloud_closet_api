@@ -16,6 +16,7 @@
 #  aasm_state  :string           default("storing")
 #  status      :string
 #  chest_id    :integer
+#  stroe_mode  :string
 #
 # Indexes
 #

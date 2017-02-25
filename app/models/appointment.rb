@@ -42,7 +42,7 @@ class Appointment < ApplicationRecord
     end
 
     event :pay do
-      transitions from: :unpaid, to: :paid, :before_enter => :create_relate_chest
+      transitions from: :unpaid, to: :paid
     end
 
     event :storing do
@@ -95,10 +95,7 @@ class Appointment < ApplicationRecord
         _chest = user.chests.build(price_system_id: group.price_system_id, last_time_inc_by_month: group.store_month)
         raise "衣橱创建失败" unless _chest.save
         group.items.each do |appointment_item|
-          _chest_item = _chest.chest_items.build(
-            price_system: group.price_system,
-            garment: appointment_item.garment
-            )
+          appointment_item.garment.
           raise "衣橱子项创建失败" unless _chest_item.save
         end
       end

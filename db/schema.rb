@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170225015815) do
+ActiveRecord::Schema.define(version: 20170225064651) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -44,16 +44,16 @@ ActiveRecord::Schema.define(version: 20170225015815) do
   end
 
   create_table "appointment_item_groups", force: :cascade do |t|
-    t.integer  "count"
     t.integer  "appointment_id"
     t.integer  "store_month"
     t.float    "price"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "type_name"
-    t.string   "season"
     t.integer  "price_system_id"
     t.integer  "chest_id"
+    t.boolean  "is_chest"
+    t.string   "count_info"
     t.index ["appointment_id"], name: "index_appointment_item_groups_on_appointment_id"
     t.index ["chest_id"], name: "index_appointment_item_groups_on_chest_id"
     t.index ["price_system_id"], name: "index_appointment_item_groups_on_price_system_id"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20170225015815) do
     t.string   "aasm_state",  default: "storing"
     t.string   "status"
     t.integer  "chest_id"
+    t.string   "stroe_mode"
     t.index ["chest_id"], name: "index_garments_on_chest_id"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
@@ -218,11 +219,11 @@ ActiveRecord::Schema.define(version: 20170225015815) do
 
   create_table "price_systems", force: :cascade do |t|
     t.integer  "price"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "item_type"
-    t.integer  "max_count_per"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "title"
+    t.string   "max_count_info"
+    t.boolean  "is_chest"
   end
 
   create_table "purchase_logs", force: :cascade do |t|
