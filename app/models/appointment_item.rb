@@ -21,18 +21,19 @@
 #  index_appointment_items_on_garment_id                 (garment_id)
 #
 
+# 弃用
 class AppointmentItem < ApplicationRecord
-	include AASM
-  	belongs_to :garment
-  	belongs_to :appointment
-  	belongs_to :appointment_item_group
+	# include AASM
+ #  	belongs_to :garment
+ #  	belongs_to :appointment
+ #  	belongs_to :appointment_item_group
 
-    # 出错在工作人员确认订单时而不在用户确认付款时 报错比较合理
-  	before_create :create_relate_garment
+ #    # 出错在工作人员确认订单时而不在用户确认付款时 报错比较合理
+ #  	before_create :create_relate_garment
 
-  	private
-    	def create_relate_garment
-    		garment = Garment.create(user: self.appointment.try(:user), store_mode: self.store_mode)
-    		self.garment = garment
-    	end
+ #  	private
+ #    	def create_relate_garment
+ #    		garment = Garment.create(user: self.appointment.try(:user), store_mode: self.store_mode)
+ #    		self.garment = garment
+ #    	end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170225072930) do
+ActiveRecord::Schema.define(version: 20170228083857) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -73,6 +73,21 @@ ActiveRecord::Schema.define(version: 20170225072930) do
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["garment_id"], name: "index_appointment_items_on_garment_id"
+  end
+
+  create_table "appointment_price_groups", force: :cascade do |t|
+    t.integer  "price_system_id"
+    t.integer  "appointment_id"
+    t.integer  "count"
+    t.integer  "store_month"
+    t.float    "unit_price"
+    t.float    "price"
+    t.boolean  "is_chest"
+    t.string   "title"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["appointment_id"], name: "index_appointment_price_groups_on_appointment_id"
+    t.index ["price_system_id"], name: "index_appointment_price_groups_on_price_system_id"
   end
 
   create_table "appointments", force: :cascade do |t|

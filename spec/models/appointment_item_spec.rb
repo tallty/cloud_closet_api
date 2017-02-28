@@ -20,9 +20,9 @@
 #  index_appointment_items_on_garment_id                 (garment_id)
 #
 
-require 'rails_helper'
+# require 'rails_helper'
 
-RSpec.describe AppointmentItem, type: :model do
-  it { should belong_to(:garment) } 
-  it { should belong_to(:appointment) } 
-end
+# RSpec.describe AppointmentItem, type: :model do
+#   it { should belong_to(:garment) } 
+#   it { should belong_to(:appointment) } 
+# end

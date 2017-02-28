@@ -21,10 +21,10 @@
 #  index_appointment_item_groups_on_price_system_id  (price_system_id)
 #
 
-require 'rails_helper'
+# require 'rails_helper'
 
-RSpec.describe AppointmentItemGroup, type: :model do
-  it { should belong_to(:appointment) } 
-  it { should have_many(:items) } 
-  it { should have_many(:garments).through(:items) } 
-end
+# RSpec.describe AppointmentItemGroup, type: :model do
+#   it { should belong_to(:appointment) } 
+#   it { should have_many(:items) } 
+#   it { should have_many(:garments).through(:items) } 
+# end
