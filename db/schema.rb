@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228091821) do
+ActiveRecord::Schema.define(version: 20170228094456) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -173,6 +173,14 @@ ActiveRecord::Schema.define(version: 20170228091821) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_distributions_on_user_id"
+  end
+
+  create_table "exhibition_chests", force: :cascade do |t|
+    t.integer  "exhibition_unit_id"
+    t.string   "custom_title"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["exhibition_unit_id"], name: "index_exhibition_chests_on_exhibition_unit_id"
   end
 
   create_table "exhibition_units", force: :cascade do |t|
@@ -349,6 +357,16 @@ ActiveRecord::Schema.define(version: 20170228091821) do
     t.index ["openid"], name: "index_users_on_openid"
     t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "valuation_chests", force: :cascade do |t|
+    t.integer  "price_system_id"
+    t.string   "aasm_state"
+    t.integer  "user_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["price_system_id"], name: "index_valuation_chests_on_price_system_id"
+    t.index ["user_id"], name: "index_valuation_chests_on_user_id"
   end
 
   create_table "wechat_sessions", force: :cascade do |t|

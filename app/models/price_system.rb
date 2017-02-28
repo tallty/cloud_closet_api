@@ -14,15 +14,6 @@ class PriceSystem < ApplicationRecord
 	has_one :icon_image, -> { where photo_type: "icon" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :icon_image, allow_destroy: true
 
-
-  class ChestPrice
-  	default_scope {where(is_chest: true)}
-  end
-
-  class OtherPrice
-  	default_scope {where(is_chest: false)}
-  end
-
   private
   
 end
