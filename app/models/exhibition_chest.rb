@@ -7,6 +7,7 @@
 #  custom_title       :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  aasm_state         :string
 #
 # Indexes
 #
@@ -17,4 +18,10 @@ class ExhibitionChest < ApplicationRecord
   belongs_to :exhibition_unit
   has_one :appointment_new_chest
   has_many :garment
+
+  include AASM
+
+  aasm do 
+  	
+	end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228095005) do
+ActiveRecord::Schema.define(version: 20170228100604) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20170228095005) do
     t.string   "custom_title"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "aasm_state"
     t.index ["exhibition_unit_id"], name: "index_exhibition_chests_on_exhibition_unit_id"
   end
 
