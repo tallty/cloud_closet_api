@@ -87,3 +87,4 @@ class AppointmentItemGroup < ApplicationRecord
 
     
 end
+
