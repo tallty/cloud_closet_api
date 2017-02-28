@@ -2,24 +2,28 @@
 #
 # Table name: appointments
 #
-#  id           :integer          not null, primary key
-#  address      :string
-#  name         :string
-#  phone        :string
-#  number       :integer
-#  date         :date
-#  user_id      :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  seq          :string
-#  aasm_state   :string
-#  price        :float            default(0.0)
-#  detail       :string
-#  remark       :text
-#  care_type    :string
-#  care_cost    :float
-#  service_cost :float
-#  rent_charge  :float
+#  id                 :integer          not null, primary key
+#  address            :string
+#  name               :string
+#  phone              :string
+#  number             :integer
+#  date               :date
+#  user_id            :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  seq                :string
+#  aasm_state         :string
+#  price              :float            default(0.0)
+#  detail             :string
+#  remark             :text
+#  care_type          :string
+#  care_cost          :float
+#  service_cost       :float
+#  rent_charge        :float
+#  garment_count_info :string
+#  hanging_count      :integer          default(0)
+#  stacking_count     :integer          default(0)
+#  full_dress_count   :integer          default(0)
 #
 # Indexes
 #
@@ -59,8 +63,9 @@ class Appointment < ApplicationRecord
   end
 
   belongs_to :user
-  has_many :items, class_name: "AppointmentItem", dependent: :destroy
-  has_many :groups, class_name: "AppointmentItemGroup", dependent: :destroy
+
+  has_many :graments
+  has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
 
   after_create :generate_seq
   after_save :create_template_message, if: :aasm_state_changed?
@@ -75,24 +80,24 @@ class Appointment < ApplicationRecord
   
   # 工作人员统计完成后，展开预约订单，这时候可以生成相关的item
   def expand_group
-    # 总价
-    self.price = 0.00
-    _detail = ""
-    ActiveRecord::Base.transaction do
-      groups.each do |group| 
-        group.create_item
-        self.price += group.price
-        _detail += "#{group.type_name.strip},#{group.count};"
-      end
-      self.detail = _detail
-      self.save!
-    end
+    # # 总价
+    # self.price = 0.00
+    # _detail = ""
+    # ActiveRecord::Base.transaction do
+    #   groups.each do |group| 
+    #     group.create_item
+    #     self.price += group.price
+    #     _detail += "#{group.type_name.strip},#{group.count};"
+    #   end
+    #   self.detail = _detail
+    #   self.save!
+    # end
   end
 
 ## !!!
-  def do_stored_if_its_garments_are_all_stored 
-    self.stored! unless self.aasm_state == 'stored' || self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
-  end
+  # def do_stored_if_its_garments_are_all_stored 
+  #   self.stored! unless self.aasm_state == 'stored' || self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
+  # end
 
   def create_template_message
     openid = user.try(:openid)
