@@ -2,27 +2,29 @@
 #
 # Table name: garments
 #
-#  id          :integer          not null, primary key
-#  user_id     :integer
-#  title       :string
-#  put_in_time :datetime
-#  expire_time :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  seq         :string
-#  row         :integer
-#  carbit      :integer
-#  place       :integer
-#  aasm_state  :string           default("storing")
-#  status      :string
-#  chest_id    :integer
-#  stroe_mode  :string
+#  id                  :integer          not null, primary key
+#  user_id             :integer
+#  title               :string
+#  put_in_time         :datetime
+#  expire_time         :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  seq                 :string
+#  row                 :integer
+#  carbit              :integer
+#  place               :integer
+#  aasm_state          :string           default("storing")
+#  status              :string
+#  stroe_mode          :string
+#  appointment_id      :integer
+#  exhibition_chest_id :integer
 #
 # Indexes
 #
-#  index_garments_on_chest_id  (chest_id)
-#  index_garments_on_seq       (seq)
-#  index_garments_on_user_id   (user_id)
+#  index_garments_on_appointment_id       (appointment_id)
+#  index_garments_on_exhibition_chest_id  (exhibition_chest_id)
+#  index_garments_on_seq                  (seq)
+#  index_garments_on_user_id              (user_id)
 #
 
 class Garment < ApplicationRecord

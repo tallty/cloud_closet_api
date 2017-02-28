@@ -59,7 +59,6 @@ class PurchaseLog < ApplicationRecord
 			user.purchase_logs.create(
 				operation_type: "消费",
 				detail: user.create_monthly_bill_info.join("@;@").join("@,@"),
-				detail: user.create_monthly_bill_info.join("\t").join("\n"),
 				operation: "租用衣柜"
 				)
 			# send template message here

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228094456) do
+ActiveRecord::Schema.define(version: 20170228095005) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -73,6 +73,17 @@ ActiveRecord::Schema.define(version: 20170228094456) do
     t.index ["appointment_id"], name: "index_appointment_items_on_appointment_id"
     t.index ["appointment_item_group_id"], name: "index_appointment_items_on_appointment_item_group_id"
     t.index ["garment_id"], name: "index_appointment_items_on_garment_id"
+  end
+
+  create_table "appointment_new_chests", force: :cascade do |t|
+    t.integer  "exhibition_chest_id"
+    t.integer  "appointment_price_group_id"
+    t.integer  "appointment_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["appointment_id"], name: "index_appointment_new_chests_on_appointment_id"
+    t.index ["appointment_price_group_id"], name: "index_appointment_new_chests_on_appointment_price_group_id"
+    t.index ["exhibition_chest_id"], name: "index_appointment_new_chests_on_exhibition_chest_id"
   end
 
   create_table "appointment_price_groups", force: :cascade do |t|
@@ -210,17 +221,19 @@ ActiveRecord::Schema.define(version: 20170228094456) do
     t.string   "title"
     t.datetime "put_in_time"
     t.datetime "expire_time"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "seq"
     t.integer  "row"
     t.integer  "carbit"
     t.integer  "place"
-    t.string   "aasm_state",  default: "storing"
+    t.string   "aasm_state",          default: "storing"
     t.string   "status"
-    t.integer  "chest_id"
     t.string   "stroe_mode"
-    t.index ["chest_id"], name: "index_garments_on_chest_id"
+    t.integer  "appointment_id"
+    t.integer  "exhibition_chest_id"
+    t.index ["appointment_id"], name: "index_garments_on_appointment_id"
+    t.index ["exhibition_chest_id"], name: "index_garments_on_exhibition_chest_id"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
   end

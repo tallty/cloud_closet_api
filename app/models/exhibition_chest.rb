@@ -15,4 +15,6 @@
 
 class ExhibitionChest < ApplicationRecord
   belongs_to :exhibition_unit
+  has_one :appointment_new_chest
+  has_many :garment
 end
