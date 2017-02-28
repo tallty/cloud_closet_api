@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228085456) do
+ActiveRecord::Schema.define(version: 20170228091821) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -175,6 +175,17 @@ ActiveRecord::Schema.define(version: 20170228085456) do
     t.index ["user_id"], name: "index_distributions_on_user_id"
   end
 
+  create_table "exhibition_units", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "store_method"
+    t.integer  "max_count"
+    t.boolean  "need_join"
+    t.integer  "price_system_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["price_system_id"], name: "index_exhibition_units_on_price_system_id"
+  end
+
   create_table "garment_logs", force: :cascade do |t|
     t.integer  "garment_id"
     t.string   "title"
@@ -239,10 +250,9 @@ ActiveRecord::Schema.define(version: 20170228085456) do
 
   create_table "price_systems", force: :cascade do |t|
     t.integer  "price"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "title"
-    t.string   "max_count_info"
     t.boolean  "is_chest"
   end
 
@@ -265,6 +275,13 @@ ActiveRecord::Schema.define(version: 20170228085456) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["phone"], name: "index_sms_tokens_on_phone"
+  end
+
+  create_table "store_methods", force: :cascade do |t|
+    t.string   "title"
+    t.string   "zh_title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "taggings", force: :cascade do |t|
