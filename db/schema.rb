@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228100604) do
+ActiveRecord::Schema.define(version: 20170301020832) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -272,10 +272,12 @@ ActiveRecord::Schema.define(version: 20170228100604) do
 
   create_table "price_systems", force: :cascade do |t|
     t.integer  "price"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "title"
     t.boolean  "is_chest"
+    t.text     "description"
+    t.string   "unit_name"
   end
 
   create_table "purchase_logs", force: :cascade do |t|
@@ -379,6 +381,7 @@ ActiveRecord::Schema.define(version: 20170228100604) do
     t.integer  "user_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.date     "start_time"
     t.index ["price_system_id"], name: "index_valuation_chests_on_price_system_id"
     t.index ["user_id"], name: "index_valuation_chests_on_user_id"
   end

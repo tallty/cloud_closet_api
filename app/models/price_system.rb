@@ -2,12 +2,14 @@
 #
 # Table name: price_systems
 #
-#  id         :integer          not null, primary key
-#  price      :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  title      :string
-#  is_chest   :boolean
+#  id          :integer          not null, primary key
+#  price       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  title       :string
+#  is_chest    :boolean
+#  description :text
+#  unit_name   :string
 #
 
 class PriceSystem < ApplicationRecord

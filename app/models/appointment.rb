@@ -81,8 +81,7 @@ class Appointment < ApplicationRecord
                                                      #
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
-    # e.g. -> garment_count_info = { hanging: 1, stacking: 10 }
-    #         params[:garment_count_info] = { hanging: 1, stacking: 10 }
+    # e.g. -> params[:garment_count_info] = { hanging: 1, stacking: 10 }
     self[:garment_count_info] = json.map {|store_method, count| "#{store_method}:#{count}" }.join(",")
   end
 

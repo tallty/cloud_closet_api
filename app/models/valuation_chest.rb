@@ -8,6 +8,7 @@
 #  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  start_time      :date
 #
 # Indexes
 #
@@ -18,4 +19,6 @@
 class ValuationChest < ApplicationRecord
   belongs_to :price_system
   belongs_to :user
+
+  delegate :title, :price, to: :exhibition_unit#, allow_nil: true
 end
