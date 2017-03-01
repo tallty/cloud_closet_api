@@ -11,7 +11,7 @@
 
 FactoryGirl.define do
   factory :store_method do
-    title "MyString"
-    zh_title "MyString"
+    sequence(:title, 0) { |n| ['hanging', 'stacking', 'full_dress'][n] }
+    sequence(:zh_title, 0) { |n| ['挂件', '叠放件', '礼服'][n] }
   end
 end

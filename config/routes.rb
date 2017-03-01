@@ -41,7 +41,8 @@ Rails.application.routes.draw do
     resources :garments, only: [:index]
   end
   ###############################################    
-
+  # user price_systems
+  resources :price_systems, only: [:index, :show]
 
   ############ Work Routes ############################ 
   namespace :work do

@@ -4,7 +4,7 @@ class PriceSystemsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_price_system, only: [:show, :update, :destroy]
+  before_action :set_price_system, only: [:show]
 
   respond_to :json
 
@@ -38,7 +38,7 @@ class PriceSystemsController < ApplicationController
       @price_system = PriceSystem.chests.find(params[:id])
     end
 
-    def price_system_params
-      params[:price_system]
-    end
+    # def price_system_params
+    #   params[:price_system]
+    # end
 end
