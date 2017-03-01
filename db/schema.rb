@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301025816) do
+ActiveRecord::Schema.define(version: 20170301101637) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -394,6 +394,24 @@ ActiveRecord::Schema.define(version: 20170301025816) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["openid"], name: "index_wechat_sessions_on_openid", unique: true
+  end
+
+  create_table "workers", force: :cascade do |t|
+    t.string   "email",                             default: "", null: false
+    t.string   "phone",                             default: "", null: false
+    t.string   "encrypted_password",                default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                     default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "authentication_token",   limit: 30
+    t.index ["authentication_token"], name: "index_workers_on_authentication_token", unique: true
+    t.index ["email"], name: "index_workers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_workers_on_reset_password_token", unique: true
   end
 
 end
