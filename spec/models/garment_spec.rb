@@ -2,26 +2,29 @@
 #
 # Table name: garments
 #
-#  id          :integer          not null, primary key
-#  user_id     :integer
-#  title       :string
-#  put_in_time :datetime
-#  expire_time :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  seq         :string
-#  row         :integer
-#  carbit      :integer
-#  place       :integer
-#  aasm_state  :string           default("storing")
-#  status      :string
-#  chest_id    :integer
+#  id                  :integer          not null, primary key
+#  user_id             :integer
+#  title               :string
+#  put_in_time         :datetime
+#  expire_time         :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  seq                 :string
+#  row                 :integer
+#  carbit              :integer
+#  place               :integer
+#  aasm_state          :string           default("storing")
+#  status              :string
+#  stroe_mode          :string
+#  appointment_id      :integer
+#  exhibition_chest_id :integer
 #
 # Indexes
 #
-#  index_garments_on_chest_id  (chest_id)
-#  index_garments_on_seq       (seq)
-#  index_garments_on_user_id   (user_id)
+#  index_garments_on_appointment_id       (appointment_id)
+#  index_garments_on_exhibition_chest_id  (exhibition_chest_id)
+#  index_garments_on_seq                  (seq)
+#  index_garments_on_user_id              (user_id)
 #
 
 require 'rails_helper'
@@ -29,6 +32,7 @@ require 'rails_helper'
 RSpec.describe Garment, type: :model do
   it { should belong_to(:user) } 
   it { should have_one(:cover_image) } 
-  it { should have_many(:detail_images) } 
-  it { should have_many(:logs) } 
+  3.times do |i|
+  	eval("it { should have_one(:detail_image_#{i}) }")
+  end
 end

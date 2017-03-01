@@ -39,6 +39,6 @@ class Work::PriceSystemsController < ApplicationController
     end
 
     # def price_system_params
-    #   params.require(:price_system).permit(:name, :season, :price, icon_images_attributes: [:id, :photo, :_destroy])
+    #   params.require(:price_system).permit(:name, :season, :price, price_icon_images_attributes: [:id, :photo, :_destroy])
     # end
 end

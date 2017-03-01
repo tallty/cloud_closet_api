@@ -12,6 +12,7 @@
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
 #  aasm_state                :string           default("storing")
+#  store_mode                :string
 #
 # Indexes
 #

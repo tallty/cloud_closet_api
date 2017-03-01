@@ -23,4 +23,5 @@
 class AppointmentPriceGroup < ApplicationRecord
   belongs_to :price_system
   belongs_to :appointment
+  has_many :appointment_new_chests
 end

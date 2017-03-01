@@ -3,16 +3,16 @@
 # Table name: appointment_item_groups
 #
 #  id              :integer          not null, primary key
-#  count           :integer
 #  appointment_id  :integer
 #  store_month     :integer
 #  price           :float
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  type_name       :string
-#  season          :string
 #  price_system_id :integer
 #  chest_id        :integer
+#  is_chest        :boolean
+#  count_info      :string
 #
 # Indexes
 #

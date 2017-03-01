@@ -42,14 +42,10 @@ class Garment < ApplicationRecord
   # has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
   # accepts_nested_attributes_for :detail_images, allow_destroy: true
 
-  has_one :detail_image_1, -> { where photo_type: "detail_1" }, class_name: "Image", as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :detail_image_1, allow_destroy: true
-
-  has_one :detail_image_2, -> { where photo_type: "detail_2" }, class_name: "Image", as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :detail_image_2, allow_destroy: true
-
-  has_one :detail_image_3, -> { where photo_type: "detail_3" }, class_name: "Image", as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :detail_image_3, allow_destroy: true
+  3.times do |i|
+    eval("has_one :detail_image_#{i}, -> { where photo_type: 'detail_#{i}' }, class_name: 'Image', as: :imageable, dependent: :destroy
+    accepts_nested_attributes_for :detail_image_#{i}, allow_destroy: true")
+  end
 
   has_many :logs, class_name: "GarmentLog", dependent: :destroy
 

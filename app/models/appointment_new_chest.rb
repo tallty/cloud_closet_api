@@ -20,5 +20,6 @@ class AppointmentNewChest < ApplicationRecord
   belongs_to :chest
   belongs_to :appointment
   belongs_to :appointment_price_group
+  belongs_to :exhibition_chest
  
 end
