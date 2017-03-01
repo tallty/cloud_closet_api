@@ -75,10 +75,23 @@ class Appointment < ApplicationRecord
     I18n.t :"appointment_aasm_state.#{aasm_state}"
   end
 
-  ### 预约订单状态筛选查询　#########
+  
   scope :appointment_state, -> (state) {where(aasm_state:state)}
   scope :by_join_date, -> {order("created_at DESC")} #降序
-  
+                                                     #
+  # 重写 garment_count_info 读写方法 attr_accessor
+  def garment_count_info=(json)
+    # e.g. -> garment_count_info = { hanging: 1, stacking: 10 }
+    #         params[:garment_count_info] = { hanging: 1, stacking: 10 }
+    self[:garment_count_info] = json.map {|store_method, count| "#{store_method}:#{count}" }.join(",")
+  end
+
+  def garment_count_info
+    # if nil
+    self[:garment_count_info] && eval("{#{self[:garment_count_info]}}")
+  end
+
+
   # 工作人员统计完成后，展开预约订单，这时候可以生成相关的item
   def expand_group
     # # 总价
