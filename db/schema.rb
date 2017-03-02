@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302015100) do
+ActiveRecord::Schema.define(version: 20170302072410) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(version: 20170302015100) do
   end
 
   create_table "appointment_new_chests", force: :cascade do |t|
-    t.integer  "exhibition_chest_id"
     t.integer  "appointment_price_group_id"
     t.integer  "appointment_id"
     t.datetime "created_at",                 null: false
@@ -84,7 +83,6 @@ ActiveRecord::Schema.define(version: 20170302015100) do
     t.integer  "exhibition_unit_id"
     t.index ["appointment_id"], name: "index_appointment_new_chests_on_appointment_id"
     t.index ["appointment_price_group_id"], name: "index_appointment_new_chests_on_appointment_price_group_id"
-    t.index ["exhibition_chest_id"], name: "index_appointment_new_chests_on_exhibition_chest_id"
     t.index ["exhibition_unit_id"], name: "index_appointment_new_chests_on_exhibition_unit_id"
   end
 
@@ -126,6 +124,21 @@ ActiveRecord::Schema.define(version: 20170302015100) do
     t.integer  "stacking_count",     default: 0
     t.integer  "full_dress_count",   default: 0
     t.index ["user_id"], name: "index_appointments_on_user_id"
+  end
+
+  create_table "appt_pricing_groups", force: :cascade do |t|
+    t.integer  "price_system_id"
+    t.integer  "appointment_id"
+    t.integer  "count"
+    t.integer  "store_month"
+    t.boolean  "is_chest"
+    t.string   "title"
+    t.float    "total_price"
+    t.float    "unit_price"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["appointment_id"], name: "index_appt_pricing_groups_on_appointment_id"
+    t.index ["price_system_id"], name: "index_appt_pricing_groups_on_price_system_id"
   end
 
   create_table "bills", force: :cascade do |t|
@@ -191,11 +204,15 @@ ActiveRecord::Schema.define(version: 20170302015100) do
   create_table "exhibition_chests", force: :cascade do |t|
     t.integer  "exhibition_unit_id"
     t.string   "custom_title"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "aasm_state"
     t.integer  "valuation_chest_id"
+    t.integer  "appointment_new_chest_id"
+    t.integer  "user_id"
+    t.index ["appointment_new_chest_id"], name: "index_exhibition_chests_on_appointment_new_chest_id"
     t.index ["exhibition_unit_id"], name: "index_exhibition_chests_on_exhibition_unit_id"
+    t.index ["user_id"], name: "index_exhibition_chests_on_user_id"
     t.index ["valuation_chest_id"], name: "index_exhibition_chests_on_valuation_chest_id"
   end
 

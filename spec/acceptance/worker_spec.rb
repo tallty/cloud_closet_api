@@ -12,6 +12,7 @@ resource "工作台相关接口" do
     @stocking_chest = create(:stocking_chest) 
     @group_chest1 = create(:group_chest1)
     @alone_full_dress_chest = create(:alone_full_dress_chest)
+    @vacuum_bag_medium = create(:vacuum_bag_medium)
 
     @worker = create(:worker)
     @user = create(:user)
@@ -24,8 +25,15 @@ resource "工作台相关接口" do
       tomorrow_appointments = create_list(:appointment, 1, user: @user, date: Time.zone.today + 1.days)
       @appointments = today_appointments.concat tomorrow_appointments
       @appointments.each do |appointment|
-
+         create(:appointment_price_group, 
+          appointment: appointment,
+          price_system: @alone_full_dress_chest
+          )
       end
+      # p '@user.valuation_chests'
+      # p @user.valuation_chests
+      # p '@user.exhibition_chests'
+      # p @user.exhibition_chests
     end
 
     get 'worker/appointments' do
@@ -78,10 +86,15 @@ resource "工作台相关接口" do
     end
 
     put 'worker/appointments/:appointment_id' do
-      parameter :count, "此栏选择的衣柜数量", required: true, scope: :appointment_item_group
+      parameter :remark, '备注', required: true, scope: :appointment     
+      parameter :care_type, '护理类型', required: true, scope: :appointment        
+      parameter :care_cost, '护理费用', required: true, scope: :appointment        
+      parameter :service_cost, '服务费', required: true, scope: :appointment
+
+      parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: :appointment_item_group
       parameter :price_system_id
       parameter :store_month, "存放的月份数", required: true, scope: :appointment_item_group
-
+      
       StoreMethod.all.each do |store_method|
         parameter store_month.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment_item_group, :garment_count_info ]
       end
@@ -89,37 +102,56 @@ resource "工作台相关接口" do
       before do
         @appointments.first.accept!
       end
-      
+      let(:appointment_id) { @appointments.first.id }
+
       example "工作人员修改指定订单下面的订单组成功" do
         params = {
-          appointment_item: 
-          {
-            price_groups: [
-              {
-                price_system_id: @stocking_chest.id,
-                count: 2,
-                store_month: 3,
-              },
-              {
-                count: 2,
-                price: 300,
-                store_month: 6,
-                type_name: "裤装",
-                season: '春秋'
-              },
-              {
-                count: 3,
-                price: 200,
-                store_month: 12,
-                type_name: '裙装',
-                season: '四季'
-              }
-            ]
-          }
+          appointment:
+            {
+              remark: '我是备注',
+              care_type: '普通护理',
+              care_cost: 100,
+              service_cost: 200,
+              garment_count_info: 
+                {
+                  hanging: 10,
+                  stacking: 55
+                }
+            },
+          appointment_items: 
+            {
+              price_groups: [
+                {
+                  price_system_id: @stocking_chest.id,
+                  count: 1,
+                  store_month: 3,
+                },
+                {
+                  price_system_id: @group_chest1.id,
+                  count: 2,
+                  store_month: 4,
+                },
+                {
+                  price_system_id: @vacuum_bag_medium.id,
+                  count: 2,
+                  store_month: 2,
+                },
+                {
+                  price_system_id: @alone_full_dress_chest.id,
+                  count: 4,
+                  store_month: 6,
+                },
+              ]
+            }
         }
-        # do_request params
-        # puts response_body
-        # expect(status).to eq(200)
+
+        do_request params
+        puts response_body
+        expect(status).to eq(200)
+        p '@user.valuation_chests'
+        p @user.valuation_chests
+        p '@user.exhibition_chests'
+        p @user.exhibition_chests
       end
     end
 
@@ -154,43 +186,43 @@ resource "工作台相关接口" do
       end
     end
 
-  describe '价格系统操作' do
-    worker_attrs = FactoryGirl.attributes_for(:worker)
+  # describe '价格系统操作' do
+  #   worker_attrs = FactoryGirl.attributes_for(:worker)
 
-    header "X-User-Token", worker_attrs[:authentication_token]
-    header "X-User-Phone", worker_attrs[:phone]
+  #   header "X-User-Token", worker_attrs[:authentication_token]
+  #   header "X-User-Phone", worker_attrs[:phone]
 
-    before do
-      @worker = create(:worker)
-      @price_systems = create_list(:price_system, 5)
-    end
+  #   before do
+  #     @worker = create(:worker)
+  #     @price_systems = create_list(:price_system, 5)
+  #   end
 
-    get 'work/price_systems' do
+  #   get 'work/price_systems' do
 
-      parameter :page, "当前页", required: false
-      parameter :per_page, "每页的数量", required: false
+  #     parameter :page, "当前页", required: false
+  #     parameter :per_page, "每页的数量", required: false
 
-      let(:page) {2}
-      let(:per_page) {2}
+  #     let(:page) {2}
+  #     let(:per_page) {2}
 
-      example "工作人员查询价目列表成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+  #     example "工作人员查询价目列表成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
+  #   end
 
-    get 'work/price_systems/:id' do
+  #   get 'work/price_systems/:id' do
 
-      let(:id) {@price_systems.first.id}
+  #     let(:id) {@price_systems.first.id}
 
-      example "工作人员查询某价目详细信息成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+  #     example "工作人员查询某价目详细信息成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
+  #   end
 
-  end
+  # end
 end
 end

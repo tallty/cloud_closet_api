@@ -1,1 +1,1 @@
-json.unpaid_appointments @work_appointments, partial: 'appointments/appointment', as: :appointment
+json.unpaid_appointments @worker_appointments, partial: 'appointments/appointment', as: :appointment

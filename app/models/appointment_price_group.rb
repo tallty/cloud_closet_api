@@ -25,41 +25,48 @@ class AppointmentPriceGroup < ApplicationRecord
   belongs_to :appointment
   has_many :appointment_new_chests, dependent: :destroy
 
-  validates :count, uniqueness: true
-  validates :store_month, uniqueness: true
+  validates :count, presence: true
+  validates :store_month, presence: true
 
   before_create :restore_price_system_info
   before_create :set_price
-  before_create :create_relate_valuation_chest
-  before_create :create_relate_new_chests
-
+  after_create :create_relate_new_chests
+  after_create :create_relate_valuation_chest
+ 
 
   private
   	def restore_price_system_info
   		raise 'price_system_id 缺失或错误' unless self.price_system
-  		self.unit_price = self.price_system.unit_price
+  		self.unit_price = self.price_system.price
   		self.is_chest = self.price_system.is_chest
-  		self.title = self.price_system.title
+      self.title = self.price_system.title
+      self.store_month = nil unless self.is_chest
   	end
 
   	def set_price
-  		price = (unit_price * count * ( store_month || 1 )).round(2)
+  		self.price = (unit_price * count * ( store_month || 1 )).round(2)
   	end
 
   	def create_relate_valuation_chest
-  		raise '用户错误' unless _user = self.appointment.try(:user)
-  		_valuation_chest = _user.valuation_chests.build(
-  				price_system: self.price_system
-  			)
-  		raise '用户计价柜(valuation_chest)创建失败' unless _valuation_chest.save
+      if self.is_chest
+    		raise '用户错误' unless _user = self.appointment.try(:user)
+    		_valuation_chest = _user.valuation_chests.build(
+    				price_system: self.price_system
+    			)
+    		raise '用户计价柜(valuation_chest)创建失败' unless _valuation_chest.save
+      end
   	end
 
   	def create_relate_new_chests
-  		self.count.times do 
-	  		self.price_system.exhibition_units.each do |exhibition_units| 
-					_new_chests = self.appointment_new_chests.build(exhibition_unit: exhibition_unit)
-					raise '订单 对应新柜子记录项(appointment_new_chests)创建失败' unless _new_chests.save
-				end
-			end
+      if self.is_chest
+        self.count.times do 
+  	  		self.price_system.exhibition_units.each do |exhibition_unit| 
+  					_new_chests = self.appointment_new_chests.build(
+              exhibition_unit: exhibition_unit,
+              )
+  					raise '订单 对应新柜子记录项(appointment_new_chests)创建失败' unless _new_chests.save
+  				end
+			 end
+     end
   	end
 end

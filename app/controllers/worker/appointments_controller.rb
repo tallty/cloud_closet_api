@@ -4,7 +4,7 @@ class Worker::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Worker
 
-  before_action :set_worker_appointment, only: [:show, :destroy, :accept, :storing, :cancel]
+  before_action :set_worker_appointment, only: [:show, :update, :destroy, :accept, :storing, :cancel]
 
   respond_to :json
 
@@ -18,7 +18,7 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   # def create
-  #   @worker_appointment = Worker::Appointment.new(worker_appointment_params)
+  #   @worker_appointment = Worker::Appointment.new(worker_appt_params)
   #   @worker_appointment.save
   #   respond_with(@worker_appointment)
   # end
@@ -49,19 +49,10 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   def update
-    @worker_appointment = Appointment.all.appointment_state(["accepted", "unpaid").find_by_id(params[:id])
-    raise '订单选择错误，只可对已接受且未支付订单操作' unless @worker_appointment
-    @worker_appointment.groups.destroy_all
-
-    appointment_item_group_params[:groups].each do |group_param|
-      appointment_group = @worker_appointment.groups.build(group_param)
-      appointment_group.save
-    end
-    @worker_appointment.service!
-
+    @worker_appointment = @worker_appointment.worker_update_appt(params)
     respond_with(@worker_appointment, template: "worker/appointments/show", status: 200)
-  rescue => error
-    render :json => {error: error}, status: 422
+  rescue => @error
+    respond_with @error, template: 'error', status: 422
   end
 
   def destroy
@@ -78,10 +69,17 @@ class Worker::AppointmentsController < ApplicationController
     def worker_appointment_params
       params[:worker_appointment]
     end
-
-    def appointment_item_group_params
-      params.require(:appointment_item).permit(
-          groups: [:count, :store_month]
+    def appt_params
+      params.require(:appointment).permit(
+          :remark, :care_type, :care_cost, :service_cost,
+          :garment_count_info
+        )
+    end
+    def appt_group_params
+      params.require(:appointment_items).permit(
+          price_groups: [
+            :price_system_id, :count, :store_month,
+          ]
         )
     end
 end

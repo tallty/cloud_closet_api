@@ -42,7 +42,7 @@ class Appointment < ApplicationRecord
     end
 
     event :service do
-      transitions from: :accepted, to: :unpaid, :before_enter => :expand_group
+      transitions from: [:accepted, :unpaid], to: :unpaid, :after => :count_price
     end
 
     event :pay do
@@ -82,31 +82,55 @@ class Appointment < ApplicationRecord
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
     # e.g. -> params[:garment_count_info] = { hanging: 1, stacking: 10 }
-    self[:garment_count_info] = json.map {|store_method, count| "#{store_method}:#{count}" }.join(",")
+    self[:garment_count_info] = json && json.map {|store_method, count| "#{store_method}:#{count}" }.join(",")
   end
 
   def garment_count_info
     # if nil
-    self[:garment_count_info] && eval("{#{self[:garment_count_info]}}")
+    self[:garment_count_info] && self[:garment_count_info].split(',').map{ |x| x.split(':')}.map {|store_method, count|[store_method, count.to_i]}.to_h
   end
 
-
-  # 工作人员统计完成后，展开预约订单，这时候可以生成相关的item
-  def expand_group
-    # # 总价
-    # self.price = 0.00
-    # _detail = ""
-    # ActiveRecord::Base.transaction do
-    #   groups.each do |group| 
-    #     group.create_item
-    #     self.price += group.price
-    #     _detail += "#{group.type_name.strip},#{group.count};"
-    #   end
-    #   self.detail = _detail
-    #   self.save!
-    # end
+  def price_except_rent
+    self.service_cost.try(:+, self.care_cost)
   end
 
+  def count_price
+    self.rent_charge = self.groups.map {|group| group.price }.reduce(:+)
+    raise '请填写正确的服务费用、护理费用' unless self.service_cost && self.care_cost
+    self.price = self.rent_charge + self.price_except_rent
+    self.save
+  end
+
+  def worker_update_appt params
+    appt_params = params.require(:appointment).permit(
+          :remark, :care_type, :care_cost, :service_cost,
+          :garment_count_info
+        )
+    appt_group_params = params.require(:appointment_items).permit(
+        price_groups: [
+          :price_system_id, :count, :store_month,
+        ]
+      )
+
+    ActiveRecord::Base.transaction do
+
+      raise '订单选择错误，只可对已接受且未支付订单操作' unless self.aasm_state.in?(["accepted", "unpaid"])
+      self.groups.destroy_all
+      self.update(appt_params)
+      
+      self.garment_count_info = params['appointment'].try(:[], 'garment_count_info')
+      self.save
+      
+      appt_group_params[:price_groups].each do |group_param|
+        appointment_group = self.groups.build(group_param)
+        appointment_group.save!
+      end
+      
+      self.service!
+    end
+    self
+  # rescue => error
+  end
 ## !!!
   # def do_stored_if_its_garments_are_all_stored 
   #   self.stored! unless self.aasm_state == 'stored' || self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}

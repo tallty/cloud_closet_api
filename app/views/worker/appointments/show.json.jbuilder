@@ -1,1 +1,1 @@
-json.partial! "appointments/appointment", appointment: @work_appointment
+json.partial! "appointments/appointment", appointment: @worker_appointment

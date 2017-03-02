@@ -19,7 +19,7 @@
 require 'rails_helper'
 
 RSpec.describe AppointmentNewChest, type: :model do
-  it { should belong_to(:exhibition_chest) } 
+  it { should have_one(:exhibition_chest) } 
   it { should belong_to(:appointment_price_group) } 
   it { should belong_to(:appointment) } 
 end

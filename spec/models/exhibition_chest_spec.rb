@@ -22,4 +22,5 @@ RSpec.describe ExhibitionChest, type: :model do
   it { should have_many(:garments) }
   it { should belong_to(:valuation_chest) }
   it { should belong_to(:exhibition_unit) }
+  it { should belong_to(:appointment_new_chest) }
 end
