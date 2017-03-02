@@ -25,5 +25,5 @@ class ExhibitionUnit < ApplicationRecord
   
   # 根据 StoreMethod 实例对象创建枚举值
   # hanging 1 , stacking 2, full_derss 3
-  enum store_method: eval("{#{StoreMethod.all.map{|i| "#{i.title}: #{i.id}"}.join(",")}}")
+  enum store_method: eval("{#{ StoreMethod.all.map{ |i| "#{i.title}: #{i.id}" }.join(',')}}")
 end

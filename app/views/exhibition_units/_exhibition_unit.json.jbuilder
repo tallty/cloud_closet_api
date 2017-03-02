@@ -1,0 +1,1 @@
+json.extract! exhibition_unit, :id, :title, :store_method, :need_join, :price_system_id

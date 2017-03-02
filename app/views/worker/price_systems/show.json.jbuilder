@@ -1,0 +1,1 @@
+json.partial! "worker/price_systems/worker_price_system", price_system: @price_system

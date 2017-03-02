@@ -1,0 +1,1 @@
+json.price_systems @price_systems, partial: 'worker/price_systems/worker_price_system', as: :price_system

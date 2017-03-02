@@ -8,10 +8,12 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  aasm_state         :string
+#  valuation_chest_id :integer
 #
 # Indexes
 #
 #  index_exhibition_chests_on_exhibition_unit_id  (exhibition_unit_id)
+#  index_exhibition_chests_on_valuation_chest_id  (valuation_chest_id)
 #
 
 FactoryGirl.define do

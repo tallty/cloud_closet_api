@@ -1,8 +1,8 @@
-class Work::PriceSystemsController < ApplicationController
+class Worker::PriceSystemsController < ApplicationController
   include ActionView::Layouts
   include ActionController::MimeResponds
 
-  acts_as_token_authentication_handler_for User
+  acts_as_token_authentication_handler_for Worker
 
   before_action :set_price_system, only: [:show]
 
@@ -10,11 +10,11 @@ class Work::PriceSystemsController < ApplicationController
 
   def index
     @price_systems = PriceSystem.all
-    respond_with @price_systems, template: "price_systems/index", status: 200
+    respond_with @price_systems, template: "worker/price_systems/index", status: 200
   end
 
   def show
-    respond_with @price_system, template: "price_systems/show", status: 200
+    respond_with @price_system, template: "worker/price_systems/show", status: 200
   end
 
   # def create

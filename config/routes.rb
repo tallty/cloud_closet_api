@@ -45,8 +45,8 @@ Rails.application.routes.draw do
   # user price_systems
   resources :price_systems, only: [:index, :show]
 
-  ############ Work Routes ############################ 
-  namespace :work do
+  ############ Worker Routes ############################ 
+  namespace :worker do
     resources :appointments, only: [:index, :show, :destroy, :update] do
       member do
         post 'accept'
