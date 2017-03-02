@@ -40,16 +40,16 @@ class PurchaseLog < ApplicationRecord
 		#payment_method 微信支付
 	end
 
-	# def self.create_one_with_storing_garment appointment
-	# 	PurchaseLog.create(
-	# 		operation: "购买衣橱",
-	# 		operation_type: "消费",
-	# 		change: appointment.price,
-	# 		detail: appointment.detail,
-	# 		user_info: appointment.user.user_info,
-	# 		payment_method: "余额支付"
-	# 		)
-	# end
+	def self.create_one_with_storing_garment appointment
+		PurchaseLog.create(
+			operation: "购买衣橱/服务费与护理费",
+			operation_type: "消费",
+			change: appointment.price_except_rent,
+			detail: appointment.detail,
+			user_info: appointment.user.user_info,
+			payment_method: "余额支付"
+			)
+	end
 
 	# detail: "chest.title@,@chest.chest_type@,@chest.get_monthly_rent_charge@;@"
 	# every month at day 1 
@@ -64,6 +64,7 @@ class PurchaseLog < ApplicationRecord
 			# send template message here
 		end
 	end
+
 
 	def change_output
 		case self.operation_type

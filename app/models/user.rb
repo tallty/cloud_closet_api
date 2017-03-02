@@ -46,7 +46,8 @@ class User < ApplicationRecord
   has_one :user_info, dependent: :destroy
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
-  has_many :bills, dependent: :destroy
+  has_many :purchase_logs, through: :user_info
+  # has_many :bills, dependent: :destroy
   has_many :valuation_chests, dependent: :destroy
   has_many :exhibition_chests, dependent: :destroy
 

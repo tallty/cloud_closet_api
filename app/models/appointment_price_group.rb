@@ -33,6 +33,8 @@ class AppointmentPriceGroup < ApplicationRecord
   after_create :create_relate_new_chests
   after_create :create_relate_valuation_chest
  
+  scope :chests, ->{ where( is_chest: true )}
+  scope :other_items, ->{ where( is_chest: false )}
 
   private
   	def restore_price_system_info

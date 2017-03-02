@@ -41,7 +41,7 @@ class Garment < ApplicationRecord
 
   # has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
   # accepts_nested_attributes_for :detail_images, allow_destroy: true
-  # 
+  
   has_one :detail_image_1, -> { where photo_type: 'detail_1' }, class_name: 'Image', as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_image_1, allow_destroy: true
 

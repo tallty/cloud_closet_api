@@ -2,18 +2,37 @@ require 'acceptance_helper'
 
 resource "预约存入衣服到我的衣橱" do
   header "Accept", "application/json"
+  user_attrs = FactoryGirl.attributes_for(:user)
+  
+  header "X-User-Token", user_attrs[:authentication_token]
+  header "X-User-Phone", user_attrs[:phone]
+  before do
+    @user = create(:user)
+    @user_info = create(:user_info, user: @user)
 
-  post '/appointments' do
-    user_attrs = FactoryGirl.attributes_for(:user)
-    appointment_attrs = FactoryGirl.attributes_for(:appointment)
-
-    header "X-User-Token", user_attrs[:authentication_token]
-    header "X-User-Phone", user_attrs[:phone]
-
-    before do
-      @user = create(:user)
-      create(:user_info, user: @user)
+    # 创建价格表
+    create_list(:store_method, 3)
+    @stocking_chest = create(:stocking_chest) 
+    @group_chest1 = create(:group_chest1)
+    @alone_full_dress_chest = create(:alone_full_dress_chest)
+    @vacuum_bag_medium = create(:vacuum_bag_medium)
+    price_system_ary = [@stocking_chest, @group_chest1, @alone_full_dress_chest, @vacuum_bag_medium]
+    @appointments = create_list(
+      :appointment, 5,
+      user: @user, 
+      garment_count_info: {
+        hanging: 15,
+        full_dress: 5 }
+      )
+    price_system_ary.each do |price_system|
+      create(:appointment_price_group, 
+          appointment: @appointments.first,
+          price_system: price_system
+          )
     end
+  end
+  post '/appointments' do
+    appointment_attrs = FactoryGirl.attributes_for(:appointment)
 
     parameter :address, "地址", require: true, scope: :appointment
     parameter :name, "预约人", require: true, scope: :appointment
@@ -35,17 +54,10 @@ resource "预约存入衣服到我的衣橱" do
   end
 
   get 'appointments' do
-    user_attrs = FactoryGirl.attributes_for(:user)
-
-    header "X-User-Token", user_attrs[:authentication_token]
-    header "X-User-Phone", user_attrs[:phone]
 
     before do
-      @user = create(:user)
-      create(:user_info, user: @user)
       @user1 = create(:user1, created_at: Time.now-1.day)
       create(:user_info, user: @user1)
-      @appointments = create_list(:appointment, 5, user: @user)
     end
 
     example "用户获取预约列表成功" do
@@ -56,16 +68,6 @@ resource "预约存入衣服到我的衣橱" do
   end
 
   get 'appointments/:id' do
-    user_attrs = FactoryGirl.attributes_for(:user)
-
-    header "X-User-Token", user_attrs[:authentication_token]
-    header "X-User-Phone", user_attrs[:phone]
-
-    before do
-      @user = create(:user)
-      create(:user_info, user: @user)
-      @appointments = create_list(:appointment, 5, user: @user)
-    end
 
     let(:id) { @appointments.first.id }
 
@@ -77,16 +79,6 @@ resource "预约存入衣服到我的衣橱" do
   end
 
   post 'appointments/:id/cancel' do
-    user_attrs = FactoryGirl.attributes_for(:user)
-
-    header "X-User-Token", user_attrs[:authentication_token]
-    header "X-User-Phone", user_attrs[:phone]
-
-    before do
-      @user = create(:user)
-      create(:user_info, user: @user)
-      @appointments = create_list(:appointment, 5, user: @user)
-    end
 
     let(:id) { @appointments.first.id }
 
@@ -97,54 +89,43 @@ resource "预约存入衣服到我的衣橱" do
     end
   end
 
-  # post 'appointments/:id/pay_by_balance' do
-  #   user_attrs = FactoryGirl.attributes_for(:user)
+  post 'appointments/:id/pay_by_balance' do
 
-  #   header "X-User-Token", user_attrs[:authentication_token]
-  #   header "X-User-Phone", user_attrs[:phone]
+    before do
+      @appointment = @appointments.first
+      @appointment.accept!
+      @appointment.service!
+    end
 
-  #   before do
-  #     @user = create(:user)
-  # create(:user_info, user: @user)
-  #     @user_info = create(:user_info, user: @user)
-  #     @appointments = create_list(:appointment, 5, user: @user)
-  #     @appointment = @appointments.first
-  #     @appointment.accept!
-  #     @appointment.service!
-  #   end
+    let(:id) { @appointment.id }
 
-  #   let(:id) { @appointment.id }
+    example "用户使用余额支付成功" do
+      do_request
+      puts response_body
+      p '--- @user.user_info.purchase_logs--'
+      p @user.user_info.purchase_logs
+      expect(status).to eq(201)
+    end
+  end
 
-  #   example "用户使用余额支付成功" do
-  #     do_request
-  #     puts response_body
-  #     expect(status).to eq(201)
-  #   end
-  # end
+  post 'appointments/:id/pay_by_balance' do
+    before do
+      @user_info.balance = 100
+      @user_info.save
+      @appointment = @appointments.first
+      @appointment.accept!
+      @appointment.service!
+    end
 
-  # post 'appointments/:id/pay_by_balance' do
-  #   user_attrs = FactoryGirl.attributes_for(:user)
+    let(:id) { @appointment.id }
 
-  #   header "X-User-Token", user_attrs[:authentication_token]
-  #   header "X-User-Phone", user_attrs[:phone]
-
-  #   before do
-  #     @user = create(:user)
-  #     create(:user_info, user: @user)
-  #     @user_info = create(:user_info, user: @user, balance: 100.00)
-  #     @appointments = create_list(:appointment, 5, user: @user, price: 30000)
-  #     @appointment = @appointments.first
-  #     @appointment.accept!
-  #     @appointment.service!
-  #   end
-
-  #   let(:id) { @appointment.id }
-
-  #   example "用户余额不足，用使用余额支付失败" do
-  #     do_request
-  #     puts response_body
-  #     expect(status).to eq(201)
-  #   end
-  # end
+    example "用户余额不足，用使用余额支付失败" do
+      do_request
+      puts response_body
+       p '--- @user.user_info.purchase_logs--'
+      p @user.user_info.purchase_logs
+      expect(status).to eq(422)
+    end
+  end
 
 end

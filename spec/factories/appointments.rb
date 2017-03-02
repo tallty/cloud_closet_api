@@ -37,7 +37,9 @@ FactoryGirl.define do
     phone "18617671987"
     number 50
     date "2016-09-24"
-
+    care_cost 111
+    care_type '普通护理'
+    service_cost 222
     # detail "衣服*2"
   end
 end

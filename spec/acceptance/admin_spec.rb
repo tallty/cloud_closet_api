@@ -3,34 +3,34 @@
 # resource "管理后台相关接口" do
 #   header "Accept", "application/json"
 
-#   describe 'admin authentication' do
+#   # describe 'admin authentication' do
 
-#     before do
-#       @admin = create(:admin)
-#     end
+#   #   before do
+#   #     @admin = create(:admin)
+#   #   end
 
-#     post "/admins/sign_in" do
+#   #   post "/admins/sign_in" do
 
-#       parameter :email, "登录的邮箱", required: true, scope: :admin
-#       parameter :password, "登录密码", required: true, scope: :admin
+#   #     parameter :email, "登录的邮箱", required: true, scope: :admin
+#   #     parameter :password, "登录密码", required: true, scope: :admin
 
-#       admin_attrs = FactoryGirl.attributes_for :admin
-#       let(:email) { admin_attrs[:email] }
-#       let(:password) { admin_attrs[:password] }
+#   #     admin_attrs = FactoryGirl.attributes_for :admin
+#   #     let(:email) { admin_attrs[:email] }
+#   #     let(:password) { admin_attrs[:password] }
 
-#       response_field :id, "用户ID"
-#       response_field :email, "邮箱"
-#       response_field :created_at, "创建时间"
-#       response_field :updated_at, "更新时间"
-#       response_field :authentication_token, "鉴权Token"
+#   #     response_field :id, "用户ID"
+#   #     response_field :email, "邮箱"
+#   #     response_field :created_at, "创建时间"
+#   #     response_field :updated_at, "更新时间"
+#   #     response_field :authentication_token, "鉴权Token"
 
-#       example "管理员登录成功" do
-#         do_request
-#         puts response_body
-#         expect(status).to eq(201)
-#       end
-#     end
-#   end
+#   #     example "管理员登录成功" do
+#   #       do_request
+#   #       puts response_body
+#   #       expect(status).to eq(201)
+#   #     end
+#   #   end
+#   # end
 
 #   describe 'appointment condition is all correct' do
 #     admin_attrs = FactoryGirl.attributes_for(:admin)
@@ -39,17 +39,35 @@
 #     header "X-Admin-Email", admin_attrs[:email]
 
 #     before do
+#     	# 创建价格表
+# 	    create_list(:store_method, 3)
+# 	    @stocking_chest = create(:stocking_chest) 
+# 	    @group_chest1 = create(:group_chest1)
+# 	    @alone_full_dress_chest = create(:alone_full_dress_chest)
+# 	    @vacuum_bag_medium = create(:vacuum_bag_medium)
+
 #       @user = create(:user)
+#       @user_info = create(:user_info)
 #       @admin = create(:admin)
-#       storing_appointments = create_list(:appointment, 3, user: @user, aasm_state:"storing")
-#       stored_appointments = create_list(:appointment, 3, user: @user, aasm_state:"stored")
+#       storing_appointments = create_list(:appointment, 1, user: @user, aasm_state:"storing")
+#       stored_appointments = create_list(:appointment, 1, user: @user, aasm_state:"stored")
 #       @appointments = storing_appointments.concat stored_appointments
 #       @appointments.each do |appointment|
 #         @groups = create_list(:appointment_item_group, 5, appointment: appointment)
 #       end
-#       @groups.each do |group|
-#         @items = create_list(:appointment_item, 5, appointment_item_group: group, appointment: group.appointment)
-#       end
+
+#       @appointments = create_list(
+# 	      :appointment, 5,
+# 	      user: @user, 
+# 	      garment_count_info: {
+# 	        hanging: 15,
+# 	        full_dress: 5 }
+# 	      )
+# 	    @appointments.each do |appointment|
+# 	         create(:appointment_price_group, 
+# 	          appointment: appointment,
+# 	          price_system: @alone_full_dress_chest
+# 	          )
 #     end
 
 #     get 'admin/appointments' do

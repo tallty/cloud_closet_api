@@ -42,7 +42,7 @@ class Appointment < ApplicationRecord
     end
 
     event :service do
-      transitions from: [:accepted, :unpaid], to: :unpaid, :after => :count_price
+      transitions from: [:accepted, :unpaid], to: :unpaid, :after => [:count_price, :set_detail]
     end
 
     event :pay do
@@ -90,13 +90,23 @@ class Appointment < ApplicationRecord
   end
 
   def price_except_rent
-    self.service_cost.try(:+, self.care_cost)
+    _care_cost = self.care_cost || 0
+    _service_cost = self.service_cost || 0
+    _other_price = self.groups.other_items.map { |group| group.price }.reduce(:+) || 0
+    _service_cost + _care_cost + _other_price
   end
 
   def count_price
     self.rent_charge = self.groups.map {|group| group.price }.reduce(:+)
     raise '请填写正确的服务费用、护理费用' unless self.service_cost && self.care_cost
-    self.price = self.rent_charge + self.price_except_rent
+    self.price = self.price_except_rent 
+    self.price += self.rent_charge if self.rent_charge
+    self.save
+  end
+
+  def set_detail
+    self.detail = self.groups.map { |group| "#{group.title},#{group.count}个,#{group.store_month && group.store_month.to_s + '元/月'}" }.join(";")
+    self.detail += ";服务:,#{self.service_cost};护理费:,#{care_cost};护理类型:,#{care_type};租用费总计:,#{rent_charge}"
     self.save
   end
 
