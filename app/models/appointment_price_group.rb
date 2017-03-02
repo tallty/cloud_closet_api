@@ -24,7 +24,7 @@ class AppointmentPriceGroup < ApplicationRecord
   belongs_to :price_system
   belongs_to :appointment
   has_many :appointment_new_chests, dependent: :destroy
-
+  has_many :exhibition_chests, through: :appointment_new_chests
   validates :count, presence: true
   validates :store_month, presence: true
 
@@ -65,6 +65,7 @@ class AppointmentPriceGroup < ApplicationRecord
   	  		self.price_system.exhibition_units.each do |exhibition_unit| 
   					_new_chests = self.appointment_new_chests.build(
               exhibition_unit: exhibition_unit,
+              appointment: self.appointment
               )
   					raise '订单 对应新柜子记录项(appointment_new_chests)创建失败' unless _new_chests.save
   				end

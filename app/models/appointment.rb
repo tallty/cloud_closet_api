@@ -134,11 +134,22 @@ class Appointment < ApplicationRecord
         appointment_group = self.groups.build(group_param)
         appointment_group.save!
       end
-      
+      self.check_space_and_garment_count
       self.service!
     end
     self
   # rescue => error
+  end
+
+
+  def check_space_and_garment_count
+    _count_info =  self.garment_count_info
+    self.new_chests.map do |new_chest|
+      _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
+    end
+    _warning = ''
+    _count_info.each { |store_method, count| _warning += "#{store_method}不足 " if count > 0}
+    raise _warning unless _warning.empty?
   end
 ## !!!
   # def do_stored_if_its_garments_are_all_stored 

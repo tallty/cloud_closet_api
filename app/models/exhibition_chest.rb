@@ -28,7 +28,8 @@ class ExhibitionChest < ApplicationRecord
   
   has_many :garments
 
-  delegate :store_method, :max_count, :need_join, to: :exhibition_unit, allow_nil: false
+  delegate :title, :store_method, :max_count, 
+    :need_join, :price_system_id, to: :exhibition_unit#, allow_nil: false
 
   include AASM
 

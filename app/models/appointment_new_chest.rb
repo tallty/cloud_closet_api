@@ -24,7 +24,7 @@ class AppointmentNewChest < ApplicationRecord
   has_one :exhibition_chest
  	
   delegate :user, to: :appointemnt, allow_nil: false # right?
-
+  delegate :title, :store_method, :max_count, :need_join, :price_system_id, to: :exhibition_unit
  	after_create :create_relate_chest
 
  	private

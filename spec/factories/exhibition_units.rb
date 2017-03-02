@@ -35,7 +35,7 @@ FactoryGirl.define do
 
   factory :hanging_unit, class: :exhibition_unit do
     title "挂柜"
-    store_method "stacking"
+    store_method "hanging"
     max_count 20
     need_join false
     association :exhibition_icon_image, factory: :image, photo_type: "exhibition_icon"

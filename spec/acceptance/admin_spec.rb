@@ -49,25 +49,25 @@
 #       @user = create(:user)
 #       @user_info = create(:user_info)
 #       @admin = create(:admin)
-#       storing_appointments = create_list(:appointment, 1, user: @user, aasm_state:"storing")
-#       stored_appointments = create_list(:appointment, 1, user: @user, aasm_state:"stored")
-#       @appointments = storing_appointments.concat stored_appointments
-#       @appointments.each do |appointment|
-#         @groups = create_list(:appointment_item_group, 5, appointment: appointment)
-#       end
 
-#       @appointments = create_list(
-# 	      :appointment, 5,
-# 	      user: @user, 
-# 	      garment_count_info: {
-# 	        hanging: 15,
-# 	        full_dress: 5 }
-# 	      )
-# 	    @appointments.each do |appointment|
-# 	         create(:appointment_price_group, 
-# 	          appointment: appointment,
-# 	          price_system: @alone_full_dress_chest
+#       @appointments = storing_appointments.concat stored_appointments
+#       price_system_ary = [@stocking_chest, @group_chest1, @alone_full_dress_chest, @vacuum_bag_medium]
+# 	    @appointments = create_list(
+# 		      :appointment, 5,
+# 		      user: @user, 
+# 		      garment_count_info: {
+# 		        hanging: 15,
+# 		        full_dress: 5 }
+# 		      )
+# 	    price_system_ary.each do |price_system|
+# 	      create(:appointment_price_group, 
+# 	          appointment: @appointments.first,
+# 	          price_system: price_system
 # 	          )
+#       end
+#       @appointments.first.service!
+#       @appointments.first.pay!
+# 	    @appointments.second.stroed! #??
 #     end
 
 #     get 'admin/appointments' do
