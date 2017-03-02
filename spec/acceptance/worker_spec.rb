@@ -91,12 +91,12 @@ resource "工作台相关接口" do
       parameter :care_cost, '护理费用', required: true, scope: :appointment        
       parameter :service_cost, '服务费', required: true, scope: :appointment
 
-      parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: :appointment_item_group
-      parameter :price_system_id
-      parameter :store_month, "存放的月份数", required: true, scope: :appointment_item_group
+      parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: [ :appointment_items, :price_groups ]
+      parameter :price_system_id, '价格 price_system id', required: true, scope: [ :appointment_items, :price_groups ]
+      parameter :store_month, "存放的月份数", required: false, scope: [ :appointment_items, :price_groups ]
       
       StoreMethod.all.each do |store_method|
-        parameter store_month.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment_item_group, :garment_count_info ]
+        parameter store_month.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment, :garment_count_info ]
       end
 
       before do
