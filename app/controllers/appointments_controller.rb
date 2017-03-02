@@ -61,7 +61,9 @@ class AppointmentsController < ApplicationController
   def pay_by_balance
     @user_info = current_user.user_info
     raise "余额不足, 需充值#{_insufficient}元" if  @user_info.balance < @appointment.price && _insufficient = "%.2f"%(@appointment.price - @user_info.balance)
-    @appointment.pay!
+    # @purchase_log = PurchaseLog.create_one_with_storing_garment(@appointment)
+      @appointment.pay!
+    # end
     respond_with @appointment, template: "appointments/show", status: 201
   rescue error
     render :json => { error: error}, status: 422

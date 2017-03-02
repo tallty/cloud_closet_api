@@ -86,7 +86,6 @@ class Appointment < ApplicationRecord
   end
 
   def garment_count_info
-    # if nil
     self[:garment_count_info] && self[:garment_count_info].split(',').map{ |x| x.split(':')}.map {|store_method, count|[store_method, count.to_i]}.to_h
   end
 
