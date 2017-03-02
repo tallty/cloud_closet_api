@@ -1,10 +1,10 @@
-class Work::AppointmentsController < ApplicationController
+class Worker::AppointmentsController < ApplicationController
   include ActionView::Layouts
   include ActionController::MimeResponds
 
-  acts_as_token_authentication_handler_for User
+  acts_as_token_authentication_handler_for Worker
 
-  before_action :set_work_appointment, only: [:show, :update, :destroy, :accept, :storing, :cancel]
+  before_action :set_worker_appointment, only: [:show, :destroy, :accept, :storing, :cancel]
 
   respond_to :json
 
@@ -14,76 +14,69 @@ class Work::AppointmentsController < ApplicationController
   end
 
   def show
-    respond_with(@work_appointment)
+    respond_with(@worker_appointment)
   end
 
   # def create
-  #   @work_appointment = Work::Appointment.new(work_appointment_params)
-  #   @work_appointment.save
-  #   respond_with(@work_appointment)
+  #   @worker_appointment = Worker::Appointment.new(worker_appointment_params)
+  #   @worker_appointment.save
+  #   respond_with(@worker_appointment)
   # end
 
   def accept
-    @work_appointment.accept!
-    @work_appointment.save
-    respond_with(@work_appointment)
+    @worker_appointment.accept!
+    @worker_appointment.save
+    respond_with(@worker_appointment)
   end
 
   def storing
-    @work_appointment.storing!
-    @work_appointment.save
-    respond_with(@work_appointment, template: "work/appointments/accept", status: 200)
+    @worker_appointment.storing!
+    @worker_appointment.save
+    respond_with(@worker_appointment, template: "worker/appointments/accept", status: 200)
   end
 
   def cancel
-    @work_appointment.cancel!
-    @work_appointment.save
-    respond_with(@work_appointment, template: "work/appointments/accept", status: 200)
+    @worker_appointment.cancel!
+    @worker_appointment.save
+    respond_with(@worker_appointment, template: "worker/appointments/accept", status: 200)
   end
 
   def state_query
-    # page = params[:page] || 1
-    # per_page = params[:per_page] || 10
-    # @query_state = params[:query_state].present? ? params[:query_state] : "accepted" 
-    # (accepted: 服务中,unpaid: 待付款, paid: 已支付,storing: 入库中，canceled: 已取消)
-    @accepted_appointments = Appointment.all.appointment_state("accepted").group_by(&:date)#.by_join_date.paginate(page: page, per_page: per_page) 
-    @unpaid_appointments = Appointment.all.appointment_state("unpaid").group_by(&:date)
-    @paid_appointments = Appointment.all.appointment_state("paid").group_by(&:date)
-    @storing_appointments = Appointment.all.appointment_state("storing").group_by(&:date)
-    @canceled_appointments = Appointment.all.appointment_state("canceled").group_by(&:date)
-    respond_with(@accepted_appointments, @unpaid_appointments, @paid_appointments, @storing_appointments, 
-                 @canceled_appointments, template: "work/appointments/state_query", status: 200)
+    Appointment.aasm.state_machine.states.collect(&:name).each do |state|
+      instance_variable_set("@#{state}_appointments", Appointment.all.appointment_state(state).group_by(&:date))
+    end
+    respond_with template: "worker/appointments/state_query", status: 200
   end
 
   def update
-    # @work_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
-    @work_appointment.groups.destroy_all
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # appointment_item_group_params!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @worker_appointment = Appointment.all.appointment_state(["accepted", "unpaid").find_by_id(params[:id])
+    raise '订单选择错误，只可对已接受且未支付订单操作' unless @worker_appointment
+    @worker_appointment.groups.destroy_all
+
     appointment_item_group_params[:groups].each do |group_param|
-      appointment_group = @work_appointment.groups.build(group_param)
+      appointment_group = @worker_appointment.groups.build(group_param)
       appointment_group.save
     end
-    @work_appointment.service!
+    @worker_appointment.service!
 
-    respond_with(@work_appointment, template: "work/appointments/show", status: 200)
+    respond_with(@worker_appointment, template: "worker/appointments/show", status: 200)
   rescue => error
     render :json => {error: error}, status: 422
   end
 
   def destroy
-    # @work_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
-    @work_appointment.destroy
-    respond_with(@work_appointment)
+    # @worker_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
+    @worker_appointment.destroy
+    respond_with(@worker_appointment)
   end
 
   private
-    def set_work_appointment
-      @work_appointment = Appointment.find(params[:id])
+    def set_worker_appointment
+      @worker_appointment = Appointment.find(params[:id])
     end
 
-    def work_appointment_params
-      params[:work_appointment]
+    def worker_appointment_params
+      params[:worker_appointment]
     end
 
     def appointment_item_group_params

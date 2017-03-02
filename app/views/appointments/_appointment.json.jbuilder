@@ -7,7 +7,3 @@ if appointment.detail
 	end
 	json.detail _detail
 end
-
-json.appointment_item_groups appointment.groups do |group|
-  json.partial! "appointment_item_groups/appointment_item_group", appointment_item_group: group
-end

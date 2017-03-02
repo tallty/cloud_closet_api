@@ -1,0 +1,1 @@
+json.partial! "worker_appointment_price_groups/worker_appointment_price_group", worker_appointment_price_group: @worker_appointment_price_group

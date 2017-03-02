@@ -23,7 +23,7 @@ class ExhibitionChest < ApplicationRecord
   has_one :appointment_new_chest
   has_many :garments
 
-  delegate :store_method, :max_count, :need_join, to: :exhibition_unit#, allow_nil: true
+  delegate :store_method, :max_count, :need_join, to: :exhibition_unit, allow_nil: false
 
   include AASM
 
