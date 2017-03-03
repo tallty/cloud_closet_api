@@ -15,7 +15,7 @@
 #  place               :integer
 #  aasm_state          :string           default("storing")
 #  status              :string
-#  stroe_mode          :string
+#  store_method        :string
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
 #
@@ -34,7 +34,7 @@ class Garment < ApplicationRecord
   scope :by_join_date, -> {order("created_at DESC")}
 
   belongs_to :user
-  belongs_to :chest
+  belongs_to :exhibition_chest
 
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
@@ -58,10 +58,11 @@ class Garment < ApplicationRecord
     state :stored
 
     event :finish_storing do
-      transitions :from => :storing, :to => :stored, :after => :release_its_chest
+      transitions :from => :storing, :to => :stored, :after => :set_put_in_time_and_expire_time
     end
   end
 
+  before_create :set_store_method
   after_create :generate_seq
 
   def is_new
@@ -84,9 +85,8 @@ class Garment < ApplicationRecord
   end
 
   #设置 入库时间 与 过期时间
-  def set_put_in_time_and_expire_time store_month
+  def set_put_in_time_and_expire_time 
     self.put_in_time = Time.zone.now
-    # self.expire_time = self.put_in_time + store_month.to_i.month
     self.save!
   end
 
@@ -104,6 +104,14 @@ class Garment < ApplicationRecord
     def generate_seq
       self.seq = "G#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
       self.save
+    end
+
+    def set_store_method
+      self.store_method = self.exhibition_chest.store_method
+    end
+
+    def set_user
+      self.user = self.exhibition_chest.user
     end
   
 end

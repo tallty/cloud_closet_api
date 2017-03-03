@@ -1,0 +1,1 @@
+json.partial! "exhibition_chests/exhibition_chest", exhibition_chest: @exhibition_chest

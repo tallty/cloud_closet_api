@@ -67,6 +67,7 @@ class Appointment < ApplicationRecord
   has_many :graments
   has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
   has_many :new_chests, class_name: "AppointmentNewChest", dependent: :destroy
+  has_many :new_exhibition_chests, through: :new_chests
 
   after_create :generate_seq
   after_save :create_template_message, if: :aasm_state_changed?

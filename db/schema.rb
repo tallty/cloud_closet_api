@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302072410) do
+ActiveRecord::Schema.define(version: 20170303031923) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -251,7 +251,7 @@ ActiveRecord::Schema.define(version: 20170302072410) do
     t.integer  "place"
     t.string   "aasm_state",          default: "storing"
     t.string   "status"
-    t.string   "stroe_mode"
+    t.string   "store_method"
     t.integer  "appointment_id"
     t.integer  "exhibition_chest_id"
     t.index ["appointment_id"], name: "index_garments_on_appointment_id"

@@ -80,6 +80,10 @@ class User < ApplicationRecord
     self.chests.map { |chest| [chest.title, chest.chest_type, chest.get_monthly_rent_charge] }
   end
 
+  def his_chest_not_full
+    self.exhibition_chests.has_space
+  end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false

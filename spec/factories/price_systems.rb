@@ -37,8 +37,8 @@ FactoryGirl.define do
     is_chest true
     unit_name '月'
     association :price_icon_image, factory: :image, photo_type: "price_icon"
-    after(:create) do |price_system| price_system.exhibition_units << create(:hanging_unit) end
-    after(:create) do |price_system| price_system.exhibition_units << create(:stacking_unit) end
+    after(:create) do |price_system| price_system.exhibition_units << create(:group_hanging_unit) end
+    after(:create) do |price_system| price_system.exhibition_units << create(:group_stacking_unit) end
   end
 
   factory :alone_full_dress_chest , class: :price_system do

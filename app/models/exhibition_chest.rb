@@ -34,6 +34,30 @@ class ExhibitionChest < ApplicationRecord
   include AASM
 
   aasm do 
-  	state :aaa, :initial => true
+  	state :waiting, :initial => true
+    state :online
+    event :release do 
+      transitions from: [:waiting, :online], to: :online
+    end
 	end
+
+  def state
+    I18n.t :"exhibition_chest_aasm_state.#{aasm_state}"
+  end
+
+  scope :has_space, ->{
+    select{ |chest| chest.has_space? }
+   }
+
+  def remain_space_count
+    _remain_space_count = self.max_count - self.garments.count    
+  end
+
+  def has_space?
+    remain_space_count > 0
+  end
+
+  def enough_space_to_move
+    # garments.stored
+  end
 end

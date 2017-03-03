@@ -16,6 +16,9 @@ zh-CN:
     unstore: "未入库"
     storing: "入库中"
     stored: "已入库"
+  exhibition_chest_aasm_state:
+    waiting: '未发布'
+    online: '已发布'
       
   devise:
     failure:

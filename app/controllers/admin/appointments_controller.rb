@@ -4,7 +4,7 @@ class Admin::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin, except: [:check, :reset] 
 
-  before_action :set_admin_appointment, only: [:show, :update, :destroy, :stored]
+  before_action :set_admin_appointment, only: [:show, :update, :its_chests, :destroy, :stored]
 
   respond_to :json
 
@@ -18,6 +18,11 @@ class Admin::AppointmentsController < ApplicationController
 
   def show
     respond_with(@admin_appointment)
+  end
+
+  def its_chests
+    @exhibition_chests = @admin_appointment.user.his_chest_not_full
+    respond_with @exhibition_chests, template: 'admin/exhibition_chests/index'
   end
 
   def stored
