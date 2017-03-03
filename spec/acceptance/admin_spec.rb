@@ -207,18 +207,26 @@ resource "管理后台相关接口" do
 
 
 
-    # 上架订单  扣取本次新柜子本月租费
-    post '/admin/appointments/:id/stored' do
-      let(:id) { @appointments.first.id }
+    # 上架订单  扣取本次新柜子本月租费!!!
+    # post '/admin/appointments/:id/stored' do
+    #   let(:id) { @appointments.first.id }
 
-      example "管理员‘确认上架’指定预订订单成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+    #   example "管理员‘确认上架’指定预订订单成功" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(200)
+    #   end
+    # end
 
 
+   #  post 'admin/exhibition_chests/:id/release' do 
+   #  	example "管理员‘发布某衣柜’成功，可多次发布" do
+   #      do_request
+   #      puts response_body
+   #      expect(status).to eq(200)
+   #    end
+  	# end
+  	
   end
 
   # describe '价格系统操作' do

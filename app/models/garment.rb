@@ -62,7 +62,7 @@ class Garment < ApplicationRecord
     end
   end
 
-  before_create :set_store_method
+  after_create :set_store_method_and_user
   after_create :generate_seq
 
   def is_new
@@ -106,12 +106,9 @@ class Garment < ApplicationRecord
       self.save
     end
 
-    def set_store_method
+    def set_store_method_and_user
       self.store_method = self.exhibition_chest.store_method
-    end
-
-    def set_user
       self.user = self.exhibition_chest.user
+      self.save
     end
-  
 end

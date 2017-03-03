@@ -79,6 +79,9 @@ Rails.application.routes.draw do
     end
 
     resources :exhibition_chests do 
+      member do 
+        post 'release'
+      end
       resources :garments, only: [:create, :update] 
     end
     resources :garments, only: [:update, :show]
