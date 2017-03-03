@@ -56,7 +56,7 @@ class Admin::GarmentsController < ApplicationController
   end
 
   def destroy
-    @admin_garment.destroy
+    @garment.destroy
     respond_with(@admin_garment)
   end
 
