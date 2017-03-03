@@ -86,7 +86,7 @@ class Garment < ApplicationRecord
 
   #设置 入库时间 与 过期时间
   def set_put_in_time_and_expire_time 
-    self.put_in_time = Time.zone.now
+    self.put_in_time = Time.zone.now unless self.put_in_time
     self.save!
   end
 

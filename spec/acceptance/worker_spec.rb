@@ -96,7 +96,7 @@ resource "工作台相关接口" do
       parameter :store_month, "存放的月份数", required: false, scope: [ :appointment_items, :price_groups ]
       parameter :hanging, "挂放数量", required: false, scope: [ :appointment_items, :price_groups ]
       parameter :stacking, "叠放数量", required: false, scope: [ :appointment_items, :price_groups ]
-      parameter :full_dressing, "礼服数量", required: false, scope: [ :appointment_items, :price_groups ]
+      parameter :full_dress, "礼服数量", required: false, scope: [ :appointment_items, :price_groups ]
       p '-----dd'
       p StoreMethod.all
       # @store_methods.each do |store_method|

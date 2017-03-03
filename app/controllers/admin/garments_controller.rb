@@ -55,10 +55,10 @@ class Admin::GarmentsController < ApplicationController
     respond_with @garment, template: "garments/show", status: 201
   end
 
-  # def destroy
-  #   @admin_garment.destroy
-  #   respond_with(@admin_garment)
-  # end
+  def destroy
+    @admin_garment.destroy
+    respond_with(@admin_garment)
+  end
 
   private
     def set_admin_garment

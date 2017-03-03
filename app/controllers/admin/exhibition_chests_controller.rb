@@ -23,7 +23,9 @@ class Admin::ExhibitionChestsController < ApplicationController
 
   def release
     @exhibition_chest.release!
-    respond_with @exhibition_chest, template: 'exhibition_chests/exhibition_chest', status: 201
+    respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+  rescue => @error
+    respond_with @error, template: 'error', status: 422
   rescue
 
   end

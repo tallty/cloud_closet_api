@@ -224,6 +224,16 @@ resource "管理后台相关接口" do
       end
     end
 
+    destroy 'admin/garments/:id' do
+      let(:id) { @exhibition_chests.first.garments.first.id }
+
+      example "管理员删除 衣服 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(204）
+      end
+    end
+
     # 上架订单  扣取本次新柜子本月租费!!!
     post '/admin/appointments/:id/stored' do
       let(:id) { @appointments.first.id }

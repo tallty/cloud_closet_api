@@ -33,10 +33,10 @@ Rails.application.routes.draw do
   # ----------------------------------------------#  
 
    # ------------ ExhibitionChest Routes ------------------#
-  resources :exhibition_chest, only: [:index, :show] do 
+  resources :exhibition_chests, only: [:index, :show] do 
     member do 
       post 'move_garment' #----!
-
+      get 'the_same_store_method'
     end
   end
 
@@ -82,7 +82,7 @@ Rails.application.routes.draw do
       member do 
         post 'release'
       end
-      resources :garments, only: [:index, :show, :create, :update] 
+      resources :garments
     end
     resources :garments, only: [:update, :show]
     resources :price_systems do 

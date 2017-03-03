@@ -1,1 +1,1 @@
-json.extract! appointment_price_group, :title, :store_month, :count, :unit_price, :price, :is_chest
+json.extract! appointment_price_group, :title, :store_month, :count, :unit_price, :price, :is_chest, :price_system_id
