@@ -104,15 +104,19 @@ resource "我的衣橱" do
   end
 
   # post 'exhibition_chests/:id/move_garment' do
+
   #   parameter :garment_ids, "选择的garment id 数组", require: true
   #   parameter :to_exhibition_chest_id, "目标衣柜", require: true
 
   #   let(:id) {@exhibition_chests.first.id}
 
   #   example "用户 移动衣服（无验证）列表 成功" do
+  #     p @exhibition_chests.first.garments
   #     do_request
   #     puts response_body
   #     expect(status).to eq(200)
+  #     p ';====after==='
+  #     p @exhibition_chests.first.garments
   #   end
   # end
 
