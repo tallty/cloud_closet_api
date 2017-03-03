@@ -186,7 +186,7 @@ resource "管理后台相关接口" do
       let(:detail_image_2_attributes) { image_attrs }
       let(:detail_image_3_attributes) { image_attrs }
 
-      example "【rewrite】管理员创建 对应衣柜中的衣服的详细信息成功" do
+      example "【rewrite】管理员修改 对应衣柜中的衣服的详细信息成功" do
         do_request
         puts response_body
         expect(status).to eq(201)

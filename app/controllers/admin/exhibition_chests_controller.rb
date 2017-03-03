@@ -7,7 +7,7 @@ class Admin::ExhibitionChestsController < ApplicationController
   respond_to :json
 
   def index
-    @exhibition_chests = Admin::ExhibitionChest.all
+    @exhibition_chests = ExhibitionChest.all
     respond_with(@exhibition_chests)
   end
 
@@ -16,7 +16,7 @@ class Admin::ExhibitionChestsController < ApplicationController
   end
 
   # def create
-  #   @exhibition_chest = Admin::ExhibitionChest.new(exhibition_chest_params)
+  #   @exhibition_chest = ExhibitionChest.new(exhibition_chest_params)
   #   @exhibition_chest.save
   #   respond_with(@exhibition_chest)
   # end
@@ -40,7 +40,7 @@ class Admin::ExhibitionChestsController < ApplicationController
 
   private
     def set_exhibition_chest
-      @exhibition_chest = Admin::ExhibitionChest.find(params[:id])
+      @exhibition_chest = ExhibitionChest.find(params[:id])
     end
 
     def exhibition_chest_params
