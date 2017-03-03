@@ -1,0 +1,1 @@
+json.partial! "admin_exhibition_units/admin_exhibition_unit", admin_exhibition_unit: @admin_exhibition_unit

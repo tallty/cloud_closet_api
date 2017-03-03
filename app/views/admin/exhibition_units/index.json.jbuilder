@@ -1,0 +1,1 @@
+json.array! @admin_exhibition_units, partial: 'admin_exhibition_units/admin_exhibition_unit', as: :admin_exhibition_unit

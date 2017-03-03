@@ -249,93 +249,103 @@ resource "管理后台相关接口" do
 
   end
 
-  # describe '价格系统操作' do
-  #   admin_attrs = FactoryGirl.attributes_for(:admin)
-  #   price_system_attrs = FactoryGirl.attributes_for(:price_system)
+  describe '价格系统操作' do
+    admin_attrs = FactoryGirl.attributes_for(:admin)
+    price_system_attrs = FactoryGirl.attributes_for(:stocking_chest)
 
-  #   header "X-Admin-Token", admin_attrs[:authentication_token]
-  #   header "X-Admin-Email", admin_attrs[:email]
+    header "X-Admin-Token", admin_attrs[:authentication_token]
+    header "X-Admin-Email", admin_attrs[:email]
 
-  #   before do
-  #     @admin = create(:admin)
-  #     @price_systems = create_list(:price_system, 5)
-  #   end
+    before do
+      create_list(:store_method, 3)
+      @admin = create(:admin)
+      @group_chest1 = create(:group_chest1)
+      @alone_full_dress_chest = create(:alone_full_dress_chest)
+      @vacuum_bag_medium = create(:vacuum_bag_medium)
+      @price_systems = PriceSystem.all
+    end
 
-  #   get 'admin/price_systems' do
+    get 'admin/price_systems' do
 
-  #     parameter :page, "当前页", required: false
-  #     parameter :per_page, "每页的数量", required: false
+      parameter :page, "当前页", required: false
+      parameter :per_page, "每页的数量", required: false
 
-  #     let(:page) {2}
-  #     let(:per_page) {2}
+      let(:page) {2}
+      let(:per_page) {2}
 
-  #     example "管理员查询价目列表成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      example "管理员查询价目列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #   get 'admin/price_systems/:id' do
+    get 'admin/price_systems/:id' do
 
-  #     let(:id) {@price_systems.first.id}
+      let(:id) {@price_systems.first.id}
 
-  #     example "管理员查询某价目详细信息成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      example "管理员查询某价目详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #   post 'admin/price_systems' do
+    post 'admin/price_systems' do
 
-  #     let(:id) {@price_systems.first.id}
+      let(:id) {@price_systems.first.id}
 
-  #     parameter :name, "价目的衣服类型名称", required: true, scope: :price_system
-  #     parameter :season, "价目的衣服季节", required: true, scope: :price_system
-  #     parameter :price, "价目的单价", required: true, scope: :price_system
+      parameter :title, "衣服类型名称", required: true, scope: :price_system
+      parameter :price, "单价", required: true, scope: :price_system
+      parameter :is_chest, "是否为衣柜", required: true, scope: :price_system
+      parameter :unit_name, '单位名称', required: true, scope: :price_system
+      parameter :description, "简介", required: false, scope: :price_system
+      parameter :price_icon_image, "封面图", require: true, scope: :price_system
 
-  #     let(:name) { price_system_attrs[:name] }
-  #     let(:season) { price_system_attrs[:season] }
-  #     let(:price) { price_system_attrs[:price] }
+      let(:title) { 'new_title' }
+      let(:price) { 999 }
+      let(:is_chest) { true }
+      let(:unit_name) { '月' }
+      let(:description) { '我是简介简介简介简介' }
+      let(:price_icon_image) { price_system_attrs[:price_icon_image] }
 
-  #     example "管理员创建价目信息成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(201)
-  #     end
-  #   end
+      example "管理员创建价目信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
 
-  #   put 'admin/price_systems/:id' do
+    # put 'admin/price_systems/:id' do
 
-  #     let(:id) {@price_systems.first.id}
+    #   let(:id) {@price_systems.first.id}
 
-  #     parameter :name, "价目的衣服类型名称", required: false, scope: :price_system
-  #     parameter :season, "价目的衣服季节", required: false, scope: :price_system
-  #     parameter :price, "价目的单价", required: false, scope: :price_system
+    #   parameter :name, "价目的衣服类型名称", required: false, scope: :price_system
+    #   parameter :season, "价目的衣服季节", required: false, scope: :price_system
+    #   parameter :price, "价目的单价", required: false, scope: :price_system
 
-  #     let(:name) { "new 上衣" }
-  #     let(:season) { "new 春夏" }
-  #     let(:price) { "2333" }
+    #   let(:name) { "new 上衣" }
+    #   let(:season) { "new 春夏" }
+    #   let(:price) { "2333" }
 
-  #     example "管理员修改某价目信息成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(201)
-  #     end
-  #   end
+    #   example "管理员修改某价目信息成功" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(201)
+    #   end
+    # end
 
-  #   delete 'admin/price_systems/:id' do
+    delete 'admin/price_systems/:id' do
 
-  #     let(:id) {@price_systems.first.id}
+      let(:id) {@price_systems.first.id}
 
-  #     example "管理员删除某价目成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(204)
-  #     end
-  #   end
-# 
-  # end
+      example "管理员删除某价目成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(204)
+      end
+    end
+
+  end
 
 end

@@ -1,6 +1,9 @@
 class Admin::ExhibitionChestsController < ApplicationController
   before_action :set_exhibition_chest, only: [:release, :show, :update, :destroy]
+  include ActionView::Layouts
+  include ActionController::MimeResponds
 
+  acts_as_token_authentication_handler_for Admin
   respond_to :json
 
   def index
@@ -21,6 +24,8 @@ class Admin::ExhibitionChestsController < ApplicationController
   def release
     @exhibition_chest.release!
     respond_with @exhibition_chest, template: 'exhibition_chests/exhibition_chest', status: 201
+  rescue
+
   end
 
   def update

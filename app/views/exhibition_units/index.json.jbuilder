@@ -1,0 +1,1 @@
+json.exhibition_units  @exhibition_units, partial: 'exhibition_units/exhibition_unit', as: :exhibition_unit

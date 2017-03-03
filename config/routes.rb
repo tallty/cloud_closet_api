@@ -85,7 +85,9 @@ Rails.application.routes.draw do
       resources :garments, only: [:index, :show, :create, :update] 
     end
     resources :garments, only: [:update, :show]
-    resources :price_systems
+    resources :price_systems do 
+      resources :exhibition_units
+    end
   end
   # --------------------------------------------------------#
 
