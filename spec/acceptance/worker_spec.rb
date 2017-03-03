@@ -160,51 +160,52 @@ resource "工作台相关接口" do
         # p '@user.exhibition_chests'
         # p @user.exhibition_chests
       end
+      describe '失败' do 
+        example "【rewrite】【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
+          params = {
+            appointment:
+              {
+                remark: '我是备注',
+                care_type: '普通护理',
+                care_cost: 100,
+                service_cost: 200,
+                garment_count_info: 
+                  {
+                    hanging: 10000,
+                    stacking: 55
+                  }
+              },
+            appointment_items: 
+              {
+                price_groups: [
+                  {
+                    price_system_id: @stocking_chest.id,
+                    count: 1,
+                    store_month: 3,
+                  },
+                  {
+                    price_system_id: @group_chest1.id,
+                    count: 2,
+                    store_month: 4,
+                  },
+                  {
+                    price_system_id: @vacuum_bag_medium.id,
+                    count: 2,
+                    store_month: 2,
+                  },
+                  {
+                    price_system_id: @alone_full_dress_chest.id,
+                    count: 4,
+                    store_month: 6,
+                  },
+                ]
+              }
+          }
 
-      example "【rewrite】【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
-        params = {
-          appointment:
-            {
-              remark: '我是备注',
-              care_type: '普通护理',
-              care_cost: 100,
-              service_cost: 200,
-              garment_count_info: 
-                {
-                  hanging: 10000,
-                  stacking: 55
-                }
-            },
-          appointment_items: 
-            {
-              price_groups: [
-                {
-                  price_system_id: @stocking_chest.id,
-                  count: 1,
-                  store_month: 3,
-                },
-                {
-                  price_system_id: @group_chest1.id,
-                  count: 2,
-                  store_month: 4,
-                },
-                {
-                  price_system_id: @vacuum_bag_medium.id,
-                  count: 2,
-                  store_month: 2,
-                },
-                {
-                  price_system_id: @alone_full_dress_chest.id,
-                  count: 4,
-                  store_month: 6,
-                },
-              ]
-            }
-        }
-
-        do_request params
-        puts response_body
-        expect(status).to eq(422)
+          do_request params
+          puts response_body
+          expect(status).to eq(422)
+        end
       end
     end
 

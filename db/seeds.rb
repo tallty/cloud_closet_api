@@ -15,8 +15,8 @@
 
 # PriceSystem.create!(
 # 	[
-# 		{ id: 1, title: '叠放柜', price: 180, description: '*叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
-# 		{ id: 2, title: '挂柜', price: 180, description: '*叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
+# 		{ id: 1, title: '叠放柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
+# 		{ id: 2, title: '挂柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
 # 		{ id: 3, title: '组合柜', price: 400, description: '*组合柜可存放60件折叠和20件挂放', is_chest: true, unit_name: '月' },
 # 		{ id: 4, title: '单件礼服', price: 60, description: '我是单件礼服 ,每月60', is_chest: true, unit_name: '月' },
 # 		{ id: 5, title: '礼服柜', price: 60, description: '	礼服柜可存放12件贵重礼服，适合存放大件礼服；', is_chest: true, unit_name: '月' },
