@@ -57,7 +57,7 @@ class Admin::GarmentsController < ApplicationController
 
   def destroy
     @garment.destroy
-    respond_with(@admin_garment)
+    respond_with @garment, template: 'garment/show', status: 204
   end
 
   private

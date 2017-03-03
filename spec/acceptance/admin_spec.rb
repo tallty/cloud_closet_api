@@ -345,16 +345,16 @@ resource "管理后台相关接口" do
     #   end
     # end
 
-    delete 'admin/price_systems/:id' do
+    # delete 'admin/price_systems/:id' do
 
-      let(:id) {@price_systems.first.id}
+    #   let(:id) {@price_systems.first.id}
 
-      example "管理员删除某价目成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(204)
-      end
-    end
+    #   example "管理员删除某价目成功" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(204)
+    #   end
+    # end
 
   end
 

@@ -51,8 +51,6 @@ class Garment < ApplicationRecord
   has_one :detail_image_3, -> { where photo_type: 'detail_3' }, class_name: 'Image', as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_image_3, allow_destroy: true
 
-  has_many :logs, class_name: "GarmentLog", dependent: :destroy
-
   aasm :column => :status do
     state :storing, :initial => true
     state :stored
