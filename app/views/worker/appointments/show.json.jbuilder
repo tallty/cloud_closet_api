@@ -1,1 +1,2 @@
 json.partial! "appointments/appointment", appointment: @worker_appointment
+json.store_methods [{title: 'hanging', zh_title: '挂件'},{title: 'stacking', zh_title: '叠放件'}, {title: 'full_dress', zh_title: '礼服'}].to_json

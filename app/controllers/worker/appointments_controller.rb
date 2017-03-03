@@ -50,6 +50,7 @@ class Worker::AppointmentsController < ApplicationController
 
   def update
     @worker_appointment = @worker_appointment.worker_update_appt(params)
+    @store_methods = StoreMethod.all
     respond_with(@worker_appointment, template: "worker/appointments/show", status: 200)
   rescue => @error
     respond_with @error, template: 'error', status: 422

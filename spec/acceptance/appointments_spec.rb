@@ -119,7 +119,7 @@ resource "预约存入衣服到我的衣橱" do
 
     let(:id) { @appointment.id }
 
-    example "用户余额不足，用使用余额支付失败" do
+    example "【change】用户余额不足，用使用余额支付失败" do
       do_request
       puts response_body
        p '--- @user.user_info.purchase_logs--'

@@ -8,7 +8,7 @@ resource "工作台相关接口" do
   header "X-Worker-Phone", worker_attrs[:phone]
   before do 
     # 创建价格表
-    create_list(:store_method, 3)
+    @store_methods = create_list(:store_method, 3)
     @stocking_chest = create(:stocking_chest) 
     @group_chest1 = create(:group_chest1)
     @alone_full_dress_chest = create(:alone_full_dress_chest)
@@ -94,18 +94,24 @@ resource "工作台相关接口" do
       parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: [ :appointment_items, :price_groups ]
       parameter :price_system_id, '价格 price_system id', required: true, scope: [ :appointment_items, :price_groups ]
       parameter :store_month, "存放的月份数", required: false, scope: [ :appointment_items, :price_groups ]
-      
-      StoreMethod.all.each do |store_method|
-        parameter store_month.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment, :garment_count_info ]
-      end
+      parameter :hanging, "挂放数量", required: false, scope: [ :appointment_items, :price_groups ]
+      parameter :stacking, "叠放数量", required: false, scope: [ :appointment_items, :price_groups ]
+      parameter :full_dressing, "礼服数量", required: false, scope: [ :appointment_items, :price_groups ]
+      p '-----dd'
+      p StoreMethod.all
+      # @store_methods.each do |store_method|
+      #   p '-----'
+      #   p parameter store_method.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment, :garment_count_info ]
+      # end
 
       before do
         @appointments.first.accept!
+        @store_methods = create_list(:store_method, 3)
       end
 
       let(:appointment_id) { @appointments.first.id }
 
-      example "工作人员修改指定订单下面的订单组成功" do
+      example "【rewrite】工作人员修改指定订单下面的订单组成功" do
         params = {
           appointment:
             {
@@ -155,7 +161,7 @@ resource "工作台相关接口" do
         # p @user.exhibition_chests
       end
 
-      example "【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
+      example "【rewrite】【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
         params = {
           appointment:
             {

@@ -19,7 +19,7 @@ resource '价目表相关' do
 
     get '/price_systems' do
 
-      example '【user】获取所有柜子的价目介绍' do
+      example '【rewrite】【user】获取所有柜子的价目介绍' do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -34,7 +34,7 @@ resource '价目表相关' do
     header "X-Worker-Phone", worker_attrs[:phone]
 
     get 'worker/price_systems' do 
-      example '【worker】获取所有的价目介绍' do
+      example '【rewrite】【worker】获取所有的价目介绍' do
         p Worker.all
         do_request
         puts response_body
