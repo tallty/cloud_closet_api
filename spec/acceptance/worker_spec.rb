@@ -86,7 +86,7 @@ resource "工作台相关接口" do
     end
 
     put 'worker/appointments/:appointment_id' do
-      parameter :remark, '备注', required: true, scope: :appointment     
+      parameter :remark, '备注', required: false, scope: :appointment     
       parameter :care_type, '护理类型', required: true, scope: :appointment        
       parameter :care_cost, '护理费用', required: true, scope: :appointment        
       parameter :service_cost, '服务费', required: true, scope: :appointment
