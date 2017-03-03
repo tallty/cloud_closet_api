@@ -58,6 +58,7 @@ resource "我的衣橱" do
 	    	:garment, 3,
 	    	exhibition_chest: @exhibition_chests.first,
 	    	) 
+      @exhibition_chests.each {|x|x.release!}
     end
 
 
@@ -103,21 +104,23 @@ resource "我的衣橱" do
     end
   end
 
-  # post 'exhibition_chests/:id/move_garment' do
+  post 'exhibition_chests/:id/move_garment' do
 
-  #   parameter :garment_ids, "选择的garment id 数组", require: true
-  #   parameter :to_exhibition_chest_id, "目标衣柜", require: true
+    parameter :garment_ids, "选择的garment id 数组", require: true
+    parameter :to_exhibition_chest_id, "目标衣柜", require: true
 
-  #   let(:id) {@exhibition_chests.first.id}
+    let(:id) {@exhibition_chests.first.id}
+    let(:garment_ids) { @exhibition_chests.first.garments.collect(&:id)[0,1] }
+    let(:to_exhibition_chest_id) { @exhibition_chests.second.id }
 
-  #   example "用户 移动衣服（无验证）列表 成功" do
-  #     p @exhibition_chests.first.garments
-  #     do_request
-  #     puts response_body
-  #     expect(status).to eq(200)
-  #     p ';====after==='
-  #     p @exhibition_chests.first.garments
-  #   end
-  # end
+    example "用户 移动衣服（无验证）列表 成功" do
+      p @exhibition_chests.first.garments.count
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+      p ';====after==='
+      p @exhibition_chests.first.garments.count
+    end
+  end
 
 end

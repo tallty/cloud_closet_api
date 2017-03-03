@@ -9,7 +9,7 @@ class ExhibitionChestsController < ApplicationController
   respond_to :json
 
   def index
-    @exhibition_chests = current_user.exhibition_chests
+    @exhibition_chests = current_user.exhibition_chests.online
     respond_with(@exhibition_chests)
   end
 
@@ -31,16 +31,18 @@ class ExhibitionChestsController < ApplicationController
   end
 
   def the_same_store_method
-    @exhibition_chests = current_user.exhibition_chests.store_method_is(@exhibition_chest.store_method)
+    @exhibition_chests = current_user.exhibition_chests.online.store_method_is(@exhibition_chest.store_method)
     respond_with @exhibition_chests, template: 'exhibition_chests/index'
   end
 
   def move_garment # garment_ids to_exhibition_chest_id
-    @exhibition_chest.where(id: params[:garment_ids]).each do |garment|
+  p params
+    @exhibition_chest.garments.where(id: params[:garment_ids]).each do |garment|
       garment.exhibition_chest_id = params[:to_exhibition_chest_id]
-      garment.save
+     p '===='
+     p  garment.save
     end
-    respond_with @exhibition_chest, template: 'exhibition_chests/show'
+    respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   end
 
   # def destroy

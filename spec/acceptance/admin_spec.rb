@@ -224,13 +224,13 @@ resource "管理后台相关接口" do
       end
     end
 
-    destroy 'admin/garments/:id' do
+    delete 'admin/garments/:id' do
       let(:id) { @exhibition_chests.first.garments.first.id }
 
       example "管理员删除 衣服 成功" do
         do_request
         puts response_body
-        expect(status).to eq(204）
+        expect(status).to eq(204)
       end
     end
 
