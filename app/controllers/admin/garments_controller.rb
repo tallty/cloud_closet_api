@@ -8,16 +8,14 @@ class Admin::GarmentsController < ApplicationController
 
   respond_to :json
 
-  # def index
-  #   @appointment_item_group = AppointmentItemGroup.find(params[:appointment_item_group_id])
-  #   @admin_garments = @appointment_item_group.garments
+  def index
+    @garments = ExhibitionChest.find(params[:exhibition_chest_id]).garments
+    respond_with @garments, template: 'garments/index'
+  end
 
-  #   respond_with(@admin_garments)
-  # end
-
-  # def show
-  #   respond_with @garment, template: "garments/show"
-  # end
+  def show
+    respond_with @garment, template: "garments/show"
+  end
 
   def create
     @admin_garment = ExhibitionChest.find(params[:exhibition_chest_id]).garments.build(garment_params)

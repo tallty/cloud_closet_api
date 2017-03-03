@@ -55,7 +55,8 @@ resource "管理后台相关接口" do
 		      user: @user, 
 		      garment_count_info: {
 		        hanging: 15,
-		        full_dress: 5 }
+		        full_dress: 5 
+		      }
 		      )
 	    price_system_ary.each do |price_system|
 	      create(:appointment_price_group, 
@@ -79,14 +80,12 @@ resource "管理后台相关接口" do
 	    @valuation_chest = create(:valuation_chest,
 	    	price_system: @stocking_chest,
 	    	user: @user)
-	    p '======'
-	    p @exhibition_chest1 = create(:exhibition_chest, 
+	    @exhibition_chest1 = create(:exhibition_chest, 
 	    	exhibition_unit: @stocking_chest.exhibition_units.first,
 	    	custom_title: 'aaaaaaaaaaaaaa',
 	    	valuation_chest: @valuation_chest,
 	    	user: @user
 	    	)
-	    p @exhibition_chest1.user
 	    @garments = create_list(
 	    	:garment, 3,
 	    	exhibition_chest: @exhibition_chests.first,
@@ -194,6 +193,27 @@ resource "管理后台相关接口" do
       end
     end
 
+    get 'admin/exhibition_chests/:id/garments' do
+      let(:id) { @exhibition_chests.first.garments.first.id }
+
+      example "【new】管理员某衣柜的所有衣服 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    get 'admin/exhibition_chests/:id/garments/:id' do
+      let(:exhibition_chest_id) { @exhibition_chests.first }
+      let(:id) { @exhibition_chests.first.garments.first.id }
+
+      example "【new】管理员某衣柜中 某一衣服 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
     get 'admin/garments/:id' do
       let(:id) { @exhibition_chests.first.garments.first.id }
 
@@ -204,29 +224,29 @@ resource "管理后台相关接口" do
       end
     end
 
-
-
-
     # 上架订单  扣取本次新柜子本月租费!!!
-    # post '/admin/appointments/:id/stored' do
-    #   let(:id) { @appointments.first.id }
+    post '/admin/appointments/:id/stored' do
+      let(:id) { @appointments.first.id }
 
-    #   example "管理员‘确认上架’指定预订订单成功" do
-    #     do_request
-    #     puts response_body
-    #     expect(status).to eq(200)
-    #   end
-    # end
+      example "管理员‘确认上架’指定预订订单成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+        p '----- purchar_log------'
+        p @user.purchase_logs
+      end
+    end
 
 
-   #  post 'admin/exhibition_chests/:id/release' do 
-   #  	example "管理员‘发布某衣柜’成功，可多次发布" do
-   #      do_request
-   #      puts response_body
-   #      expect(status).to eq(200)
-   #    end
-  	# end
-  	
+    post 'admin/exhibition_chests/:id/release' do 
+      let(:id) { @exhibition_chests.first.id }
+    	example "管理员‘发布某衣柜’成功，可多次发布" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+  	end
+
   end
 
   # describe '价格系统操作' do

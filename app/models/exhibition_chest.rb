@@ -37,7 +37,7 @@ class ExhibitionChest < ApplicationRecord
   	state :waiting, :initial => true
     state :online
     event :release do 
-      transitions from: [:waiting, :online], to: :online
+      transitions from: [:waiting, :online], to: :online, :after => :release_new_garments
     end
 	end
 
@@ -59,5 +59,11 @@ class ExhibitionChest < ApplicationRecord
 
   def enough_space_to_move
     # garments.stored
+  end
+
+  def release_new_garments
+    ActiveRecord::Base.transaction do
+      self.garments.each { |garment| garment.finish_storing! }
+    end
   end
 end

@@ -37,7 +37,14 @@ ExhibitionUnit.create!  (
 		{ id: 5, title: "礼服柜", store_method: 'full_dress', max_count: 12, need_join: false, price_system_id: 5 },
 		
 		])
-
+# user = User.where(phone: '18516591232').first
+# @appointment = Appointment.create(user: user, number: 50, date: "2016-09-24", care_cost: 111, care_type: '普通护理', service_cost: 222)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(1), count: 1, store_month: 3)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(2), count: 3, store_month: 3)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(3), count: 1, store_month: 3)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(4), count: 1, store_month: 3)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(5), count: 4, store_month: 2)
+# AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(6), count: 1, store_month: 0)
     
     
  

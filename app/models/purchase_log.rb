@@ -51,6 +51,20 @@ class PurchaseLog < ApplicationRecord
 			)
 	end
 
+	def self.after_appt_stored appointment
+		_ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
+    _detail = appointment.groups.map { |group| "#{group.title},#{group.count}个,#{group.price.to_s + '元/月'},本次收费: #{group.price * _ratio}元 " }.join(";")
+    _change = appointment.groups.map { |group| group.price * _ratio }.reduce(:+) || 0
+		PurchaseLog.create(
+			operation: "收取 本次订单新衣橱的本月租用费用",
+			operation_type: "消费",
+			change: _change,
+			detail: _detail,
+			user_info: appointment.user.user_info,
+			payment_method: "余额支付"
+			)
+	end
+
 	# detail: "chest.title@,@chest.chest_type@,@chest.get_monthly_rent_charge@;@"
 	# every month at day 1 
 	def self.create_monthly_bill

@@ -58,7 +58,7 @@ class Garment < ApplicationRecord
     state :stored
 
     event :finish_storing do
-      transitions :from => :storing, :to => :stored, :after => :set_put_in_time_and_expire_time
+      transitions from: [:storing, :stored], to: :stored, after:  :set_put_in_time_and_expire_time
     end
   end
 

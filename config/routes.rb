@@ -82,7 +82,7 @@ Rails.application.routes.draw do
       member do 
         post 'release'
       end
-      resources :garments, only: [:create, :update] 
+      resources :garments, only: [:index, :show, :create, :update] 
     end
     resources :garments, only: [:update, :show]
     resources :price_systems

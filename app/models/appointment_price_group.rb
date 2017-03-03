@@ -26,7 +26,7 @@ class AppointmentPriceGroup < ApplicationRecord
   has_many :appointment_new_chests, dependent: :destroy
   has_many :exhibition_chests, through: :appointment_new_chests
   validates :count, presence: true
-  validates :store_month, presence: true
+
 
   before_create :restore_price_system_info
   before_create :set_price

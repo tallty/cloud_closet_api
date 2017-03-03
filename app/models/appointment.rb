@@ -54,7 +54,7 @@ class Appointment < ApplicationRecord
     end
 
     event :stored do
-      transitions from: :storing, to: :stored
+      transitions from: :storing, to: :stored, :after => :cut_rent_of_the_new_chests
     end
 
     event :cancel do
@@ -106,7 +106,7 @@ class Appointment < ApplicationRecord
   end
 
   def set_detail
-    self.detail = self.groups.map { |group| "#{group.title},#{group.count}个,#{group.store_month && group.store_month.to_s + '元/月'}" }.join(";")
+    self.detail = self.groups.map { |group| "#{group.title},#{group.count}个,#{group.price && group.price.to_s + '元/月'},#{group.store_month}" }.join(";")
     self.detail += ";服务:,#{self.service_cost};护理费:,#{care_cost};护理类型:,#{care_type};租用费总计:,#{rent_charge}"
     self.save
   end
@@ -152,10 +152,10 @@ class Appointment < ApplicationRecord
     _count_info.each { |store_method, count| _warning += "#{store_method}不足 " if count > 0}
     raise _warning unless _warning.empty?
   end
-## !!!
-  # def do_stored_if_its_garments_are_all_stored 
-  #   self.stored! unless self.aasm_state == 'stored' || self.items.collect(&:garment).each {|x| return true if x.status == 'storing'}
-  # end
+
+  def cut_rent_of_the_new_chests
+    PurchaseLog.after_appt_stored(self)
+  end
 
   def create_template_message
     openid = user.try(:openid)
