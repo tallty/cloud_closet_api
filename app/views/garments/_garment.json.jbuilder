@@ -4,4 +4,4 @@ json.detail_image [
 										garment.detail_image_1.try(:image_url, :medium), 
 										garment.detail_image_2.try(:image_url, :medium),
 										garment.detail_image_3.try(:image_url, :medium)
-									]
+									].reject{ |x| x.nil? }
