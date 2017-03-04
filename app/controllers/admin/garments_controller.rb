@@ -67,7 +67,7 @@ class Admin::GarmentsController < ApplicationController
 
     def garment_params
       params.require(:garment).permit(
-        :title, :row, :carbit, :place 
+        :title, :row, :carbit, :place, :description
         )
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170303031923) do
+ActiveRecord::Schema.define(version: 20170304002440) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20170303031923) do
     t.string   "store_method"
     t.integer  "appointment_id"
     t.integer  "exhibition_chest_id"
+    t.text     "description"
     t.index ["appointment_id"], name: "index_garments_on_appointment_id"
     t.index ["exhibition_chest_id"], name: "index_garments_on_exhibition_chest_id"
     t.index ["seq"], name: "index_garments_on_seq"

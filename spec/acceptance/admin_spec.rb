@@ -132,7 +132,8 @@ resource "管理后台相关接口" do
 
       parameter :appointment_id, "当前订单id", required: true
 
-      parameter :title, "衣服描述信息", require: false, scope: :garment
+      parameter :title, "衣服标题", require: false, scope: :garment
+      parameter :description, "衣服描述信息", require: false, scope: :garment
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
@@ -145,6 +146,7 @@ resource "管理后台相关接口" do
 
       let(:store_month) { 12 }
       let(:title) { "garemnt title" }
+      let(:description) { '我是简述简述简述' }
       let(:row) { 1 }
       let(:carbit) { 3 }
       let(:place) { 2 }
@@ -165,7 +167,8 @@ resource "管理后台相关接口" do
 
       parameter :appointment_id, "当前订单id", required: true
 
-      parameter :title, "衣服描述信息", require: false, scope: :garment
+      parameter :title, "衣服标题", require: false, scope: :garment
+      parameter :description, "衣服描述信息", require: false, scope: :garment
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
@@ -177,7 +180,8 @@ resource "管理后台相关接口" do
       let(:exhibition_chest_id) { @exhibition_chests.first.id }
       let(:id) { @exhibition_chests.first.garments.first.id }
       let(:store_month) { 12 }
-      let(:title) { "garemnt title" }
+      let(:title) { "garemnt new title" }
+      let(:description) { '我是新简述 新简述新简述' }
       let(:row) { 1 }
       let(:carbit) { 3 }
       let(:place) { 2 }

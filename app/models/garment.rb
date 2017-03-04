@@ -18,6 +18,7 @@
 #  store_method        :string
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
+#  description         :text
 #
 # Indexes
 #
