@@ -46,7 +46,7 @@ class ExhibitionChest < ApplicationRecord
   end
 
   scope :has_space, ->{
-    select{ |chest| chest.has_space? }
+    select{ |chest| chest.it_has_space }
    }
 
   scope :store_method_is, ->(store_method){
@@ -59,14 +59,18 @@ class ExhibitionChest < ApplicationRecord
     _remain_space_count = self.max_count - self.garments.count    
   end
 
-  def has_space?
+  def it_has_space
     remain_space_count > 0
   end
 
+  def move_garment
+    
+  end
+
   # 用户端 将单件礼服合并显示
-  # def self.chest_index_for user
-  #   user.exhibition_chests.map { |chest| chest.id, chest.title , chest.need_join }
-  # end
+  def self.merge_items_need_join exhibition_chests
+    # exhibition_chests.
+  end
 
   def enough_space_to_move
     # garments.stored

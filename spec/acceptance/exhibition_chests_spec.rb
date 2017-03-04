@@ -93,16 +93,6 @@ resource "我的衣橱" do
     end
   end
 
-  get 'exhibition_chests/:id/the_same_store_method' do
-
-    let(:id) {@exhibition_chests.first.id}
-
-    example "用户查询某柜子 可移动的柜子（含无空间）列表 成功" do
-      do_request
-      puts response_body
-      expect(status).to eq(200)
-    end
-  end
 
   post 'exhibition_chests/:id/move_garment' do
 

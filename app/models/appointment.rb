@@ -91,6 +91,7 @@ class Appointment < ApplicationRecord
   end
 
   def price_except_rent
+    # 服务费 护理费 真空袋等护理配件费
     _care_cost = self.care_cost || 0
     _service_cost = self.service_cost || 0
     _other_price = self.groups.other_items.map { |group| group.price }.reduce(:+) || 0
@@ -98,10 +99,12 @@ class Appointment < ApplicationRecord
   end
 
   def count_price
-    self.rent_charge = self.groups.map {|group| group.price }.reduce(:+)
+    # 租用柜子的租金
+    self.rent_charge = self.groups.chests.map {|group| group.price }.reduce(:+)
     raise '请填写正确的服务费用、护理费用' unless self.service_cost && self.care_cost
     self.price = self.price_except_rent 
     self.price += self.rent_charge if self.rent_charge
+
     self.save
   end
 
