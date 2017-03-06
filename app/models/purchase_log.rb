@@ -25,11 +25,13 @@ class PurchaseLog < ApplicationRecord
 	def self.create_one_with_ping_request _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
 		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
-
+		# 临时充值为 0.01 元 而余额体现充值数量
+		_change = JSON.parse(_ping_request.metadata).amount
+		# _change = (_ping_request.amount.to_f/100).round(2) 
 		PurchaseLog.create(
                 operation_type: _ping_request.subject,
                 operation: _ping_request.body,
-                change: (_ping_request.amount.to_f/100).round(2),
+                change: _change,
                 detail: _metadata['detail'] || "",
                 user_info: User.where(openid: _ping_request.openid).first.user_info,
                 payment_method: _channel
