@@ -31,11 +31,12 @@
 class Garment < ApplicationRecord
   include AASM
   # acts_as_taggable # Alias for acts_as_taggable_on :tags
-  # acts_as_taggable_on :tags, :skills
+  acts_as_taggable_on :tags
   scope :by_join_date, -> {order("created_at DESC")}
 
   belongs_to :user
   belongs_to :exhibition_chest
+  belongs_to :appointment
 
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true

@@ -40,13 +40,27 @@ RechargeRule.destroy_all
 RechargeRule.create! (
 	[
 		{ id: 1, amount: 1000, credits: 0 },
-		{ id: 1, amount: 2000, credits: 0 },
-		{ id: 1, amount: 3000, credits: 100 },
-		{ id: 1, amount: 5000, credits: 300 },
-		{ id: 1, amount: 10000, credits: 800 },
-		{ id: 1, amount: 20000, credits: 2000 },
-		{ id: 1, amount: 50000, credits: 6000 },
-		{ id: 1, amount: 100000, credits: 20000 },
+		{ id: 2, amount: 2000, credits: 0 },
+		{ id: 3, amount: 3000, credits: 100 },
+		{ id: 4, amount: 5000, credits: 300 },
+		{ id: 5, amount: 10000, credits: 800 },
+		{ id: 6, amount: 20000, credits: 2000 },
+		{ id: 7, amount: 50000, credits: 6000 },
+		{ id: 8, amount: 100000, credits: 20000 },
+	])
+RechargeRule.destroy_all
+GarmentTag.create (
+	[
+		{ title: '上衣'},
+		{ title: '半裙'},
+		{ title: '连衣裙'},
+		{ title: '裤装'},
+		{ title: '外套'},
+		{ title: '羽绒服'},
+		{ title: '泳装'},
+		{ title: '春秋'},
+		{ title: '冬'},
+		{ title: '夏'},	
 	])
 # user = User.where(phone: '18516591232').first
 # @appointment = Appointment.create(user: user, number: 50, date: "2016-09-24", care_cost: 111, care_type: '普通护理', service_cost: 222)

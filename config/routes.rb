@@ -101,6 +101,11 @@ Rails.application.routes.draw do
   resources :recharge_rules, only: [:index,:show]
   # ----------------------------------------------------#
 
+  # ------------ ConstantTag Routes ------------------------#
+  # 得到所有固定标签
+  resources :constant_tags, only: [:index, :show]
+  # ----------------------------------------------------#
+  ##
   # ------------ PurchaseLog Routes ------------------------#
   resources :purchase_logs, only: [:index,:show]
   # ----------------------------------------------------#

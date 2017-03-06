@@ -1,0 +1,1 @@
+json.partial! "constant_tags/constant_tag", constant_tag: @constant_tag

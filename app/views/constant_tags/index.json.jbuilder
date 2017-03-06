@@ -1,0 +1,1 @@
+json.array! @constant_tags, partial: 'constant_tags/constant_tag', as: :constant_tag

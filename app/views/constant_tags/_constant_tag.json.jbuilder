@@ -1,0 +1,1 @@
+json.extract! constant_tag, :id, :title, :class_type
