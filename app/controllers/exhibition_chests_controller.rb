@@ -3,19 +3,19 @@ class ExhibitionChestsController < ApplicationController
   include ActionController::MimeResponds
 
   acts_as_token_authentication_handler_for User
-
-  before_action :set_exhibition_chest, only: [ :move_garment, :the_same_store_method, :show, :update, :destroy]
+  
+  before_action :set_user_chests
+  before_action :set_exhibition_chest, only: [ :move_garment, :the_same_store_method, :update, :destroy]
 
   respond_to :json
 
   def index
-    @exhibition_chests = current_user.exhibition_chests.online
+    @exhibition_chests = ExhibitionChestViewService.new(@user_chests).in_user_index
     respond_with(@exhibition_chests)
   end
 
   def show
-    p '----'
-    p @garments = @exhibition_chest.garments.stored
+    @exhibition_chest, @garments = ExhibitionChestViewService.new(@user_chests).in_user_show(params[:id])
     respond_with @exhibition_chest, template: 'exhibition_chests/show'
   end
 
@@ -31,7 +31,7 @@ class ExhibitionChestsController < ApplicationController
   end
 
   def the_same_store_method
-    @exhibition_chests = current_user.exhibition_chests.online.store_method_is(@exhibition_chest.store_method)
+    @exhibition_chests = @user_chests.store_method_is(@exhibition_chest.store_method)
     respond_with @exhibition_chests, template: 'exhibition_chests/index'
   end
 
@@ -51,6 +51,10 @@ class ExhibitionChestsController < ApplicationController
   # end
 
   private
+    def set_user_chests
+      @user_chests = current_user.exhibition_chests.online
+    end
+
     def set_exhibition_chest
       @exhibition_chest = current_user.exhibition_chests.find(params[:id])
     end

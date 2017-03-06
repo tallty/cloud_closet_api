@@ -6,7 +6,7 @@ threads 2, 64
 workers 2
 
 app_name = 'cloud_closet_api'
-application_path = "/home/deploy/#{app_name}"
+application_path = "/mnt/home/app/#{app_name}"
 directory application_path
 
 pidfile "#{application_path}/tmp/pids/puma.pid"
