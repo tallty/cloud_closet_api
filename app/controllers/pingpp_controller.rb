@@ -35,7 +35,7 @@ class PingppController < ApplicationController
       subject: params[:subject],
       body: params[:body],
       openid: params[:openid],
-      metadata: {amount: params[:amount]}
+      metadata: "{\"amount\":#{params[:amount]}}"
       )
 
 		#在ping++平台创建一条记录
