@@ -97,6 +97,10 @@ Rails.application.routes.draw do
   end
   # ----------------------------------------------------------#   
 
+  # ------------ RechargeRule Routes ------------------------#
+  resources :recharge_rules, only: [:index,:show]
+  # ----------------------------------------------------#
+
   # ------------ PurchaseLog Routes ------------------------#
   resources :purchase_logs, only: [:index,:show]
   # ----------------------------------------------------#

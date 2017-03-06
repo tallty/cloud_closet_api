@@ -148,6 +148,14 @@ class Appointment < ApplicationRecord
 
   def check_space_and_garment_count
     _count_info =  self.garment_count_info
+    user = self.user
+    # user.appointments.stor
+
+
+
+
+
+    
     self.new_chests.map do |new_chest|
       _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
     end

@@ -1,0 +1,1 @@
+json.extract! recharge_rule, :id, :amount, :credits

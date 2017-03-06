@@ -14,7 +14,6 @@ StoreMethod.create!(
 		{ id: 3, title: "full_dress", zh_title: "礼服"},
 		])	
 
-
 PriceSystem.destroy_all
 PriceSystem.create!(
 	[
@@ -37,6 +36,18 @@ ExhibitionUnit.create!  (
 		{ id: 5, title: "礼服柜", store_method: 'full_dress', max_count: 12, need_join: false, price_system_id: 5 },
 		
 		])
+RechargeRule.destroy_all
+RechargeRule.create! (
+	[
+		{ id: 1, amount: 1000, credits: 0 },
+		{ id: 1, amount: 2000, credits: 0 },
+		{ id: 1, amount: 3000, credits: 100 },
+		{ id: 1, amount: 5000, credits: 300 },
+		{ id: 1, amount: 10000, credits: 800 },
+		{ id: 1, amount: 20000, credits: 2000 },
+		{ id: 1, amount: 50000, credits: 6000 },
+		{ id: 1, amount: 100000, credits: 20000 },
+	])
 # user = User.where(phone: '18516591232').first
 # @appointment = Appointment.create(user: user, number: 50, date: "2016-09-24", care_cost: 111, care_type: '普通护理', service_cost: 222)
 # AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(1), count: 1, store_month: 3)

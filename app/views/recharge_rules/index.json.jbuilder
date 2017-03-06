@@ -1,0 +1,1 @@
+json.recharge_rules @recharge_rules, partial: 'recharge_rules/recharge_rule', as: :recharge_rule

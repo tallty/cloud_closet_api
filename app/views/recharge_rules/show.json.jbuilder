@@ -1,0 +1,1 @@
+json.partial! "recharge_rules/recharge_rule", recharge_rule: @recharge_rule
