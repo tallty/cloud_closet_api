@@ -18,5 +18,14 @@ class ConstantTag < ApplicationRecord
 		where(class_type: class_name || 'garment')
 	}
 	
+
+	def self.tag_validate class_name, params
+		return params unless params
+		ary = ConstantTag.class_is(class_name).collect(&:title)
+		params.split(',').map do |tag| 
+			raise "\"#{tag}\"不是合法的标签值" unless tag.in?(ary)
+			tag
+		end
+	end
 end
 

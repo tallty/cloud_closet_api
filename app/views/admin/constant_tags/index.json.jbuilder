@@ -1,0 +1,1 @@
+json.array! @admin_constant_tags, partial: 'admin_constant_tags/admin_constant_tag', as: :admin_constant_tag

@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   # ----------------------------------------------#
 
   # ------------ Garment Routes ------------------#
-  resources :garments, only: [:index, :show]
+  resources :garments, only: [:index, :show, :update]
   # ----------------------------------------------#  
 
    # ------------ ExhibitionChest Routes ------------------#
@@ -88,6 +88,7 @@ Rails.application.routes.draw do
     resources :price_systems do 
       resources :exhibition_units
     end
+    resources :constant_tags
   end
   # --------------------------------------------------------#
 

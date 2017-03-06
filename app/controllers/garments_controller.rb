@@ -4,7 +4,7 @@ class GarmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_garment, only: [:show]
+  before_action :set_garment, only: [:show, :update]
 
   respond_to :json
 
@@ -25,10 +25,14 @@ class GarmentsController < ApplicationController
   #   respond_with(@garment)
   # end
 
-  # def update
-  #   @garment.update(garment_params)
-  #   respond_with(@garment)
-  # end
+  def update
+    @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list]))
+    @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list]))
+    @garment.update(garment_params) if garment_params
+    respond_with @garment, template: 'garments/show', status: 201
+    rescue => @error
+      respond_with @error, template: 'error', status: 422
+  end
 
   # def destroy
   #   @garment.destroy
@@ -37,6 +41,19 @@ class GarmentsController < ApplicationController
 
   private
     def set_garment
-      @garment = current_user.garments.find(params[:id])
+      @garment = current_user.garments.stored.find_by_id(params[:id])
+      raise 'id 错误, 只允许用户编辑已上架衣服' unless @garment 
+    end
+
+    def garment_params
+      params.require(:garment).permit(
+        
+        )
+    end
+
+    def tag_params
+      params.require(:garment).permit(
+        :add_tag_list, :remove_tag_list
+        )
     end
 end

@@ -1,0 +1,1 @@
+json.partial! "admin_constant_tags/admin_constant_tag", admin_constant_tag: @admin_constant_tag

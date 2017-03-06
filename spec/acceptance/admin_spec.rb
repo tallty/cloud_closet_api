@@ -39,8 +39,9 @@ resource "管理后台相关接口" do
     header "X-Admin-Email", admin_attrs[:email]
 
     before do
-    	# 创建价格表
 	    create_list(:store_method, 3)
+      create_list(:garment_tag, 4)
+      # 创建价格表
 	    @stocking_chest = create(:stocking_chest) 
 	    @group_chest1 = create(:group_chest1)
 	    @alone_full_dress_chest = create(:alone_full_dress_chest)
@@ -131,12 +132,16 @@ resource "管理后台相关接口" do
       garment_attrs = FactoryGirl.attributes_for(:garment)
 
       parameter :appointment_id, "当前订单id", required: true
-
+      # 文字描述
       parameter :title, "衣服标题", require: false, scope: :garment
       parameter :description, "衣服描述信息", require: false, scope: :garment
+      # 标签
+      parameter :add_tag_list, "【添加的】标签 组成的字符串，以英文逗号',' 分隔各标签", required: true, scope: :garment
+      # 存放位置
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
+      # 图片
       parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
       parameter :detail_image_1_attributes, "衣服的详细图片1", require: false, scope: :garment
       parameter :detail_image_2_attributes, "衣服的详细图片2", require: false, scope: :garment
@@ -147,6 +152,7 @@ resource "管理后台相关接口" do
       let(:store_month) { 12 }
       let(:title) { "garemnt title" }
       let(:description) { '我是简述简述简述' }
+      let(:add_tag_list) { '上衣' }
       let(:row) { 1 }
       let(:carbit) { 3 }
       let(:place) { 2 }
@@ -166,22 +172,29 @@ resource "管理后台相关接口" do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
       parameter :appointment_id, "当前订单id", required: true
-
+      # 文字描述
       parameter :title, "衣服标题", require: false, scope: :garment
       parameter :description, "衣服描述信息", require: false, scope: :garment
+      # 标签
+      parameter :add_tag_list, "【添加的】标签 组成的字符串，以英文逗号',' 分隔各标签", required: true, scope: :garment
+      parameter :remove_tag_list, "【删除的】标签 组成的字符串，以英文逗号',' 分隔各标签", required: true, scope: :garment
+      # 存储位置
       parameter :row, "衣服存放的 排 ", require: false, scope: :garment
       parameter :carbit, "衣服存放的 柜 ", require: false, scope: :garment
       parameter :place, "衣服存放的 位 ", require: false, scope: :garment
+      # 图片
       parameter :cover_image_attributes, "衣服的封面图", require: false, scope: :garment
       parameter :detail_image_1_attributes, "衣服的详细图片1", require: false, scope: :garment
       parameter :detail_image_2_attributes, "衣服的详细图片2", require: false, scope: :garment
       parameter :detail_image_3_attributes, "衣服的详细图片3", require: false, scope: :garment
 
       let(:exhibition_chest_id) { @exhibition_chests.first.id }
+      let(:appointment_id) { @appointments.first.id }
       let(:id) { @exhibition_chests.first.garments.first.id }
-      let(:store_month) { 12 }
       let(:title) { "garemnt new title" }
       let(:description) { '我是新简述 新简述新简述' }
+      let(:add_tag_list) { '上衣,半裙' }
+      let(:remove_tag_list) { '上衣' }
       let(:row) { 1 }
       let(:carbit) { 3 }
       let(:place) { 2 }
