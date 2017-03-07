@@ -70,6 +70,7 @@ class Appointment < ApplicationRecord
   has_many :new_exhibition_chests, through: :new_chests
 
   after_create :generate_seq
+  after_create :send_sms
   after_save :create_template_message, if: :aasm_state_changed?
 
   def state
@@ -221,5 +222,9 @@ class Appointment < ApplicationRecord
     def generate_seq
       self.seq = "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
       self.save
+    end
+
+    def send_sms
+      SmsService.new('worker').new_appt(self) if Rails.env == production
     end
 end

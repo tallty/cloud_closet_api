@@ -63,6 +63,8 @@ gem 'aasm'
 # A tagging plugin for Rails applications that allows for custom tagging along dynamic contexts.
 # Read More ：https://github.com/mbleigh/acts-as-taggable-on
 gem 'acts-as-taggable-on', '~> 4.0'
+# SMS
+gem 'china_sms'
 ###############################################################################
 
 group :development, :test do

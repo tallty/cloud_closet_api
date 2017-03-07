@@ -40,7 +40,7 @@ resource "管理后台相关接口" do
 
     before do
 	    create_list(:store_method, 3)
-      create_list(:garment_tag, 4)
+      create_list(:garment_tag, 3)
       # 创建价格表
 	    @stocking_chest = create(:stocking_chest) 
 	    @group_chest1 = create(:group_chest1)
