@@ -225,6 +225,6 @@ class Appointment < ApplicationRecord
     end
 
     def send_sms
-      SmsService.new('worker').new_appt(self) if Rails.env == production
+      SmsService.new('worker').new_appt(self) if Rails.env == 'production'
     end
 end
