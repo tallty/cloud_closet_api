@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306075145) do
+ActiveRecord::Schema.define(version: 20170307065309) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -420,6 +420,14 @@ ActiveRecord::Schema.define(version: 20170306075145) do
     t.date     "start_time"
     t.index ["price_system_id"], name: "index_valuation_chests_on_price_system_id"
     t.index ["user_id"], name: "index_valuation_chests_on_user_id"
+  end
+
+  create_table "vip_levels", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "xp"
+    t.integer  "birthday_gift"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "wechat_sessions", force: :cascade do |t|

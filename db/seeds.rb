@@ -49,19 +49,36 @@ RechargeRule.create! (
 		{ id: 8, amount: 100000, credits: 20000 },
 	])
 RechargeRule.destroy_all
-GarmentTag.create (
+ConstantTag.create (
 	[
-		{ title: '上衣'},
-		{ title: '半裙'},
-		{ title: '连衣裙'},
-		{ title: '裤装'},
-		{ title: '外套'},
-		{ title: '羽绒服'},
-		{ title: '泳装'},
-		{ title: '春秋'},
-		{ title: '冬'},
-		{ title: '夏'},	
+		{ title: '上衣', class_type: 'garment'},
+		{ title: '半裙', class_type: 'garment'},
+		{ title: '连衣裙', class_type: 'garment'},
+		{ title: '裤装', class_type: 'garment'},
+		{ title: '外套', class_type: 'garment'},
+		{ title: '羽绒服', class_type: 'garment'},
+		{ title: '泳装', class_type: 'garment'},
+		{ title: '春秋', class_type: 'garment'},
+		{ title: '冬', class_type: 'garment'},
+		{ title: '夏', class_type: 'garment'},	
 	])
+VipLevel.destroy_all
+VipLevel.create!(
+	[
+		# { name: '普通会员', ex: 0, birthday_gift: 30 },
+		# { name: '银卡会员', ex: 800, birthday_gift: 30 },
+		# { name: '金卡会员', ex: 0, birthday_gift: 30 },
+		# { name: '砖石卡会员', ex: 0, birthday_gift: 30 },
+	]
+	)
+
+
+
+
+
+
+
+
 # user = User.where(phone: '18516591232').first
 # @appointment = Appointment.create(user: user, number: 50, date: "2016-09-24", care_cost: 111, care_type: '普通护理', service_cost: 222)
 # AppointmentPriceGroup.create(appointment: @appointment, price_system: PriceSystem.find(1), count: 1, store_month: 3)
