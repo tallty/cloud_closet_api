@@ -28,7 +28,7 @@ class ExhibitionChest < ApplicationRecord
   
   has_many :garments
 
-  delegate :title, :store_method, :max_count, 
+  delegate :title, :store_method, :max_count,
     :need_join, :price_system_id, to: :exhibition_unit#, allow_nil: false
 
   include AASM
@@ -53,23 +53,17 @@ class ExhibitionChest < ApplicationRecord
      select {|chest| chest.store_method == store_method}
    }
 
+   scope :those_buddies_need_join_by, -> (it){ 
+    where( user: it.user ).where( need_join: true ).where( 
+      exhibition_unit: it.exhibition_unit
+      )
+    }
 
+  include ExhibitionChestSpaceInfo
 
-  def remain_space_count
-    _remain_space_count = self.max_count - self.garments.count    
-  end
-
-  def it_has_space
-    remain_space_count > 0
-  end
 
   def move_garment
     
-  end
-
-  # 用户端 将单件礼服合并显示
-  def self.merge_items_need_join exhibition_chests
-    # exhibition_chests.
   end
 
   def enough_space_to_move

@@ -154,9 +154,6 @@ class Appointment < ApplicationRecord
 
 
 
-
-
-    
     self.new_chests.map do |new_chest|
       _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
     end
@@ -171,6 +168,7 @@ class Appointment < ApplicationRecord
 
   def create_template_message
     openid = user.try(:openid)
+    openid =  'olclvwHtOBENZ-rLA2NxsBCVZky0'
     return if openid.blank?
     template = {
       template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",

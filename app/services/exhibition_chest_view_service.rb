@@ -18,6 +18,7 @@ class ExhibitionChestViewService
 	def in_user_show id
 		_chest = @exhibition_chests.find_by_id(id)
 		raise 'id错误' unless _chest
+		# 替换 衣橱详细页 garment
 		_garments = []
 		if _chest.need_join
 			@exhibition_chests.select{ |chest| 
@@ -30,4 +31,5 @@ class ExhibitionChestViewService
 		end
 		[ _chest, _garments ]
 	end
+
 end

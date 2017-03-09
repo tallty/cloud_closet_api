@@ -17,7 +17,6 @@ class SmsService
     }
     ChinaSMS.use :yunpian, password: "255281473668c1ef1fc752b71ce575d8"
     result = ChinaSMS.to @phone_list, sms_hash, {tpl_id: tpl_id}
-    logger.info result
 	end
 
 end

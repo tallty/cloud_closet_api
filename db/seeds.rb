@@ -14,7 +14,7 @@ StoreMethod.create!(
 		{ id: 3, title: "full_dress", zh_title: "礼服"},
 		])	
 
-PriceSystem.destroy_all
+# PriceSystem.destroy_all
 PriceSystem.create!(
 	[
 		{ id: 1, title: '叠放柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
@@ -65,10 +65,10 @@ ConstantTag.create (
 VipLevel.destroy_all
 VipLevel.create!(
 	[
-		# { name: '普通会员', ex: 0, birthday_gift: 30 },
-		# { name: '银卡会员', ex: 800, birthday_gift: 30 },
-		# { name: '金卡会员', ex: 0, birthday_gift: 30 },
-		# { name: '砖石卡会员', ex: 0, birthday_gift: 30 },
+		# { name: '普通会员', rank: 1, ex: 0, birthday_gift: 30 },
+		# { name: '银卡会员', rank: 2 ex: 800, birthday_gift: 30 },
+		# { name: '金卡会员', rank: 3 ex: 0, birthday_gift: 30 },
+		# { name: '砖石卡会员', rank: 4 ex: 0, birthday_gift: 30 },
 	]
 	)
 
