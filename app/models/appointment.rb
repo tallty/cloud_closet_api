@@ -166,17 +166,18 @@ class Appointment < ApplicationRecord
     PurchaseLog.after_appt_stored(self)
   end
 
-  def create_template_message
-    WechatMessageService.new.appt_state_msg(self)
-  end
-
   private
+    def create_template_message
+      WechatMessageService.new(self.user).appt_state_msg(self)
+    end
+
     def generate_seq
       self.seq = "A#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
       self.save
     end
 
     def send_sms
-      SmsService.new('worker').new_appt(self) if Rails.env == 'production'
+      respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production'
+      logger.info respond
     end
 end

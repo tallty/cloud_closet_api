@@ -3,7 +3,7 @@ class WechatMessageService
 	def initialize user
 		@openid = user.try(:openid)
 		# @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
-		raise '用户openid 为空' if openid.blank?
+		raise '用户openid 为空' if @openid.blank?
 		@template = {}
 	end
 
@@ -17,44 +17,21 @@ class WechatMessageService
 			stored: '如有疑问，敬请咨询客服热线：15800634815', 
 			canceled: ''
 		}
-
-    template = {
-      template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
-      url: "http://closet.tallty.com/orders",
-      topcolor: "#FF0000",
-      data: {
-        first: {
-          value: "亲，您的预约订单状态变更，请注意查看。",
-          color: "#0A0A0A"
-        },
-        keyword1: {
-          value: "乐存好衣",
-          color: "#757575"
-        },
-        keyword2: 
-        {
-          value: "15800634815",
-          color: "#757575"
-        },
-        keyword3: {
-          value: appt.seq,
-          color: "#757575"
-        },
-        keyword4: {
-          value: appt.state,
-          color: "#757575"
-        },
-        keyword5: {
-          value: "#{appt.price == 0 ? "上门评估" : appt.price}",
-          color: "#757575"
-        },
-        remark: {
-          value: appt_state_remark[ appt.aasm_state.to_sym ],
-          color: "#173177"
-        }
-      }
-    }
-    template[:url] = 'http://closet.tallty.com/MyCloset' if appt.aasm_state == 'stored'
+    @template = Appt_state_msg
+    # 商家名称
+    @template[:date][:keyword1] = '乐存好衣'
+    # 商家电话
+    @template[:date][:keyword2] = '15800634815'
+    # 订单号
+    @template[:date][:keyword3] = appt.seq
+    # 状态
+    @template[:date][:keyword4] = appt.state
+    # 总价
+    @template[:date][:keyword5] = appt.price == 0 ? "上门评估" : appt.price
+    # 提示
+    @template[:date][:remark] = appt_state_remark[ appt.aasm_state.to_sym ]
+    # 点击触发地址 默认为我的订单页面 'http://closet.tallty.com/orders'
+    @template[:url] = 'http://closet.tallty.com/MyCloset' if appt.aasm_state == 'stored'
     
     send_msg
   end
@@ -64,5 +41,37 @@ class WechatMessageService
       { openid: @openid, template: @template}
     puts response.body
   end
+
+
+  Appt_state_msg = {
+      template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
+      url: "http://closet.tallty.com/orders",
+      topcolor: "#FF0000",
+      data: {
+        first: {
+          color: "#0A0A0A"
+        },
+        keyword1: {
+          color: "#757575"
+        },
+        keyword2: 
+        {
+          color: "#757575"
+        },
+        keyword3: {
+          color: "#757575"
+        },
+        keyword4: {
+          color: "#757575"
+        },
+        keyword5: {
+          color: "#757575"
+        },
+        remark: {
+          color: "#173177"
+        }
+      }
+    }
+
 
 end
