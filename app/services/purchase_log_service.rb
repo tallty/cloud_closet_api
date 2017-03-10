@@ -1,5 +1,5 @@
 class PurchaseLogService
-
+	# PurchaseLogService.new(user, ['service'], {appointment: @appt})
 	def initialize user, type_ary=[], options={}
 		options.each_pair do |key, value|
      instance_variable_set("@#{key}", value)
@@ -80,8 +80,6 @@ private
 		raise '创建参数缺失' unless params.values.include?(nil)
 	end
 
-
-
 end
 
-PurchaseLogService.new()
+
