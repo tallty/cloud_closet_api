@@ -10,7 +10,7 @@
 #  updated_at         :datetime         not null
 #  default_address_id :integer
 #  balance            :float            default(0.0)
-#  credits            :integer          default(0)
+#  credit             :integer          default(0)
 #  recharge_amount    :integer          default(0)
 #
 # Indexes

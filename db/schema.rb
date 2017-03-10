@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307070808) do
+ActiveRecord::Schema.define(version: 20170310014712) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -386,7 +386,7 @@ ActiveRecord::Schema.define(version: 20170307070808) do
     t.datetime "updated_at",                       null: false
     t.integer  "default_address_id"
     t.float    "balance",            default: 0.0
-    t.integer  "credits",            default: 0
+    t.integer  "credit",             default: 0
     t.integer  "recharge_amount",    default: 0
     t.index ["user_id"], name: "index_user_infos_on_user_id"
   end
