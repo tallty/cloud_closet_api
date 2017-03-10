@@ -110,7 +110,7 @@ class Appointment < ApplicationRecord
   end
 
   def set_detail
-    self.detail = self.groups.map { |group| "#{group.title},#{group.count}个,#{group.price && group.price.to_s + '元/月'},#{group.store_month}" }.join(";")
+    self.detail = self.groups.map { |group| "#{group.title}, * ,#{group.count}个,#{group.price && group.price.to_s + '元/月'},#{group.store_month}" }.join(";")
     self.detail += ";服务:,#{self.service_cost};护理费:,#{care_cost};护理类型:,#{care_type};租用费总计:,#{rent_charge}"
     self.save
   end

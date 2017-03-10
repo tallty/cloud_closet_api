@@ -30,11 +30,11 @@ class PingppService
       channel: _channel,
       client_ip: request.remote_ip,
       extra: _extra,
-      amount: 1,
+      amount: params[:amount],
       subject: params[:subject],
       body: params[:body],
       openid: params[:openid],
-      metadata: "{\"amount\":#{params[:amount]}}"
+      metadata: params[:metadata]
       )
 
 		#在ping++平台创建一条记录

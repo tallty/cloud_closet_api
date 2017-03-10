@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310014712) do
+ActiveRecord::Schema.define(version: 20170310024839) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -310,15 +310,15 @@ ActiveRecord::Schema.define(version: 20170310014712) do
   end
 
   create_table "purchase_logs", force: :cascade do |t|
-    t.string   "operation_type"
     t.string   "operation"
-    t.float    "change"
     t.string   "payment_method"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "user_info_id"
     t.text     "detail"
     t.float    "balance"
+    t.float    "amount"
+    t.boolean  "is_increased"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end
 

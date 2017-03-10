@@ -26,7 +26,9 @@ class PingRequest < ApplicationRecord
                           :order_no  => self.order_no,
                           :app       => { :id => APP_ID },
                           :channel   => self.channel, #'wx_pub',
-                          :amount    => self.amount,
+                          #!!!### 临时充值为 0.01 元 ###########
+                          :amount    => 1, #self.amount,
+                          ################################
                           :client_ip => self.client_ip, #Pingplusplus.new.get_client_id,
                           :currency  => "cny",
                           :subject   => self.subject,
@@ -36,11 +38,7 @@ class PingRequest < ApplicationRecord
                            ) 
 	end
 
-  def self.create_order_no #order_no 允许重复
-    chars =  ('1'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
-    Array.new(8).collect{chars[rand(chars.size - 1)]}.join 
-  end
-
+  
   def send_recharge_success_message balance
     openid = self.openid
     template = {
