@@ -1,4 +1,5 @@
 class PurchaseLogService
+
 	# PurchaseLogService.new(user, ['service'], {appointment: @appt})
 	def initialize user, type_ary=[], options={}
 		options.each_pair do |key, value|
@@ -14,9 +15,11 @@ class PurchaseLogService
 		@type_ary.each do |type|
 			# undefind method 错误处理？
 			send("set_#{type}_params")
-			@user_info.purchase_logs.create!(purchase_log_params)
+			purchase_log = @user_info.purchase_logs.create!(purchase_log_params)
+			change_balance(purchase_log)
 		end
 	end
+
 
 	def set_service_params
 		@operation = '服务费'
@@ -56,7 +59,7 @@ class PurchaseLogService
 		@payment_method = '在线支付'
 		@detail = ''
 		@amount = 0
-		@is_increased = 
+		@is_increased = true
 	end
 
 	def set_distribution_params
@@ -71,15 +74,22 @@ private
 
 	def purchase_log_params
 		params = {
-			operation: @operation
-			payment_method: @payment_method
-			detail: @detail
-			amount: @amount
+			operation: @operation,
+			payment_method: @payment_method,
+			detail: @detail,
+			amount: @amount,
 			is_increased: @is_increased
 		}
 		raise '创建参数缺失' unless params.values.include?(nil)
 	end
 
+	def change_balance purchase_log
+		# user_info = purchase_log.user_info
+		# user = user_info.user
+		# if purchase_log.is_increased 
+
+		# 	WechatMessageService.new(user).
+	end
 end
 
 

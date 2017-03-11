@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: recharge_rules
+#
+#  id         :integer          not null, primary key
+#  amount     :float
+#  credits    :float            default(0.0)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 FactoryGirl.define do
   factory :recharge_rule do
     amount_ary = [ 1000, 2000, 3000, 5000, 10000 ]

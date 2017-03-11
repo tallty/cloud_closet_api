@@ -1,4 +1,6 @@
-json.extract! purchase_log, :id, :user_info_id, :balance, :operation_type, :operation, :payment_method, :change_output, :what_day, :date, :time, :created_at, :updated_at
+json.extract! purchase_log, :id, :user_info_id, :balance, :operation, :payment_method,
+ :amount_output, :what_day, :date, :time, 
+ :created_at, :updated_at
 
 if purchase_log.detail
 	_detail = purchase_log.detail.split(";")

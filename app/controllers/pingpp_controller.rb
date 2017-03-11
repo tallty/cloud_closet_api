@@ -23,7 +23,7 @@ class PingppController < ApplicationController
 		# 	subject: params[:subject],
 		# 	body: params[:body],
 		# 	openid: params[:openid],
-  #     metadata: params[:metadata]
+    #   metadata: params[:metadata]
 		# 	)
     # 临时充值为 0.01 元
     @ping_request = PingRequest.new(
@@ -92,8 +92,8 @@ class PingppController < ApplicationController
             #生成账单记录
             _purchase_log = PurchaseLog.create_one_with_ping_request(@ping_request)
             #发送微信消息 
-            @ping_request.send_recharge_success_message(_purchase_log.balance)
-
+            # @ping_request.send_recharge_success_message(_purchase_log.balance)
+            WechatMessageService.new(@ping_request.user).recharge_msg(@ping_request)
             status = 200
           else
             status = 500

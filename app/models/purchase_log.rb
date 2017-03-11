@@ -20,18 +20,17 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	after_create :cut_payment
+	after_create :change_balance
 
 	def self.create_one_with_ping_request _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
 		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
 		# 临时充值为 0.01 元 而余额体现充值数量
-		_change = JSON.parse(_ping_request.metadata)['amount']
-		# _change = (_ping_request.amount.to_f/100).round(2) 
+		_amount = JSON.parse(_ping_request.metadata)['amount']
+		# _amount = (_ping_request.amount.to_f/100).round(2) 
 		PurchaseLog.create(
-                operation_type: _ping_request.subject,
                 operation: _ping_request.body,
-                change: _change,
+                amount: _amount,
                 detail: _metadata['detail'] || "",
                 user_info: User.where(openid: _ping_request.openid).first.user_info,
                 payment_method: _channel
@@ -45,8 +44,7 @@ class PurchaseLog < ApplicationRecord
 	def self.create_one_with_storing_garment appointment
 		PurchaseLog.create(
 			operation: "购买衣橱/服务费与护理费",
-			operation_type: "消费",
-			change: appointment.price_except_rent,
+			amount: appointment.price_except_rent,
 			detail: appointment.detail,
 			user_info: appointment.user.user_info,
 			payment_method: "余额支付"
@@ -56,11 +54,10 @@ class PurchaseLog < ApplicationRecord
 	def self.after_appt_stored appointment
 		_ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
     _detail = appointment.groups.map { |group| "#{group.title},#{group.count}个,#{group.price.to_s + '元/月'},本次收费: #{group.price * _ratio}元 " }.join(";")
-    _change = appointment.groups.map { |group| group.price * _ratio }.reduce(:+) || 0
+    _amount = appointment.groups.map { |group| group.price * _ratio }.reduce(:+) || 0
 		PurchaseLog.create(
 			operation: "本次订单新增衣橱的本月租金",
-			operation_type: "消费",
-			change: _change,
+			amount: _amount,
 			detail: _detail,
 			user_info: appointment.user.user_info,
 			payment_method: "余额支付"
@@ -73,7 +70,6 @@ class PurchaseLog < ApplicationRecord
 		User.all.each do |user|
 			# 缺少错误处理
 			user.purchase_logs.create(
-				operation_type: "消费",
 				detail: user.create_monthly_bill_info.join("@;@").join("@,@"),
 				operation: "租用衣柜"
 				)
@@ -82,15 +78,10 @@ class PurchaseLog < ApplicationRecord
 	end
 
 
-	def change_output
-		case self.operation_type
-		when "充值"
-			"+%.2f"%self.change
-		when "发票"
-			"%.2f"%self.change
-		else #消费 提现 复数
-			"%.2f"%self.change
-		end
+	def amount_output
+		self.is_increased ?
+			"+%.2f"%self.amount :
+			"-%.2f"%self.amount
 	end
 
 	def date
@@ -128,9 +119,10 @@ class PurchaseLog < ApplicationRecord
 
 	private
 
-	def cut_payment
-		self.user_info.balance += self.change if self.operation_type == "充值" || self.operation == "充值" 
-		self.user_info.balance -= self.change if self.operation_type == "消费" || self.operation_type == "提现"
+	def change_balance
+		self.is_increased ? 
+			self.user_info.balance += self.amount : 
+			self.user_info.balance -= self.amount 
 		self.user_info.balance = self.user_info.balance.round(2)
 		self.user_info.save
 		self.balance = self.user_info.balance
