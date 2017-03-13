@@ -44,6 +44,7 @@ class User < ApplicationRecord
   validate :sms_token_validate, on: :create
 
   has_one :user_info, dependent: :destroy
+  has_many :offline_recharges
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :purchase_logs, through: :user_info

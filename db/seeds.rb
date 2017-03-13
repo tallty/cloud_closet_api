@@ -15,27 +15,27 @@ StoreMethod.create!(
 		])	
 
 # PriceSystem.destroy_all
-PriceSystem.create!(
-	[
-		{ id: 1, title: '叠放柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
-		{ id: 2, title: '挂柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
-		{ id: 3, title: '组合柜', price: 400, description: '*组合柜可存放60件折叠和20件挂放', is_chest: true, unit_name: '月' },
-		{ id: 4, title: '单件礼服', price: 60, description: '我是单件礼服 ,每月60', is_chest: true, unit_name: '月' },
-		{ id: 5, title: '礼服柜', price: 600, description: '	礼服柜可存放12件贵重礼服，适合存放大件礼服；', is_chest: true, unit_name: '月' },
-		{ id: 6, title: '真空袋-中', price: 10, description: '我是真空袋中号', is_chest: false, unit_name: '个' },
-		{ id: 7, title: '真空袋-大', price: 10, description: '我是真空袋大号', is_chest: false, unit_name: '个' }
-		])		
-ExhibitionUnit.destroy_all
-ExhibitionUnit.create!  (
-	[
-		{ id: 1, title: "叠放柜", store_method: "stacking", max_count: 60, need_join: false, price_system_id: 1 },
-		{ id: 2, title: "挂柜", store_method: "hanging", max_count: 20, need_join: false, price_system_id: 2 },
-		{ id: 3, title: "组合柜-叠放柜", store_method: "stacking", max_count: 60, need_join: false, price_system_id: 3 },
-		{ id: 4, title: "组合柜-挂柜", store_method: "hanging", max_count: 20, need_join: false, price_system_id: 3 },
-		{ id: 6, title: "单件礼服", store_method: 'full_dress', max_count: 1, need_join: true, price_system_id: 4 },
-		{ id: 5, title: "礼服柜", store_method: 'full_dress', max_count: 12, need_join: false, price_system_id: 5 },
+# PriceSystem.create!(
+# 	[
+# 		{ id: 1, title: '叠放柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
+# 		{ id: 2, title: '挂柜', price: 180, description: '叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售', is_chest: true, unit_name: '月' },
+# 		{ id: 3, title: '组合柜', price: 400, description: '*组合柜可存放60件折叠和20件挂放', is_chest: true, unit_name: '月' },
+# 		{ id: 4, title: '单件礼服', price: 60, description: '我是单件礼服 ,每月60', is_chest: true, unit_name: '月' },
+# 		{ id: 5, title: '礼服柜', price: 600, description: '	礼服柜可存放12件贵重礼服，适合存放大件礼服；', is_chest: true, unit_name: '月' },
+# 		{ id: 6, title: '真空袋-中', price: 10, description: '我是真空袋中号', is_chest: false, unit_name: '个' },
+# 		{ id: 7, title: '真空袋-大', price: 10, description: '我是真空袋大号', is_chest: false, unit_name: '个' }
+# 		])		
+# ExhibitionUnit.destroy_all
+# ExhibitionUnit.create!  (
+# 	[
+# 		{ id: 1, title: "叠放柜", store_method: "stacking", max_count: 60, need_join: false, price_system_id: 1 },
+# 		{ id: 2, title: "挂柜", store_method: "hanging", max_count: 20, need_join: false, price_system_id: 2 },
+# 		{ id: 3, title: "组合柜-叠放柜", store_method: "stacking", max_count: 60, need_join: false, price_system_id: 3 },
+# 		{ id: 4, title: "组合柜-挂柜", store_method: "hanging", max_count: 20, need_join: false, price_system_id: 3 },
+# 		{ id: 6, title: "单件礼服", store_method: 'full_dress', max_count: 1, need_join: true, price_system_id: 4 },
+# 		{ id: 5, title: "礼服柜", store_method: 'full_dress', max_count: 12, need_join: false, price_system_id: 5 },
 		
-		])
+# 		])
 RechargeRule.destroy_all
 RechargeRule.create! (
 	[
@@ -65,10 +65,10 @@ ConstantTag.create (
 VipLevel.destroy_all
 VipLevel.create!(
 	[
-		# { name: '普通会员', rank: 1, ex: 0, birthday_gift: 30 },
-		# { name: '银卡会员', rank: 2 ex: 800, birthday_gift: 30 },
-		# { name: '金卡会员', rank: 3 ex: 0, birthday_gift: 30 },
-		# { name: '砖石卡会员', rank: 4 ex: 0, birthday_gift: 30 },
+		{ name: '普通会员', rank: 1, ex: 0, birthday_gift: 30 },
+		{ name: '银卡会员', rank: 2 ex: 800, birthday_gift: 30 },
+		{ name: '金卡会员', rank: 3 ex: 6000, birthday_gift: 30 },
+		{ name: '砖石卡会员', rank: 4 ex: 20000, birthday_gift: 30 },
 	]
 	)
 

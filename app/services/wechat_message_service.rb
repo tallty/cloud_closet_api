@@ -10,6 +10,13 @@ class WechatMessageService
     @merchant_name = '乐存好衣'
 	end
 
+  def send_msg type, *arg
+    send('type', arg )
+    response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
+      { openid: @openid, template: @template}
+    puts response.body
+  end
+
 	def appt_state_msg appt
     # @merchant_name = '乐存好衣'
     # @merchant_phone = '15800634815'
@@ -23,28 +30,31 @@ class WechatMessageService
             'http://closet.tallty.com/orders'
     
     @template = appt_state_template
-    send_msg
   end
 
-  def recharge_msg ping_request
-    @amount = ping_request
-    @credit = 
+  def online_recharge_msg ping_request
+    @amount = ping_request.amount
+    @credit = ping_request.credit
     @balance_now =
     @remark = "如有疑问，敬请咨询：#{@merchant_phone}." 
 
     @template = @recharge_template
-    send_msg
   end
+
+  # def offline_recharge_msg ping_request
+  #   @amount = ping_request.amount
+  #   @credit = ping_request.credit
+  #   @balance_now =
+  #   @remark = "如有疑问，敬请咨询：#{@merchant_phone}." 
+
+  #   @template = @recharge_template
+  # end
 
   def consume_msg
     
   end
 
-  def send_msg
-  	response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
-      { openid: @openid, template: @template}
-    puts response.body
-  end
+
 
 
    def appt_remark_list

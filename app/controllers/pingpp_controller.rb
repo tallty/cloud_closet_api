@@ -88,12 +88,17 @@ class PingppController < ApplicationController
           #更新字段
           @ping_request.complete = event['data']['object']['paid']  
 
-          if @ping_request.save 
+          if @ping_request.save
             #生成账单记录
-            _purchase_log = PurchaseLog.create_one_with_ping_request(@ping_request)
+            user = @ping_request.user
+            PurchaseLogService.new(
+              user, ['pingpp_recharge', 'credit'],
+              {
+                ping_request: @ping_request
+                })
+
             #发送微信消息 
-            # @ping_request.send_recharge_success_message(_purchase_log.balance)
-            WechatMessageService.new(@ping_request.user).recharge_msg(@ping_request)
+            WechatMessageService.new(user).recharge_msg(@ping_request)
             status = 200
           else
             status = 500
