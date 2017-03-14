@@ -17,47 +17,50 @@ class WechatMessageService
     puts response.body
   end
 
+  # ---- 订单状态改变 微信通知 --- #
+
 	def appt_state_msg appt
-    # @merchant_name = '乐存好衣'
-    # @merchant_phone = '15800634815'
     @appt_seq = appt.seq
     @appt_state = appt.state
     @appt_amount = appt.price == 0 ? "上门评估" : appt.price
     @remark = appt_remark_list[ appt.aasm_state.to_sym ]
-    # 点击触发地址 默认为我的订单页面 'http://closet.tallty.com/orders'
+    
     @url = appt.stored? ? 
             'http://closet.tallty.com/MyCloset' :
             'http://closet.tallty.com/orders'
-    
     @template = appt_state_template
   end
 
-  def online_recharge_msg ping_request
-    @amount = ping_request.amount
-    @credit = ping_request.credit
-    @balance_now =
-    @remark = "如有疑问，敬请咨询：#{@merchant_phone}." 
+  # ---- 充值 微信通知 --- #
 
-    @template = @recharge_template
-  end
-
-  # def offline_recharge_msg ping_request
-  #   @amount = ping_request.amount
-  #   @credit = ping_request.credit
-  #   @balance_now =
-  #   @remark = "如有疑问，敬请咨询：#{@merchant_phone}." 
-
-  #   @template = @recharge_template
-  # end
-
-  def consume_msg
+  def online_recharge_msg purchase_log
+    @title = purchase_log
+    @amount = purchase_log.amount
+    @time = purchase_log.created_at
+    @remark = "当前余额: #{purchase_log.balance} 元\n" + 
+                "如有疑问，敬请咨询：#{@merchant_phone}." 
     
+    @url = 'http://closet.tallty.com/user'
+    @template = recharge_template
   end
 
+  # ---- 消费 微信通知 --- #
 
+  def consume_msg purchase_log
+    @title = '您的消费成功'
+    @amount = purchase_log.amount
+    @operation = purchase_log.operation
+    @balance_now = purchase_log.balance
+    @time = purchase_log.created_at
+    @remark = '谢谢您的支持（balabala...）'
+    
+    @url = 'http://closet.tallty.com/user'
+    @template = consume_template
+  end
 
+  # ---- 订单状态改变 t提示不同备注 --- #
 
-   def appt_remark_list
+  def appt_remark_list
     {
       committed: '工作人员即将与您联系确认订单。', 
       accepted: '请您留意上门时间，作好合理安排。', 
@@ -72,7 +75,7 @@ class WechatMessageService
   def appt_state_template 
    template = {
       template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
-      url: "http://closet.tallty.com/orders",
+      url: @url,
       topcolor: "#FF0000",
       data: {
         first: {
@@ -109,30 +112,69 @@ class WechatMessageService
   end
 
   def recharge_template
-     template = {
-      template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0",
-      url: "http://closet.tallty.com/user",
+    template = {
+      template_id: "q-PZND2iTTkNRAEwcWGsK9ETN6_ryMfvn2Q0eSs11rA",
+      url: @url, 
       topcolor: "#FF0000",
 
       data: {
         first: {
-          value: "充值成功",
+          value: @title,
           color: "#0A0A0A"
         },
+        # 本次充值
         keyword1: {
           value: @amount,
           color: "#757575"
         },
+        # 充值时间
         keyword2: {
-          value: @credit,
+          value: @time,
           color: "#757575"
-        },#赠送金额
+        },
+        remark: {
+          value: @remark,
+          color: "#173177"
+        }
+      }
+    }
+
+  end
+
+  def consume_template
+     template = {
+      template_id: "hFCXLN4imU5Zh7ZgjjmaHyAxhXotxHu4MwEeJCYAIjk",
+      url: @usl, #{}"http://closet.tallty.com/user",
+      topcolor: "#FF0000",
+
+      data: {
+        first: {
+          value: @title,
+          color: "#0A0A0A"
+        },
+        # 消费金额
+        keyword1: {
+          value: @amount,
+          color: "#757575"
+        },
+        # 消费类型
+        keyword2: {
+          value: @operation,
+          color: "#757575"
+        },
+        # 充值门店
         keyword3: {
-          value: "#{@merchant_name}",
+          value: @merchant_name,
           color: "#757575"
-        },#充值门店
+        },
+        # 卡内余额
         keyword4: {
           value: @balance_now,
+          color: "#757575"
+        },
+        # 消费时间
+        keyword5: {
+          value: @time,
           color: "#757575"
         },
         remark: {
@@ -142,4 +184,41 @@ class WechatMessageService
       }
     }
   end
+
+
+  # def recharge_template
+  #    template = {
+  #     template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0",
+  #     url: "http://closet.tallty.com/user",
+  #     topcolor: "#FF0000",
+
+  #     data: {
+  #       first: {
+  #         value: "充值成功",
+  #         color: "#0A0A0A"
+  #       },
+  #       keyword1: {
+  #         value: @amount,
+  #         color: "#757575"
+  #       },
+  #       keyword2: {
+  #         value: @credit,
+  #         color: "#757575"
+  #       },#赠送金额
+  #       keyword3: {
+  #         value: "#{@merchant_name}",
+  #         color: "#757575"
+  #       },#充值门店
+  #       keyword4: {
+  #         value: @balance_now,
+  #         color: "#757575"
+  #       },
+  #       remark: {
+  #         value: @remark,
+  #         color: "#173177"
+  #       }
+  #     }
+  #   }
+  # end
+
 end
