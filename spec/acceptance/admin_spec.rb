@@ -32,66 +32,70 @@ resource "管理后台相关接口" do
   #   end
   # end
 
-  describe 'appointment condition is all correct' do
+  before do 
+
     admin_attrs = FactoryGirl.attributes_for(:admin)
+    price_system_attrs = FactoryGirl.attributes_for(:stocking_chest)
 
     header "X-Admin-Token", admin_attrs[:authentication_token]
     header "X-Admin-Email", admin_attrs[:email]
 
-    before do
-	    create_list(:store_method, 3)
-      create_list(:garment_tag, 3)
-      # 创建价格表
-	    @stocking_chest = create(:stocking_chest) 
-	    @group_chest1 = create(:group_chest1)
-	    @alone_full_dress_chest = create(:alone_full_dress_chest)
-	    @vacuum_bag_medium = create(:vacuum_bag_medium)
+    create_list(:store_method, 3)
+    create_list(:garment_tag, 3)
+    # 创建价格表
+    @stocking_chest = create(:stocking_chest) 
+    @group_chest1 = create(:group_chest1)
+    @alone_full_dress_chest = create(:alone_full_dress_chest)
+    @vacuum_bag_medium = create(:vacuum_bag_medium)
 
-      @user = create(:user)
-      @user_info = create(:user_info, user: @user)
-      @admin = create(:admin)
-      price_system_ary = [@stocking_chest, @group_chest1, @alone_full_dress_chest, @vacuum_bag_medium]
-	    @appointments = create_list(
-		      :appointment, 4,
-		      user: @user, 
-		      garment_count_info: {
-		        hanging: 15,
-		        full_dress: 5 
-		      }
-		      )
-	    price_system_ary.each do |price_system|
-	      create(:appointment_price_group, 
-	          appointment: @appointments.first,
-	          price_system: price_system
-	          )
-      end
-      @appointments.first.accept!
-      @appointments.first.service!
-      @appointments.first.pay!
-      @appointments.first.storing!
-
-      @appointments.second.accept!
-      @appointments.second.service!
-      @appointments.second.pay!
-      @appointments.second.storing!
-	    @appointments.second.stored! #??
-
-	    @exhibition_chests = @user.exhibition_chests
-	    # 创建用户原有衣柜
-	    @valuation_chest = create(:valuation_chest,
-	    	price_system: @stocking_chest,
-	    	user: @user)
-	    @exhibition_chest1 = create(:exhibition_chest, 
-	    	exhibition_unit: @stocking_chest.exhibition_units.first,
-	    	custom_title: 'aaaaaaaaaaaaaa',
-	    	valuation_chest: @valuation_chest,
-	    	user: @user
-	    	)
-	    @garments = create_list(
-	    	:garment, 3,
-	    	exhibition_chest: @exhibition_chests.first,
-	    	) 
+    @user = create(:user)
+    @worker = create(:worker)
+    @user_info = create(:user_info, user: @user)
+    @admin = create(:admin)
+    price_system_ary = [@stocking_chest, @group_chest1, @alone_full_dress_chest, @vacuum_bag_medium]
+    @appointments = create_list(
+        :appointment, 4,
+        user: @user, 
+        garment_count_info: {
+          hanging: 15,
+          full_dress: 5 
+        }
+        )
+    price_system_ary.each do |price_system|
+      create(:appointment_price_group, 
+          appointment: @appointments.first,
+          price_system: price_system
+          )
     end
+    @appointments.first.accept!
+    @appointments.first.service!
+    @appointments.first.pay!
+    @appointments.first.storing!
+
+    @appointments.second.accept!
+    @appointments.second.service!
+    @appointments.second.pay!
+    @appointments.second.storing!
+    @appointments.second.stored! #??
+
+    @exhibition_chests = @user.exhibition_chests
+    # 创建用户原有衣柜
+    @valuation_chest = create(:valuation_chest,
+      price_system: @stocking_chest,
+      user: @user)
+    @exhibition_chest1 = create(:exhibition_chest, 
+      exhibition_unit: @stocking_chest.exhibition_units.first,
+      custom_title: 'aaaaaaaaaaaaaa',
+      valuation_chest: @valuation_chest,
+      user: @user
+      )
+    @garments = create_list(
+      :garment, 3,
+      exhibition_chest: @exhibition_chests.first,
+      ) 
+  end
+
+  describe 'appointment condition is all correct' do
 
     get 'admin/appointments' do
 
@@ -120,7 +124,7 @@ resource "管理后台相关接口" do
 
     get 'admin/appointments/:id/its_chests' do
     	let(:id) { @appointments.first.id }
-      example "【new】管理员获取指定的订单下面的所有 该用户可操作衣柜 成功" do
+      example "管理员获取指定的订单下面的所有 该用户可操作衣柜 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -161,7 +165,7 @@ resource "管理后台相关接口" do
       let(:detail_image_2_attributes) { image_attrs }
       let(:detail_image_3_attributes) { image_attrs }
 
-      example "【new】管理员创建 对应衣柜中的衣服的详细信息成功" do
+      example "管理员创建 对应衣柜中的衣服的详细信息成功" do
         do_request
         puts response_body
         expect(status).to eq(201)
@@ -203,7 +207,7 @@ resource "管理后台相关接口" do
       let(:detail_image_2_attributes) { image_attrs }
       let(:detail_image_3_attributes) { image_attrs }
 
-      example "【rewrite】管理员修改 对应衣柜中的衣服的详细信息成功" do
+      example "管理员修改 对应衣柜中的衣服的详细信息成功" do
         do_request
         puts response_body
         expect(status).to eq(201)
@@ -213,7 +217,7 @@ resource "管理后台相关接口" do
     get 'admin/exhibition_chests/:id/garments' do
       let(:id) { @exhibition_chests.first.garments.first.id }
 
-      example "【new】管理员某衣柜的所有衣服 成功" do
+      example "管理员某衣柜的所有衣服 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -224,7 +228,7 @@ resource "管理后台相关接口" do
       let(:exhibition_chest_id) { @exhibition_chests.first }
       let(:id) { @exhibition_chests.first.garments.first.id }
 
-      example "【new】管理员某衣柜中 某一衣服 成功" do
+      example "管理员某衣柜中 某一衣服 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -277,21 +281,7 @@ resource "管理后台相关接口" do
   end
 
   describe '价格系统操作' do
-    admin_attrs = FactoryGirl.attributes_for(:admin)
-    price_system_attrs = FactoryGirl.attributes_for(:stocking_chest)
-
-    header "X-Admin-Token", admin_attrs[:authentication_token]
-    header "X-Admin-Email", admin_attrs[:email]
-
-    before do
-      create_list(:store_method, 3)
-      @admin = create(:admin)
-      @group_chest1 = create(:group_chest1)
-      @alone_full_dress_chest = create(:alone_full_dress_chest)
-      @vacuum_bag_medium = create(:vacuum_bag_medium)
-      @price_systems = PriceSystem.all
-    end
-
+  
     get 'admin/price_systems' do
 
       parameter :page, "当前页", required: false
@@ -343,36 +333,48 @@ resource "管理后台相关接口" do
       end
     end
 
-    # put 'admin/price_systems/:id' do
+  describe '线下充值' do
 
-    #   let(:id) {@price_systems.first.id}
+    before do 
+      @offline_recharges = create_list(
+          :offline_recharge, 3,
+          user: @user,
+          worker: @worker
+        )
+    end
 
-    #   parameter :name, "价目的衣服类型名称", required: false, scope: :price_system
-    #   parameter :season, "价目的衣服季节", required: false, scope: :price_system
-    #   parameter :price, "价目的单价", required: false, scope: :price_system
+    post 'admin/offline_recharges/:id/to_confirmed_or_not' do
+      
+      let(:id) {@offline_recharges.first.id}
 
-    #   let(:name) { "new 上衣" }
-    #   let(:season) { "new 春夏" }
-    #   let(:price) { "2333" }
+      example "【new】管理员 确认/取消确认 线下充值单据" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
 
-    #   example "管理员修改某价目信息成功" do
-    #     do_request
-    #     puts response_body
-    #     expect(status).to eq(201)
-    #   end
-    # end
+    get 'admin/offline_recharges' do
 
-    # delete 'admin/price_systems/:id' do
+      example "【new】管理员 查询 线下充值单据 列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-    #   let(:id) {@price_systems.first.id}
+    get 'admin/offline_recharges/:id' do
 
-    #   example "管理员删除某价目成功" do
-    #     do_request
-    #     puts response_body
-    #     expect(status).to eq(204)
-    #   end
-    # end
+      let(:id) {@offline_recharges.first.id}
+
+      example "【new】管理员 查询 某线下充值单据 详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
   end
+end
 
 end

@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       end
       get 'state_query', on: :collection
     end    
+    resources :offline_recharges, only: [:index, :show, :create]
     resources :price_systems, only: [:index, :show]
   end
   # -------------------------------------------------------- 
@@ -75,6 +76,12 @@ Rails.application.routes.draw do
       member do 
         post 'stored'
         get 'its_chests'
+      end
+    end
+
+    resources :offline_recharges, only: [:index, :show] do 
+      member do 
+        post 'to_confirmed_or_not'
       end
     end
 

@@ -285,10 +285,11 @@ ActiveRecord::Schema.define(version: 20170313033044) do
   create_table "offline_recharges", force: :cascade do |t|
     t.float    "amount"
     t.float    "credit"
+    t.boolean  "is_confirmed"
     t.integer  "worker_id"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.index ["user_id"], name: "index_offline_recharges_on_user_id"
     t.index ["worker_id"], name: "index_offline_recharges_on_worker_id"
   end

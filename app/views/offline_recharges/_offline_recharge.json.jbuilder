@@ -1,0 +1,1 @@
+json.extract! offline_recharge, :id, :amount, :credit, :user_id, :worker_id, :is_confirmed, :created_at, :updated_at
