@@ -1,6 +1,6 @@
 class WechatMessageService
+  # e.g. WechatMessageService.new(user).appt_state_msg(@appt)
 
-  # e.g. WechatMessageService.new(user).appt_state_msg(appt)
 	def initialize user
 		@openid = user.try(:openid)
 		# @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
@@ -10,10 +10,10 @@ class WechatMessageService
     @merchant_name = '乐存好衣'
 	end
 
-  def send_msg type, *arg
-    send('type', arg )
+  def send_msg type, arg
+    send('type', arg)
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
-      { openid: @openid, template: @template}
+      { openid: @openid, template: @template }
     puts response.body
   end
 
@@ -23,7 +23,7 @@ class WechatMessageService
     @appt_seq = appt.seq
     @appt_state = appt.state
     @appt_amount = appt.price == 0 ? "上门评估" : appt.price
-    @remark = appt_remark_list[ appt.aasm_state.to_sym ]
+    @remark = appt_remark_list[appt.aasm_state.to_sym]
     
     @url = appt.stored? ? 
             'http://closet.tallty.com/MyCloset' :
@@ -33,8 +33,8 @@ class WechatMessageService
 
   # ---- 充值 微信通知 --- #
 
-  def online_recharge_msg purchase_log
-    @title = purchase_log
+  def recharge_msg purchase_log
+    @title = "#{purchase_log.operation}"
     @amount = purchase_log.amount
     @time = purchase_log.created_at
     @remark = "当前余额: #{purchase_log.balance} 元\n" + 
@@ -47,18 +47,18 @@ class WechatMessageService
   # ---- 消费 微信通知 --- #
 
   def consume_msg purchase_log
-    @title = '您的消费成功'
+    @title = '您有一笔最新消费信息'
     @amount = purchase_log.amount
     @operation = purchase_log.operation
     @balance_now = purchase_log.balance
     @time = purchase_log.created_at
-    @remark = '谢谢您的支持（balabala...）'
+    @remark = '谢谢您的支持'
     
     @url = 'http://closet.tallty.com/user'
     @template = consume_template
   end
 
-  # ---- 订单状态改变 t提示不同备注 --- #
+  # ---- 订单状态改变 提示不同备注 --- #
 
   def appt_remark_list
     {
@@ -71,7 +71,9 @@ class WechatMessageService
       canceled: ''
     }
   end
-    
+  
+  # ---- 微信模板 --- #
+
   def appt_state_template 
    template = {
       template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
