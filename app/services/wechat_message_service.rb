@@ -19,17 +19,17 @@ class WechatMessageService
 		}
     @template = Appt_state_msg
     # 商家名称
-    @template[:date][:keyword1] = '乐存好衣'
+    @template[:data][:keyword1] = '乐存好衣'
     # 商家电话
-    @template[:date][:keyword2] = '15800634815'
+    @template[:data][:keyword2] = '15800634815'
     # 订单号
-    @template[:date][:keyword3] = appt.seq
+    @template[:data][:keyword3] = appt.seq
     # 状态
-    @template[:date][:keyword4] = appt.state
+    @template[:data][:keyword4] = appt.state
     # 总价
-    @template[:date][:keyword5] = appt.price == 0 ? "上门评估" : appt.price
+    @template[:data][:keyword5] = appt.price == 0 ? "上门评估" : appt.price
     # 提示
-    @template[:date][:remark] = appt_state_remark[ appt.aasm_state.to_sym ]
+    @template[:data][:remark] = appt_state_remark[ appt.aasm_state.to_sym ]
     # 点击触发地址 默认为我的订单页面 'http://closet.tallty.com/orders'
     @template[:url] = 'http://closet.tallty.com/MyCloset' if appt.aasm_state == 'stored'
     
