@@ -38,7 +38,7 @@ class OfflineRecharge < ApplicationRecord
 		def create_purchase_log
 			p 'here'
 			PurchaseLogService.new(
-					self.user, ['offline_recharge'],
+					self.user, ['offline_recharge', 'credit'],
 					{
 						offline_recharge: self
 					}

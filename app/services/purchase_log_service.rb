@@ -98,8 +98,7 @@ class PurchaseLogService
 		@payment_method = '微信支付'
 			I18n.t :"pingpp_channel.#{@ping_request.channel}"
 		@detail = ''
-		p '===amount==='
-		p @amount = @ping_request.amount
+		@amount = @ping_request.amount
 		@actual_amount = @amount
 		@is_increased = true
 	end
@@ -114,13 +113,16 @@ class PurchaseLogService
 		@is_increased = true
 	end
 
-	def set_credit_params
+	def set_credit_params # ping_request/offline_recharge
+		object = @ping_request || @offline_recharge
+		p 'object-----'
+		p object
 		@operation = '赠送积分变现为余额'
 		@payment_method = '余额支付'
 		@detail = 
-			"充值 #{@ping_request.amount}元 ;" + 
-			"赠送 #{@ping_request.credit}元"
-		@amount = @ping_request.credit
+			"充值 #{object.amount}元 ; " + 
+			"赠送 #{object.credit}元"
+		@amount = object.credit
 		@credit = @amount
 		@is_increased = true
 	end
@@ -133,6 +135,7 @@ private
 			payment_method: @payment_method,
 			detail: @detail,
 			amount: @amount,
+			credit: @credit || 0, # 积分 可不存在 
 			is_increased: @is_increased
 		}
 		missing_val = params.map {|key, val| val ? next : key }.reject{|i| i.nil?}
