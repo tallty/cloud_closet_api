@@ -1,28 +1,42 @@
 class PurchaseLogService
 
-	# PurchaseLogService.new(user, ['service'], {appointment: @appt})
+	# PurchaseLogService.new(user, ['service'], { appointment: @appt })
 	def initialize user, type_ary=[], options={}
 		options.each_pair do |key, value|
      instance_variable_set("@#{key}", value)
    	end
-   	raise 'user 缺失' unless @user && @user.is_a?(User)
+   	raise 'user 缺失' unless @user = user && @user.is_a?(User)
    	@user_info = user.user_info
    	@type_ary = type_ary
 	end
 
 
 	def create 
-		@type_ary.each do |type|
-			# undefind method 错误处理？
-			send("set_#{type}_params")
-			purchase_log = @user_info.purchase_logs.create!(purchase_log_params)
+		ActiveRecord::Base.transaction do
+			purchase_log_ary = []
+			@type_ary.each do |type|
+				# undefind method 错误处理？
+				send("set_#{type}_params")
+				purchase_log_ary << @user_info.purchase_logs.create!(purchase_log_params)
+			end
+		end
+		# 确认全部创建后 
+		purchase_log_ary.each do |purchase_log|
+			# 操作用户余额
 			change_balance(purchase_log)
+			# 发送 充值/消费 微信消息
+			WechatMessageService.new(@user).send_msg(
+				purchase_log.is_increased ? 
+					'recharge_msg': 
+					'consume_msg', 
+				purchase_log
+				)
 		end
 	end
 
 	# -------  消费  ------- #
 
-	def set_service_params
+	def set_service_params # appointment
 		@operation = '服务费'
 		@payment_method = '余额支付'
 		@detail = ''
@@ -30,7 +44,7 @@ class PurchaseLogService
 		@is_increased = false
 	end
 
-	def set_case_params
+	def set_case_params # appointment
 		@operation = '护理费'
 		@payment_method = '余额支付'
 		@detail = @appointment.care_type
@@ -38,31 +52,25 @@ class PurchaseLogService
 		@is_increased = false
 	end
 
-	def set_montly_rent_params
+	def set_montly_rent_params # appointment
 		@operation = '每月租金'
 		@payment_method = '余额支付'
 		@detail = @appointment.care_type
-		@amount = @appointment.care_cost
+		@actual = @appointment.care_cost
 		@is_increased = false
 	end
 
-	def set_new_chest_rent_params
+	def set_new_chest_rent_params # appointment
 		@operation = '新赠衣柜的本月租金'
 		@payment_method = '余额支付'
-		@detail = @appointment.care_type
-		@amount = @appointment.care_cost
+		@detail = @appointment.groups.map { |group|
+	    	 "#{group.title},#{group.count}个," + 
+	    	 "#{group.price.to_s + '元/月'}," +
+	    	 "本次收费: #{group.price * _ratio}元" 
+    	 }.join(";")
+    ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
+		@amount = @appointment.groups.map { |group| group.price * ratio }.reduce(:+) || 0
 		@is_increased = false
-
-		_ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
-    _detail = appointment.groups.map { |group| "#{group.title},#{group.count}个,#{group.price.to_s + '元/月'},本次收费: #{group.price * _ratio}元 " }.join(";")
-    _amount = appointment.groups.map { |group| group.price * _ratio }.reduce(:+) || 0
-		PurchaseLog.create(
-			operation: "本次订单新增衣橱的本月租金",
-			amount: _amount,
-			detail: _detail,
-			user_info: appointment.user.user_info,
-			payment_method: "余额支付"
-			)
 	end
 
 	def set_distribution_params
@@ -75,28 +83,34 @@ class PurchaseLogService
 
  # -------  充值  ------- #
 
-	def set_pingpp_recharge_params
+	def set_pingpp_recharge_params # ping_request
 		@operation = '在线充值'
-		@payment_method = 
+		@payment_method = '微信支付'
 			I18n.t :"pingpp_channel.#{@ping_request.channel}"
 		@detail = ''
 		@amount = @ping_request.amount
+		@actual_amount = @amount
 		@is_increased = true
 	end
-#！！！@#
-	def set_offline_recharge_params 
+
+	def set_offline_recharge_params # offline_recharge
 		@operation = '线下充值'
-		@payment_method = '线下充值' ||
-		@detail = ''
-		@amount = 0
+		@payment_method = '线下充值' || ''
+		@detail = 
+			"为您充值的工作人员电话: #{@offline_recharge.worker_phone}"
+		@amount = @offline_recharge.amount
+		@actual_amount = @amount
 		@is_increased = true
 	end
 
 	def set_credit_params
-		@operation = '积分赠送'
+		@operation = '赠送积分变现为余额'
 		@payment_method = '余额支付'
-		@detail = "充值 #{@ping_request.credit}元;赠送 #{@ping_request}元"
+		@detail = 
+			"充值 #{@ping_request.credit}元 ;" + 
+			"赠送 #{@ping_request}元"
 		@amount = @ping_request.credit
+		@credit = @amount
 		@is_increased = true
 	end
      
@@ -114,11 +128,10 @@ private
 	end
 
 	def change_balance purchase_log
-		# user_info = purchase_log.user_info
-		# user = user_info.user
-		# if purchase_log.is_increased 
-
-		# 	WechatMessageService.new(user).
+		change = purchase_log.is_increased ? '+=' : '-='
+		@user_info.balance.send(change, purchase_log.amount)
+		@user_info.credit.send(change, purchase_log.credit || 0)
+		@user_info.recharge_amount.send(change, purchase_log.actual_amount || 0)
 	end
 end
 

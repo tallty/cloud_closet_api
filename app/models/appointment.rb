@@ -71,7 +71,7 @@ class Appointment < ApplicationRecord
 
   after_create :generate_seq
   after_create :send_sms
-  after_save :create_template_message, if: :aasm_state_changed?
+  after_save :send_wechat_msg, if: :aasm_state_changed?
 
   def state
     I18n.t :"appointment_aasm_state.#{aasm_state}"
@@ -172,8 +172,8 @@ class Appointment < ApplicationRecord
   end
 
   private
-    def create_template_message
-      WechatMessageService.new(self.user).appt_state_msg(self)
+    def send_wechat_msg
+      WechatMessageService.new(self.user).send_msg('appt_state_msg', self)
     end
 
     def generate_seq

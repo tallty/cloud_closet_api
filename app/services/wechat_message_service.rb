@@ -2,8 +2,8 @@ class WechatMessageService
   # e.g. WechatMessageService.new(user).appt_state_msg(@appt)
 
 	def initialize user
-		@openid = user.try(:openid)
-		# @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
+		# @openid = user.try(:openid)
+		@openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
 		raise '用户openid 为空' if @openid.blank?
 		@template = {}
     @merchant_phone = '15800634815'
@@ -11,7 +11,7 @@ class WechatMessageService
 	end
 
   def send_msg type, arg
-    send('type', arg)
+    send( "set_#{type}", arg )
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
       { openid: @openid, template: @template }
     puts response.body
@@ -19,7 +19,7 @@ class WechatMessageService
 
   # ---- 订单状态改变 微信通知 --- #
 
-	def appt_state_msg appt
+	def set_appt_state_msg appt
     @appt_seq = appt.seq
     @appt_state = appt.state
     @appt_amount = appt.price == 0 ? "上门评估" : appt.price
@@ -33,7 +33,7 @@ class WechatMessageService
 
   # ---- 充值 微信通知 --- #
 
-  def recharge_msg purchase_log
+  def set_recharge_msg purchase_log
     @title = "#{purchase_log.operation}"
     @amount = purchase_log.amount
     @time = purchase_log.created_at
@@ -46,7 +46,7 @@ class WechatMessageService
 
   # ---- 消费 微信通知 --- #
 
-  def consume_msg purchase_log
+  def set_consume_msg purchase_log
     @title = '您有一笔最新消费信息'
     @amount = purchase_log.amount
     @operation = purchase_log.operation

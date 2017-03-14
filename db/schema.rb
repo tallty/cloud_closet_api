@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313033044) do
+ActiveRecord::Schema.define(version: 20170314091503) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -284,7 +284,7 @@ ActiveRecord::Schema.define(version: 20170313033044) do
 
   create_table "offline_recharges", force: :cascade do |t|
     t.float    "amount"
-    t.float    "credit"
+    t.integer  "credit"
     t.boolean  "is_confirmed"
     t.integer  "worker_id"
     t.integer  "user_id"
@@ -331,6 +331,8 @@ ActiveRecord::Schema.define(version: 20170313033044) do
     t.float    "balance"
     t.float    "amount"
     t.boolean  "is_increased"
+    t.integer  "credit"
+    t.float    "actual_amount"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end
 

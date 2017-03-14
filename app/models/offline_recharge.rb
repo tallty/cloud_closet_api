@@ -4,7 +4,7 @@
 #
 #  id           :integer          not null, primary key
 #  amount       :float
-#  credit       :float
+#  credit       :integer
 #  is_confirmed :boolean
 #  worker_id    :integer
 #  user_id      :integer
