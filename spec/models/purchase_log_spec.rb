@@ -12,6 +12,8 @@
 #  balance        :float
 #  amount         :float
 #  is_increased   :boolean
+#  credit         :integer
+#  actual_amount  :float
 #
 # Indexes
 #

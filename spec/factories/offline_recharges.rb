@@ -2,13 +2,14 @@
 #
 # Table name: offline_recharges
 #
-#  id         :integer          not null, primary key
-#  amount     :float
-#  credit     :float
-#  worker_id  :integer
-#  user_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  amount       :float
+#  credit       :integer
+#  is_confirmed :boolean
+#  worker_id    :integer
+#  user_id      :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 # Indexes
 #

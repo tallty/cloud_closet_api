@@ -22,7 +22,7 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	after_create :change_balance
+	# after_create :change_balance
 
 	def self.create_one_with_ping_request _ping_request
 		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
@@ -121,13 +121,13 @@ class PurchaseLog < ApplicationRecord
 
 	private
 
-	def change_balance
-		self.is_increased ? 
-			self.user_info.balance += self.amount : 
-			self.user_info.balance -= self.amount 
-		self.user_info.balance = self.user_info.balance.round(2)
-		self.user_info.save
-		self.balance = self.user_info.balance
-		self.save
-	end
+	# def change_balance
+	# 	self.is_increased ? 
+	# 		self.user_info.balance += self.amount : 
+	# 		self.user_info.balance -= self.amount 
+	# 	self.user_info.balance = self.user_info.balance.round(2)
+	# 	self.user_info.save
+	# 	self.balance = self.user_info.balance
+	# 	self.save
+	# end
 end

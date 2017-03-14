@@ -17,6 +17,7 @@
 #  updated_at  :datetime         not null
 #  openid      :string
 #  metadata    :string
+#  credit      :integer
 #
 
 class PingRequest < ApplicationRecord

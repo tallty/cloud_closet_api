@@ -11,6 +11,7 @@ class WechatMessageService
 	end
 
   def send_msg type, arg
+    p "------ set_#{type}--------" 
     send( "set_#{type}", arg )
     response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
       { openid: @openid, template: @template }
@@ -36,7 +37,7 @@ class WechatMessageService
   def set_recharge_msg purchase_log
     @title = "#{purchase_log.operation}"
     @amount = purchase_log.amount
-    @time = purchase_log.created_at
+    @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
     @remark = "当前余额: #{purchase_log.balance} 元\n" + 
                 "如有疑问，敬请咨询：#{@merchant_phone}." 
     
@@ -51,11 +52,15 @@ class WechatMessageService
     @amount = purchase_log.amount
     @operation = purchase_log.operation
     @balance_now = purchase_log.balance
-    @time = purchase_log.created_at
+    @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
     @remark = '谢谢您的支持'
     
     @url = 'http://closet.tallty.com/user'
     @template = consume_template
+  end
+
+  def set_insufficient_balance_msg info
+    
   end
 
   # ---- 订单状态改变 提示不同备注 --- #
@@ -187,40 +192,31 @@ class WechatMessageService
     }
   end
 
-
-  # def recharge_template
-  #    template = {
-  #     template_id: "EJGMPFNSkgMee7o50EH0D1eOM3iawiNwjaSteThxex0",
-  #     url: "http://closet.tallty.com/user",
-  #     topcolor: "#FF0000",
-
-  #     data: {
-  #       first: {
-  #         value: "充值成功",
-  #         color: "#0A0A0A"
-  #       },
-  #       keyword1: {
-  #         value: @amount,
-  #         color: "#757575"
-  #       },
-  #       keyword2: {
-  #         value: @credit,
-  #         color: "#757575"
-  #       },#赠送金额
-  #       keyword3: {
-  #         value: "#{@merchant_name}",
-  #         color: "#757575"
-  #       },#充值门店
-  #       keyword4: {
-  #         value: @balance_now,
-  #         color: "#757575"
-  #       },
-  #       remark: {
-  #         value: @remark,
-  #         color: "#173177"
-  #       }
-  #     }
-  #   }
-  # end
-
+  def insufficient_balance_template
+    template = {
+      template_id: "6uuBWTV5mf9FzmGsCEH0Ddtt13gxsQn1RiUkb4Fk9ok",
+      url: @usl, 
+      topcolor: "#FF0000",
+      data: {
+        first: {
+          value: @title,
+          color: "#0A0A0A"
+        },
+        # 账号
+        keyword1: {
+          value: @amount,
+          color: "#757575"
+        },
+        # 当前余额
+        keyword2: {
+          value: @operation,
+          color: "#757575"
+        },
+        remark: {
+          value: @remark,
+          color: "#173177"
+        }
+      }
+    }
+  end
 end
