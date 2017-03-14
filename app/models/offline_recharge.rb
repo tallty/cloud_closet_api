@@ -20,5 +20,18 @@
 class OfflineRecharge < ApplicationRecord
 	belongs_to :user
 	belongs_to :worker
+
+	def user_phone
+		user.phone
+	end
+
+	def user_name 
+		user.user_info.name
+	end
+
+	def worker_phone
+		worker.phone
+	end
+	
 end
 
