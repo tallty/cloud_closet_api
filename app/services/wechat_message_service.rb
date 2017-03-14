@@ -39,6 +39,7 @@ class WechatMessageService
     @amount = purchase_log.amount
     @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
     @remark = "当前余额: #{purchase_log.balance} 元\n" + 
+                "#{purchase_log.detail}\n\n" +
                 "如有疑问，敬请咨询：#{@merchant_phone}." 
     
     @url = 'http://closet.tallty.com/user'

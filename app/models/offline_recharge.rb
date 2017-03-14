@@ -20,18 +20,29 @@
 class OfflineRecharge < ApplicationRecord
 	belongs_to :user
 	belongs_to :worker
+	after_create :create_purchase_log
 
 	def user_phone
 		user.phone
 	end
 
 	def user_name 
-		user.user_info.name
+		user.info.name
 	end
 
 	def worker_phone
 		worker.phone
 	end
-	
+
+	private
+		def create_purchase_log
+			p 'here'
+			PurchaseLogService.new(
+					self.user, ['offline_recharge'],
+					{
+						offline_recharge: self
+					}
+				).create
+		end
 end
 

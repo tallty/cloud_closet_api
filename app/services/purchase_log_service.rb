@@ -5,7 +5,6 @@ class PurchaseLogService
 		options.each_pair do |key, value|
      instance_variable_set("@#{key}", value)
    	end
-   	p '------'
    	raise 'user 缺失' unless (@user = user) && @user.is_a?(User)
    	@user_info = user.user_info
    	@type_ary = type_ary
