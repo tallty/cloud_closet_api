@@ -27,6 +27,8 @@ class UserInfo < ApplicationRecord
 
   has_one :avatar, -> { where photo_type: "avatar" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :avatar, allow_destroy: true
+  has_one :user_info_cover, -> { where photo_type: "user_info_cover" }, class_name: "Image", as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :user_info_cover, allow_destroy: true
 
   def balance_output
     "%.2f"%self.balance

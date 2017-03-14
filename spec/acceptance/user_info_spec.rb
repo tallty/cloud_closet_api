@@ -31,6 +31,7 @@ resource "用户信息查询修改" do
     parameter :nickname, "称谓", require: false, scope: :user_info
     parameter :mail, "邮箱", require: false, scope: :user_info
     parameter :avatar_attributes, "头像", require: false, scope: :user_info
+    parameter :user_info_cover_attributes, "个人中心背景", require: false, scope: :user_info
     # parameter :default_address_id, "默认地址id", require: false, scope: :user_info
     # parameter :balance, "用户余额", require: false, scope: :user_info
 
@@ -41,6 +42,7 @@ resource "用户信息查询修改" do
     let(:nickname) { "new nickname" }
     let(:mail) { "new mail" }
     let(:avatar_attributes) { image_attrs }
+    let(:user_info_cover_attributes) { image_attrs }
 
 
     example "用户修改自己的信息成功" do

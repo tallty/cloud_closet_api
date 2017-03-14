@@ -21,6 +21,7 @@ FactoryGirl.define do
     nickname "userinfo nickname"
     mail "userinfo mail"
     association :avatar, factory: :image, photo_type: "avatar"
+    association :user_info_cover, factory: :image, photo_type: "user_info_cover"
     balance 100000.00
   end
 end
