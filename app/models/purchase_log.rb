@@ -24,25 +24,6 @@ class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 	# after_create :change_balance
 
-	def self.create_one_with_ping_request _ping_request
-		_metadata = _ping_request.metadata ? JSON.parse(_ping_request.metadata) : ""
-		_channel = I18n.t :"pingpp_channel.#{_ping_request.channel}"
-		# 临时充值为 0.01 元 而余额体现充值数量
-		_amount = JSON.parse(_ping_request.metadata)['amount']
-		# _amount = (_ping_request.amount.to_f/100).round(2) 
-		PurchaseLog.create(
-                operation: _ping_request.body,
-                amount: _amount,
-                detail: _metadata['detail'] || "",
-                user_info: User.where(openid: _ping_request.openid).first.user_info,
-                payment_method: _channel
-                )
-		#现 不需要微信支付 		operation,deatil,metadata暂不需要
-		#operation 购买衣橱 衣服配送  
-		#detail 衣服*3 裤子*4
-		#payment_method 微信支付
-	end
-
 	def self.create_one_with_storing_garment appointment
 		PurchaseLog.create(
 			operation: "购买衣橱/服务费与护理费",

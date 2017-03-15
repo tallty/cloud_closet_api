@@ -46,7 +46,7 @@ class Appointment < ApplicationRecord
     end
 
     event :pay do
-      transitions from: :unpaid, to: :paid
+      transitions from: :unpaid, to: :paid, :after => :after_pay
     end
 
     event :storing do
@@ -54,7 +54,7 @@ class Appointment < ApplicationRecord
     end
 
     event :stored do
-      transitions from: :storing, to: :stored, :after => :cut_rent_of_the_new_chests
+      transitions from: :storing, to: :stored, :after => :after_stored
     end
 
     event :cancel do
@@ -71,7 +71,7 @@ class Appointment < ApplicationRecord
 
   after_create :generate_seq
   after_create :send_sms
-  after_save :send_wechat_msg, if: :aasm_state_changed?
+  after_save :send_wechat_appt_state_msg, if: :aasm_state_changed?
 
   def state
     I18n.t :"appointment_aasm_state.#{aasm_state}"
@@ -83,7 +83,8 @@ class Appointment < ApplicationRecord
                                                      #
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
-    # e.g. -> params[:garment_count_info] = { hanging: 1, stacking: 10 }
+    # e.g.
+    #  -> params[:garment_count_info] = { hanging: 1, stacking: 10 }
     self[:garment_count_info] = json && json.map {|store_method, count| "#{store_method}:#{count}" }.join(",")
   end
 
@@ -167,13 +168,29 @@ class Appointment < ApplicationRecord
     raise _warning unless _warning.empty?
   end
 
-  def cut_rent_of_the_new_chests
-    PurchaseLog.after_appt_stored(self)
-  end
-
   private
-    def send_wechat_msg
-      WechatMessageService.new(self.user).send_msg('appt_state_msg', self)
+    def send_wechat_appt_state_msg
+      WechatMessageService.new(self.user).send_msg(
+        'appt_state_msg', self
+        )
+    end
+
+    def after_pay
+      PurchaseLogService.new(
+          self.user, ['service_cost', 'case_cost'],
+          {
+            appointment: self
+          }
+        ).create
+    end
+
+    def after_stored
+      PurchaseLogService.new(
+          user, ['new_chest_rent'], 
+          { 
+            appointment: self
+           }
+        ).create
     end
 
     def generate_seq

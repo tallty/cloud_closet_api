@@ -17,13 +17,9 @@ class PurchaseLogService
 			@type_ary.each do |type|
 				# undefind method 错误处理？
 				send("set_#{type}_params")
-				p '----- purchase_log_params params ----'
-				p purchase_log_params
 				purchase_log_ary << @user_info.purchase_logs.create!(purchase_log_params)
 			end
 		
-			p ' ----  purchase_log_ary ----'
-			p purchase_log_ary
 			# 确认全部创建后 
 			purchase_log_ary.each do |purchase_log|
 				# 操作用户余额
@@ -136,9 +132,13 @@ private
 			detail: @detail,
 			amount: @amount,
 			credit: @credit || 0, # 积分 可不存在 
-			is_increased: @is_increased
+			is_increased: @is_increased # 可为true or false
 		}
-		missing_val = params.map {|key, val| val ? next : key }.reject{|i| i.nil?}
+		missing_val = params.map { |key, val| 
+				val ? next : key 
+			}.reject{ |i| 
+				i.nil? || i == :is_increased 
+			}
 		raise "创建参数缺失 #{missing_val}" if missing_val.any?
 		params
 	end
@@ -146,6 +146,7 @@ private
 	def change_balance purchase_log
 		change = purchase_log.is_increased ? '+' : '-'
 		purchase_log.balance = @user_info.balance = @user_info.balance.send(change, purchase_log.amount)# || 0)
+		raise '余额不足，扣费失败' if purchase_log.balance < 0
 		@user_info.credit = @user_info.credit.send(change, purchase_log.credit || 0)
 		@user_info.recharge_amount = @user_info.recharge_amount.send(change, purchase_log.actual_amount || 0)
 		@user_info.save!
