@@ -70,12 +70,8 @@ class PurchaseLogService
 	def set_new_chest_rent_params # appointment
 		@operation = '新赠衣柜的本月租金'
 		@payment_method = '余额支付'
-		@detail = @appointment.groups.map { |group|
-	    	 "#{group.title},#{group.count}个," + 
-	    	 "#{group.price.to_s + '元/月'}," +
-	    	 "本次收费: #{group.price * _ratio}元" 
-    	 }.join(";")
-		@amount = RentCalculationService.new(@user).appt_new_chest_rent(@appointment)
+		@amount, @detail = RentCalculationService.new(@user).appt_new_chest_rent(@appointment)
+
 		@is_increased = false
 	end
 
@@ -132,12 +128,12 @@ private
 			detail: @detail,
 			amount: @amount,
 			credit: @credit || 0, # 积分 可不存在 
-			is_increased: @is_increased # 可为true or false
+			is_increased: @is_increased 
 		}
 		missing_val = params.map { |key, val| 
 				val ? next : key 
 			}.reject{ |i| 
-				i.nil? || i == :is_increased 
+				i.nil? || i == :is_increased # 可为true or false
 			}
 		raise "创建参数缺失 #{missing_val}" if missing_val.any?
 		params
