@@ -33,7 +33,7 @@ FactoryGirl.define do
     password "abcd.1234"
     sms_token "1981"
     authentication_token "qwertyuiop1"
-    openid "openid"
+    openid "olclvwHtOBENZ-rLA2NxsBCVZky0"
   end
 
   factory :user1, class: :user do
@@ -41,7 +41,7 @@ FactoryGirl.define do
     password "abcd.1234"
     sms_token "1981"
     authentication_token "qwertyuiop2"
-    openid "openid1"
+    openid "olclvwHtOBENZ-rLA2NxsBCVZky0"
   end  
 
 end

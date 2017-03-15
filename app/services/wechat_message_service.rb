@@ -2,8 +2,8 @@ class WechatMessageService
   # e.g. WechatMessageService.new(user).appt_state_msg(@appt)
 
 	def initialize user
-		# @openid = user.try(:openid)
-		@openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
+		@openid = user.try(:openid)
+		# @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
 		raise '用户openid 为空' if @openid.blank?
 		@template = {}
     @merchant_phone = '15800634815'
