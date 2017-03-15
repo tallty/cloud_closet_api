@@ -18,11 +18,18 @@
 #  openid      :string
 #  metadata    :string
 #  credit      :integer
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_ping_requests_on_user_id  (user_id)
 #
 
 class PingRequest < ApplicationRecord
 
-	def get_pay_order  extra
+  belong_to :user
+	
+  def get_pay_order  extra
 	  Pingpp::Charge.create(
       :order_no  => self.order_no,
       :app       => { :id => APP_ID },

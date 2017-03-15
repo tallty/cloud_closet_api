@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315024752) do
+ActiveRecord::Schema.define(version: 20170315082627) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -310,6 +310,8 @@ ActiveRecord::Schema.define(version: 20170315024752) do
     t.string   "openid"
     t.string   "metadata"
     t.integer  "credit"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_ping_requests_on_user_id"
   end
 
   create_table "price_systems", force: :cascade do |t|

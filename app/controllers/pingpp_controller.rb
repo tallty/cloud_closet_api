@@ -13,8 +13,9 @@ class PingppController < ApplicationController
 			#ping++ 平台发起创建时  openid 需要下划线 open_id
 			_extra = {open_id: params[:openid]}
 		end
-
-		@ping_request = PingRequest.new(
+    user = User.where(openid: params[:openid]).try(:first)
+    raise '用户openid错误' unless user
+		@ping_request = user.ping_requests.new(
 			order_no: PingRequest.create_order_no,
 			channel: _channel,
 			client_ip: request.remote_ip,
