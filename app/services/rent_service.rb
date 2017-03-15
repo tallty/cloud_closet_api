@@ -71,6 +71,7 @@ class RentService
         'urgent_insufficient_balance_msg' : 
         'insufficient_balance_msg'
     info = {
+      month: options[:is_this_month] ? '本月' : '下个月',
       phone: @user.phone,
       name: @user_info.name,
       balance: @user_info.balance,

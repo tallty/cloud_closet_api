@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314104406) do
+ActiveRecord::Schema.define(version: 20170315024752) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 20170314104406) do
     t.boolean  "is_increased"
     t.integer  "credit"
     t.float    "actual_amount"
+    t.boolean  "can_arrears"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end
 
