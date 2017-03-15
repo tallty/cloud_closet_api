@@ -2,7 +2,9 @@ require 'acceptance_helper'
 
 resource "ping++平台支付相关" do
   header "Accept", "application/json"
-
+  before do 
+    @user = create(:user)
+  end
   post '/get_pingpp_pay_order' do
   	parameter :channel, "支付渠道",required: false
   	parameter :openid, "用户openid", required: true
@@ -14,7 +16,7 @@ resource "ping++平台支付相关" do
     
 
     let(:channel) { 'wx_pub' }
-    let(:openid) { "olclvwHtOBENZ-rLA2NxsBCVZky0" }
+    let(:openid) { @user.openid }
     let(:amount) { "2000" }
     let(:credit) { 200 }
     let(:subject) { "充值" }
