@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307070808) do
+ActiveRecord::Schema.define(version: 20170315024752) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -282,6 +282,18 @@ ActiveRecord::Schema.define(version: 20170307070808) do
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
   end
 
+  create_table "offline_recharges", force: :cascade do |t|
+    t.float    "amount"
+    t.integer  "credit"
+    t.boolean  "is_confirmed"
+    t.integer  "worker_id"
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_offline_recharges_on_user_id"
+    t.index ["worker_id"], name: "index_offline_recharges_on_worker_id"
+  end
+
   create_table "ping_requests", force: :cascade do |t|
     t.string   "object_type"
     t.string   "ping_id"
@@ -297,6 +309,7 @@ ActiveRecord::Schema.define(version: 20170307070808) do
     t.datetime "updated_at",  null: false
     t.string   "openid"
     t.string   "metadata"
+    t.integer  "credit"
   end
 
   create_table "price_systems", force: :cascade do |t|
@@ -310,15 +323,18 @@ ActiveRecord::Schema.define(version: 20170307070808) do
   end
 
   create_table "purchase_logs", force: :cascade do |t|
-    t.string   "operation_type"
     t.string   "operation"
-    t.float    "change"
     t.string   "payment_method"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "user_info_id"
     t.text     "detail"
     t.float    "balance"
+    t.float    "amount"
+    t.boolean  "is_increased"
+    t.integer  "credit"
+    t.float    "actual_amount"
+    t.boolean  "can_arrears"
     t.index ["user_info_id"], name: "index_purchase_logs_on_user_info_id"
   end
 
@@ -386,7 +402,7 @@ ActiveRecord::Schema.define(version: 20170307070808) do
     t.datetime "updated_at",                       null: false
     t.integer  "default_address_id"
     t.float    "balance",            default: 0.0
-    t.integer  "credits",            default: 0
+    t.integer  "credit",             default: 0
     t.integer  "recharge_amount",    default: 0
     t.index ["user_id"], name: "index_user_infos_on_user_id"
   end

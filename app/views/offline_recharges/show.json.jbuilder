@@ -1,0 +1,1 @@
+json.partial! "offline_recharges/offline_recharge", offline_recharge: @offline_recharge

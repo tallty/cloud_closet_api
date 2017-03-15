@@ -26,6 +26,8 @@
 class Worker < ApplicationRecord
   ## Token Authenticatable
   acts_as_token_authenticatable
+  
+  has_many :offline_recharges
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

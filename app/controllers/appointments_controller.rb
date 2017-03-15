@@ -58,13 +58,6 @@ class AppointmentsController < ApplicationController
 
   # v2 工作人员上门统计结束 用户确认，系统确认余额足够
   def pay_by_balance
-    @user_info = current_user.user_info
-    if  @user_info.balance < @appointment.price 
-      _insufficient = "%.2f"%(@appointment.price - @user_info.balance)
-      raise "余额不足, 需充值#{_insufficient}元" 
-    end
-    @purchase_log = PurchaseLog.create_one_with_storing_garment(@appointment)
-    raise '扣费不足' unless @purchase_log
     @appointment.pay!
     respond_with @appointment, template: "appointments/show", status: 201
   rescue => @error

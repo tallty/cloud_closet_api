@@ -111,7 +111,7 @@ resource "工作台相关接口" do
 
       let(:appointment_id) { @appointments.first.id }
 
-      example "【rewrite】工作人员修改指定订单下面的订单组成功" do
+      example "工作人员修改指定订单下面的订单组成功" do
         params = {
           appointment:
             {
@@ -161,7 +161,7 @@ resource "工作台相关接口" do
         # p @user.exhibition_chests
       end
       describe '失败' do 
-        example "【rewrite】【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
+        example "【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do
           params = {
             appointment:
               {
@@ -240,43 +240,57 @@ resource "工作台相关接口" do
       end
     end
 
-  # describe '价格系统操作' do
-  #   worker_attrs = FactoryGirl.attributes_for(:worker)
 
-  #   header "X-User-Token", worker_attrs[:authentication_token]
-  #   header "X-User-Phone", worker_attrs[:phone]
 
-  #   before do
-  #     @worker = create(:worker)
-  #     @price_systems = create_list(:price_system, 5)
-  #   end
+  describe '线下充值' do
 
-  #   get 'work/price_systems' do
+    before do 
+      @offline_recharges = create_list(
+          :offline_recharge, 3,
+          user: @user,
+          worker: @worker
+        )
+    end
 
-  #     parameter :page, "当前页", required: false
-  #     parameter :per_page, "每页的数量", required: false
+    post 'worker/offline_recharges' do
 
-  #     let(:page) {2}
-  #     let(:per_page) {2}
+      parameter :user_id, "用户id", required: true, scope: :offline_recharge
+      parameter :amount, "充值金额", required: true, scope: :offline_recharge
+      parameter :credit, "赠送积分", required: true, scope: :offline_recharge
 
-  #     example "工作人员查询价目列表成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      let(:user_id) { @user.id }
+      let(:amount) { 2000 }
+      let(:credit) { 200 }
 
-  #   get 'work/price_systems/:id' do
+      example "【new】工作人员 创建线下充值成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
 
-  #     let(:id) {@price_systems.first.id}
+    get 'worker/offline_recharges' do
 
-  #     example "工作人员查询某价目详细信息成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      let(:id) {@offline_recharges.first.id}
 
-  # end
+      example "工作人员查询某价目详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    get 'worker/offline_recharges/:id' do
+
+      let(:id) {@offline_recharges.first.id}
+
+      example "工作人员查询某价目详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+  end
 end
 end

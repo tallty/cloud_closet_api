@@ -15,9 +15,10 @@
 #  place               :integer
 #  aasm_state          :string           default("storing")
 #  status              :string
-#  stroe_mode          :string
+#  store_method        :string
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
+#  description         :text
 #
 # Indexes
 #

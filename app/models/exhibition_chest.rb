@@ -53,7 +53,7 @@ class ExhibitionChest < ApplicationRecord
      select {|chest| chest.store_method == store_method}
    }
 
-   scope :those_buddies_need_join_by, -> (it){ 
+  scope :those_buddies_need_join_by, -> (it){ 
     where( user: it.user ).where( need_join: true ).where( 
       exhibition_unit: it.exhibition_unit
       )

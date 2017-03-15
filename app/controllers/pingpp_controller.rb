@@ -14,30 +14,20 @@ class PingppController < ApplicationController
 			_extra = {open_id: params[:openid]}
 		end
 
-		# @ping_request = PingRequest.new(
-		# 	order_no: PingRequest.create_order_no,
-		# 	channel: _channel,
-		# 	client_ip: request.remote_ip,
-		# 	extra: _extra,
-		# 	amount: params[:amount],
-		# 	subject: params[:subject],
-		# 	body: params[:body],
-		# 	openid: params[:openid],
-  #     metadata: params[:metadata]
-		# 	)
-    # 临时充值为 0.01 元
-    @ping_request = PingRequest.new(
-      order_no: PingRequest.create_order_no,
-      channel: _channel,
-      client_ip: request.remote_ip,
-      extra: _extra,
-      amount: 1,
-      subject: params[:subject],
-      body: params[:body],
-      openid: params[:openid],
-      metadata: "{\"amount\":#{params[:amount]}}"
-      )
+		@ping_request = PingRequest.new(
+			order_no: PingRequest.create_order_no,
+			channel: _channel,
+			client_ip: request.remote_ip,
+			extra: _extra,
+			amount: params[:amount],
+      credit: params[:credit],
+			subject: params[:subject],
+			body: params[:body],
+			openid: params[:openid],
+      metadata: params[:metadata]
 
+			)
+  
 		#在ping++平台创建一条记录
 		_charge = @ping_request.get_pay_order(_extra) 
 
@@ -88,12 +78,14 @@ class PingppController < ApplicationController
           #更新字段
           @ping_request.complete = event['data']['object']['paid']  
 
-          if @ping_request.save 
+          if @ping_request.save
             #生成账单记录
-            _purchase_log = PurchaseLog.create_one_with_ping_request(@ping_request)
-            #发送微信消息 
-            @ping_request.send_recharge_success_message(_purchase_log.balance)
-
+            user = @ping_request.user
+            PurchaseLogService.new(
+              user, ['pingpp_recharge', 'credit'],
+              {
+                ping_request: @ping_request
+                }).create
             status = 200
           else
             status = 500
