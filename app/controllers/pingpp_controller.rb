@@ -25,7 +25,7 @@ class PingppController < ApplicationController
 			subject: params[:subject],
 			body: params[:body],
 			openid: params[:openid],
-      metadata: params[:metadata]
+      metadata: params[:metadata],
       user: user
 			)
   

@@ -27,7 +27,7 @@
 
 class PingRequest < ApplicationRecord
 
-  belong_to :user
+  belongs_to :user
 	
   def get_pay_order  extra
 	  Pingpp::Charge.create(
