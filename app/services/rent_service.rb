@@ -25,7 +25,15 @@ class RentService
   # 每月1号收取
   def deducte_monthly_rent
     @monthly_rent = get_monthly_rent
-
+    PurchaseLogService.new( 
+        @user, ['montly_rent'],
+        {
+          info: {
+            amount: @monthly_rent
+            detail: 
+          }
+        }
+      )
     @user_info.balance -= @monthly_rent
     @user_info.save!
 
@@ -74,7 +82,7 @@ class RentService
 			msg_type, info
 			)
 		# 通知工作人员
-     
+    SmsService.new('worker').insufficient_blannce_remind(info)
 	end
 
 

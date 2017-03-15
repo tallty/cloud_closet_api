@@ -33,6 +33,7 @@ class PurchaseLogService
 					)
 			end
 		end
+		purchase_log_ary
 	end
 
 	# -------  消费  ------- #
@@ -53,18 +54,13 @@ class PurchaseLogService
 		@is_increased = false
 	end
 
-	def set_montly_rent_params # 
+	def set_montly_rent_params # info
 		@operation = '每月租金'
 		@payment_method = '余额支付'
-		@detail = @appointment.care_type
-		@amount = @appointment.care_cost
-
-
-
-
-
-
+		@detail = @info[:]
+		@amount = @info[:amount]
 		@is_increased = false
+		@can_arrears = true
 	end
 
 	def set_new_chest_rent_params # appointment
@@ -72,6 +68,7 @@ class PurchaseLogService
 		@payment_method = '余额支付'
 		@amount, @detail = RentCalculationService.new(@user).appt_new_chest_rent(@appointment)
 		@is_increased = false
+		@can_arrears = true
 	end
 
 	def set_distribution_params
@@ -125,12 +122,13 @@ private
 			detail: @detail,
 			amount: @amount,
 			credit: @credit || 0, # 积分 可不存在 
+			can_arrears: @can_arrears
 			is_increased: @is_increased 
 		}
 		missing_val = params.map { |key, val| 
 				val ? next : key 
 			}.reject{ |i| 
-				i.nil? || i == :is_increased # 可为true or false
+				i.nil? || i.in?[:is_increased, :can_arrears] # 可为true or false
 			}
 		raise "创建参数缺失 #{missing_val}" if missing_val.any?
 		params
@@ -139,7 +137,7 @@ private
 	def change_balance purchase_log
 		change = purchase_log.is_increased ? '+' : '-'
 		purchase_log.balance = @user_info.balance = @user_info.balance.send(change, purchase_log.amount)# || 0)
-		raise '余额不足，扣费失败' if purchase_log.balance < 0
+		raise '余额不足，扣费失败' if purchase_log.balance < 0 && purchase_log.can_arrears.!
 		@user_info.credit = @user_info.credit.send(change, purchase_log.credit || 0)
 		@user_info.recharge_amount = @user_info.recharge_amount.send(change, purchase_log.actual_amount || 0)
 		@user_info.save!
