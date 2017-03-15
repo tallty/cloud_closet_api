@@ -26,7 +26,7 @@ class PingppController < ApplicationController
 			body: params[:body],
 			openid: params[:openid],
       metadata: params[:metadata]
-
+      user: user
 			)
   
 		#在ping++平台创建一条记录
