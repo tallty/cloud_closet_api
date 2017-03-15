@@ -13,9 +13,11 @@ class WechatMessageService
   def send_msg type, arg
     p "------ set_#{type}--------" 
     send( "set_#{type}", arg )
-    response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
-      { openid: @openid, template: @template }
-    puts response.body
+    unless Rails.env == 'test'
+      response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
+        { openid: @openid, template: @template }
+      puts response.body
+    end
   end
 
   # ---- 订单状态改变 微信通知 --- #

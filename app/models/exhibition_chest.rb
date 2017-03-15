@@ -54,7 +54,7 @@ class ExhibitionChest < ApplicationRecord
    }
 
   scope :those_buddies_need_join_by, -> (it){ 
-    where( user: it.user ).where( need_join: true ).where( 
+    where( user: it.user ).where( 
       exhibition_unit: it.exhibition_unit
       )
     }
