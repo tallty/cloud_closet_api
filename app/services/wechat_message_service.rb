@@ -60,8 +60,27 @@ class WechatMessageService
     @template = consume_template
   end
 
+  # ---- 余额不足 微信通知 --- #
+
+  def set_urgent_insufficient_balance_msg info
+    @title = '亲，您当前账户余额不足本月的租金啦!'
+    @account = info[:phone]
+    @balance = info[:balance]
+    @remark = "支付本月租金还需 #{info[:arrears]} 元"
+
+    @url = 'http://closet.tallty.com/user'
+    @template = insufficient_balance_template
+  end
+
   def set_insufficient_balance_msg info
-    
+    @title = '亲，您当前账户余额不足下个月的租金啦!'
+    @account = info[:phone]
+    @balance = info[:balance]
+    @remark = "下个月租金为 #{info[:rent]} 元\n" +
+              "为保证下个月成功扣费，请充值 #{info[:arrears]} 元"
+
+    @url = 'http://closet.tallty.com/user'
+    @template = insufficient_balance_template
   end
 
   # ---- 订单状态改变 提示不同备注 --- #
@@ -92,7 +111,7 @@ class WechatMessageService
         },
         keyword1: {
           color: "#757575",
-          value: @merchant_name
+          value: @merchant_nameΩ
         },
         keyword2: 
         {
@@ -205,12 +224,12 @@ class WechatMessageService
         },
         # 账号
         keyword1: {
-          value: @amount,
+          value: @account,
           color: "#757575"
         },
         # 当前余额
         keyword2: {
-          value: @operation,
+          value: @balance,
           color: "#757575"
         },
         remark: {

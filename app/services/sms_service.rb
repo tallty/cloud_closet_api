@@ -19,4 +19,8 @@ class SmsService
     result = ChinaSMS.to @phone_list, sms_hash, {tpl_id: tpl_id}
 	end
 
+	def insufficient_blannce_remind
+		
+	end
+
 end

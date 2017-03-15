@@ -21,5 +21,17 @@ class ValuationChest < ApplicationRecord
   belongs_to :user
   has_many :exhibition_chests
   
-  # delegate :title, :price, to: :price_system#, allow_nil: true
+  delegate :title, :price, to: :price_system#, allow_nil: true
+
+	default_scope { using }
+
+	include AASM
+
+  aasm do 
+  	state :using, :initial => true
+    state :released
+    event :soft_delete do 
+      transitions from: :using, to: :released
+    end
+	end
 end

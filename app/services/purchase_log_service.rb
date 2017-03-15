@@ -53,7 +53,7 @@ class PurchaseLogService
 		@is_increased = false
 	end
 
-	def set_montly_rent_params 
+	def set_montly_rent_params # 
 		@operation = '每月租金'
 		@payment_method = '余额支付'
 		@detail = @appointment.care_type
@@ -71,7 +71,6 @@ class PurchaseLogService
 		@operation = '新赠衣柜的本月租金'
 		@payment_method = '余额支付'
 		@amount, @detail = RentCalculationService.new(@user).appt_new_chest_rent(@appointment)
-
 		@is_increased = false
 	end
 
@@ -107,8 +106,6 @@ class PurchaseLogService
 
 	def set_credit_params # ping_request/offline_recharge
 		object = @ping_request || @offline_recharge
-		p 'object-----'
-		p object
 		@operation = '赠送积分变现为余额'
 		@payment_method = '余额支付'
 		@detail = 
