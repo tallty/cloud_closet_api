@@ -27,7 +27,7 @@ class OfflineRecharge < ApplicationRecord
 	end
 
 	def user_name 
-		user.info.name
+		user.info.nickname
 	end
 
 	def worker_phone

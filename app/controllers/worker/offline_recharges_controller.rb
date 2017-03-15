@@ -18,9 +18,8 @@ class Worker::OfflineRechargesController < ApplicationController
   end
 
   def create
-  	@user = User.find_by_id( offline_recharge_params[:user_id] )
-  	raise '用户id 错误' unless @user
-    @offline_recharge =  @user.offline_recharges.build( offline_recharge_params )
+  	raise '用户id 错误' unless User.find_by_id( offline_recharge_params[:user_id] )
+    @offline_recharge =  current_worker.offline_recharges.build( offline_recharge_params )
     @offline_recharge.save
     respond_with @offline_recharge, template: 'offline_recharges/show', status: 201
   rescue => @error

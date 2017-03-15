@@ -57,7 +57,7 @@ class PurchaseLogService
 	def set_montly_rent_params # info
 		@operation = '每月租金'
 		@payment_method = '余额支付'
-		@detail = @info[:]
+		@detail = @info[:detail]
 		@amount = @info[:amount]
 		@is_increased = false
 		@can_arrears = true
@@ -66,7 +66,7 @@ class PurchaseLogService
 	def set_new_chest_rent_params # appointment
 		@operation = '新赠衣柜的本月租金'
 		@payment_method = '余额支付'
-		@amount, @detail = RentCalculationService.new(@user).appt_new_chest_rent(@appointment)
+		@amount, @detail = RentService.new(@user).appt_new_chest_rent(@appointment)
 		@is_increased = false
 		@can_arrears = true
 	end
@@ -122,13 +122,13 @@ private
 			detail: @detail,
 			amount: @amount,
 			credit: @credit || 0, # 积分 可不存在 
-			can_arrears: @can_arrears
+			can_arrears: @can_arrears,
 			is_increased: @is_increased 
 		}
 		missing_val = params.map { |key, val| 
 				val ? next : key 
 			}.reject{ |i| 
-				i.nil? || i.in?[:is_increased, :can_arrears] # 可为true or false
+				i.nil? || i.in?([:is_increased, :can_arrears]) # 可为true or false
 			}
 		raise "创建参数缺失 #{missing_val}" if missing_val.any?
 		params

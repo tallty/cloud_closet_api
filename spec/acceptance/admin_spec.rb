@@ -35,7 +35,6 @@ resource "管理后台相关接口" do
   before do 
 
     admin_attrs = FactoryGirl.attributes_for(:admin)
-    price_system_attrs = FactoryGirl.attributes_for(:stocking_chest)
 
     header "X-Admin-Token", admin_attrs[:authentication_token]
     header "X-Admin-Email", admin_attrs[:email]
@@ -93,6 +92,7 @@ resource "管理后台相关接口" do
       :garment, 3,
       exhibition_chest: @exhibition_chests.first,
       ) 
+    @price_systems = PriceSystem.all
   end
 
   describe 'appointment condition is all correct' do
@@ -309,7 +309,8 @@ resource "管理后台相关接口" do
     end
 
     post 'admin/price_systems' do
-
+      
+      price_system_attrs = FactoryGirl.attributes_for(:stocking_chest)
       let(:id) {@price_systems.first.id}
 
       parameter :title, "衣服类型名称", required: true, scope: :price_system

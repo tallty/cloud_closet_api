@@ -24,13 +24,13 @@ class RentService
 
   # 每月1号收取
   def deducte_monthly_rent
-    @monthly_rent = get_monthly_rent
+    @monthly_rent, @detail = get_monthly_rent
     PurchaseLogService.new( 
         @user, ['montly_rent'],
         {
           info: {
-            amount: @monthly_rent
-            detail: 
+            amount: @monthly_rent,
+            detail: @detail
           }
         }
       )
@@ -46,6 +46,7 @@ class RentService
 
   def get_monthly_rent 
     rent = 0
+    info_hash = {}
     @user.valuation_chests.each do |val_chest|
       price = val_chest.price
       if price.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
@@ -54,9 +55,19 @@ class RentService
         # 释放该可自动释放衣柜 （单件礼服）
         val_chest.soft_delete！
       end
-      rent += val_chest.price if val_chest.exhibition_chests.online.any?
+    end
+    if val_chest.exhibition_chests.online.any?
+      rent += val_chest.price 
+      # 衣柜信息
+      info_hash["#{val_chest.price_system_id}"] =  
+        (info_hash["#{val_chest.price_system_id}"] || 0 ) + 1
     end 
-    rent
+    detail = 
+      info_hash.map do |price_system_id, count|
+        price_system = PriceSystem.find(price_system_id)
+        "#{price_system.title}, * , 数量：#{count}, 单价： #{price_system.price}, 收费：#{(price_system.price * count).rount(2)};"
+      end.join(';')
+    [ rent, detail ]
   end
 
   # 如果本月余额不足 将发送两条通知
@@ -67,7 +78,7 @@ class RentService
         ( @user_info.balance - @monthly_rent ).abs
 
     msg_type = 
-      (options[:is_this_month] ? 
+      options[:is_this_month] ? 
         'urgent_insufficient_balance_msg' : 
         'insufficient_balance_msg'
     info = {
@@ -76,7 +87,7 @@ class RentService
       name: @user_info.name,
       balance: @user_info.balance,
       rent: @monthly_rent,
-      arrears: arrears,
+      arrears: arrears
     }
 		# 通知用户
 		WechatMessageService.new(@user).send_msg(
