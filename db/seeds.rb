@@ -48,7 +48,7 @@ RechargeRule.create! (
 		{ id: 7, amount: 50000, credits: 6000 },
 		{ id: 8, amount: 100000, credits: 20000 },
 	])
-RechargeRule.destroy_all
+
 ConstantTag.create (
 	[
 		{ title: '上衣', class_type: 'garment'},

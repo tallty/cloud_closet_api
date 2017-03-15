@@ -23,46 +23,8 @@
 
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
-	# after_create :change_balance
 
-	def self.create_one_with_storing_garment appointment
-		PurchaseLog.create(
-			operation: "购买衣橱/服务费与护理费",
-			amount: appointment.price_except_rent,
-			detail: appointment.detail,
-			user_info: appointment.user.user_info,
-			payment_method: "余额支付"
-			)
-	end
-
-	def self.after_appt_stored appointment
-		_ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
-    _detail = appointment.groups.map { |group| "#{group.title},#{group.count}个,#{group.price.to_s + '元/月'},本次收费: #{group.price * _ratio}元 " }.join(";")
-    _amount = appointment.groups.map { |group| group.price * _ratio }.reduce(:+) || 0
-		PurchaseLog.create(
-			operation: "本次订单新增衣橱的本月租金",
-			amount: _amount,
-			detail: _detail,
-			user_info: appointment.user.user_info,
-			payment_method: "余额支付"
-			)
-	end
-
-	# detail: "chest.title@,@chest.chest_type@,@chest.get_monthly_rent_charge@;@"
-	# every month at day 1 
-	def self.create_monthly_bill
-		User.all.each do |user|
-			# 缺少错误处理
-			user.purchase_logs.create(
-				detail: user.create_monthly_bill_info.join("@;@").join("@,@"),
-				operation: "租用衣柜"
-				)
-			# send template message here
-		end
-	end
-
-
-	def amount_output
+	def change_output
 		self.is_increased ?
 			"+%.2f"%self.amount :
 			"-%.2f"%self.amount
@@ -103,13 +65,4 @@ class PurchaseLog < ApplicationRecord
 
 	private
 
-	# def change_balance
-	# 	self.is_increased ? 
-	# 		self.user_info.balance += self.amount : 
-	# 		self.user_info.balance -= self.amount 
-	# 	self.user_info.balance = self.user_info.balance.round(2)
-	# 	self.user_info.save
-	# 	self.balance = self.user_info.balance
-	# 	self.save
-	# end
 end
