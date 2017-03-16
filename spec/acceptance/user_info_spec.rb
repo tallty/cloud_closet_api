@@ -11,7 +11,8 @@ resource "用户信息查询修改" do
 
     before do
       @user = create(:user)
-      create(:user_info, user: @user)
+      create(:user_info, user: @user, credit: 810)
+      create_list(:vip_level, 4)
     end
 
     example "用户查询自己的信息成功" do

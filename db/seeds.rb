@@ -65,10 +65,10 @@ ConstantTag.create (
 VipLevel.destroy_all
 VipLevel.create!(
 	[
-		{ name: '普通会员', rank: 1, xp: 0, birthday_gift: 30 },
-		{ name: '银卡会员', rank: 2, xp: 800, birthday_gift: 30 },
-		{ name: '金卡会员', rank: 3, xp: 6000, birthday_gift: 30 },
-		{ name: '砖石卡会员', rank: 4, xp: 20000, birthday_gift: 30 },
+		{ name: '普通会员', rank: 1, exp: 0, birthday_gift: 30 },
+		{ name: '银卡会员', rank: 2, exp: 800, birthday_gift: 30 },
+		{ name: '金卡会员', rank: 3, exp: 6000, birthday_gift: 30 },
+		{ name: '砖石卡会员', rank: 4, exp: 20000, birthday_gift: 30 },
 	]
 	)
 

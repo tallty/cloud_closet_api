@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  name          :string
-#  xp            :integer
+#  exp           :integer
 #  birthday_gift :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -12,4 +12,6 @@
 #
 
 class VipLevel < ApplicationRecord
+	default_scope { order(:rank) }
+	validates	:rank, uniqueness: true
 end

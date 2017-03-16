@@ -25,5 +25,7 @@ FactoryGirl.define do
     association :avatar, factory: :image, photo_type: "avatar"
     association :user_info_cover, factory: :image, photo_type: "user_info_cover"
     balance 100000.00
+    credit 200
+    recharge_amount 10000
   end
 end

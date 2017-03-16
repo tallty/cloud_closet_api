@@ -45,5 +45,9 @@ class UserInfo < ApplicationRecord
         end
       end
   end
+
+  def vip_level_info
+    VipServices.new(self).vip_in_user_info
+  end
   
 end
