@@ -1,4 +1,4 @@
-json.extract! appointment, :id, :address, :seq, 
+json.extract! appointment, :id, :address, :seq, :user_id,
 	:name, :phone, :number, :date, :created_at, 
 	:state, :remark, :rent_charge, :care_type, 
 	:care_cost, :service_cost, :price, :price_except_rent,
