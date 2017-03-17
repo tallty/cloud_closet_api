@@ -31,7 +31,7 @@ class UserInfo < ApplicationRecord
   accepts_nested_attributes_for :user_info_cover, allow_destroy: true
 
   def balance_output
-    "%.2f"%self.balance
+    "%.2f"%self.balance.round(2)
   end
 
   def refresh_default_address
