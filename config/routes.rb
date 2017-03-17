@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :exhibition_chests, only: [:index, :show] do 
     member do 
       post 'move_garment' #----!
+      post 'delete_his_val_chest'
       get 'the_same_store_method'
     end
   end

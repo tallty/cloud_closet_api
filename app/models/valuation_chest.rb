@@ -29,9 +29,14 @@ class ValuationChest < ApplicationRecord
 
   aasm do 
   	state :using, :initial => true
-    state :released
+    state :deleted
     event :soft_delete do 
-      transitions from: :using, to: :released
+      transitions from: :using, to: :deleted, :after => :soft_delete_his_exhi_chest
     end
 	end
+
+  private
+    def soft_delete_his_exhi_chest
+      self.exhibition_chests.each {|i| i.soft_delete!}
+    end
 end

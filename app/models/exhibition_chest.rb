@@ -35,10 +35,15 @@ class ExhibitionChest < ApplicationRecord
 
   aasm do 
   	state :waiting, :initial => true
-    state :online
+    state :online, :deleted
     event :release do 
       transitions from: [:waiting, :online], to: :online, :after => :release_new_garments
     end
+
+    event :soft_delete do 
+      transitions from: :online, to: :deleted
+    end
+
 	end
 
   def state
@@ -61,6 +66,14 @@ class ExhibitionChest < ApplicationRecord
 
   include ExhibitionChestSpaceInfo
 
+  def his_duddies_can_be_break?
+    self.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+).select{ |garment| garment.stored?}.blank?
+  end
+
+  def delete_his_val_chest
+    raise '绑定衣柜中仍有衣服，不能释放该衣柜'  unless   his_duddies_can_be_break? 
+    self.valuation_chest.soft_delete! 
+  end
 
   def move_garment
     

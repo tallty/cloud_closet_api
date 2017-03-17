@@ -5,7 +5,10 @@ class ExhibitionChestsController < ApplicationController
   acts_as_token_authentication_handler_for User
   
   before_action :set_user_chests
-  before_action :set_exhibition_chest, only: [ :move_garment, :the_same_store_method, :update, :destroy]
+  before_action :set_exhibition_chest, only: [ 
+      :move_garment, :the_same_store_method, 
+      :update, :destroy, :delete_his_val_chest
+    ]
 
   respond_to :json
 
@@ -45,6 +48,13 @@ class ExhibitionChestsController < ApplicationController
      p  garment.save
     end
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+  end
+
+  def delete_his_val_chest
+    @exhibition_chest.delete_his_val_chest
+    respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+  rescue => @error
+    respond_with @error, template: 'error', status: 200
   end
 
   # def destroy

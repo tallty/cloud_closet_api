@@ -54,7 +54,10 @@ resource "我的衣橱" do
     @val_chest3 = create(:valuation_chest,
       price_system: @alone_full_dress_chest,
       user: @user)
-    # 
+    # 组合柜
+    @val_chest4 = create(:valuation_chest,
+      price_system: @group_chest1,
+      user: @user)
 
     @chest1 = create(:exhibition_chest, 
     	exhibition_unit: @stocking_chest.exhibition_units.first,
@@ -62,6 +65,19 @@ resource "我的衣橱" do
     	valuation_chest: @val_chest1,
     	user: @user
     	)
+    @chest2_group1 = create(:exhibition_chest, 
+      exhibition_unit: @stocking_chest.exhibition_units.first,
+      custom_title: '组合柜哈哈航啊',
+      valuation_chest: @val_chest4,
+      user: @user
+      )
+
+    @chest2_group2 =  create(:exhibition_chest, 
+      exhibition_unit: @stocking_chest.exhibition_units.second,
+      custom_title: '组合柜哈哈航啊222',
+      valuation_chest: @val_chest4,
+      user: @user
+      )
     # 正在入库的衣服
     @garments = create_list(
     	:garment, 3,
@@ -159,6 +175,36 @@ resource "我的衣橱" do
       expect(status).to eq(201)
       p ';====after==='
       p @exhi_chests.first.garments.count
+    end
+  end
+
+  post 'exhibition_chests/:id/delete_his_val_chest' do
+
+    let(:id) {@chest2_group1.id}
+
+    example "用户 释放衣柜 成功" do
+      
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+    end
+
+    describe '失败' do 
+      before do 
+        create_list(
+          :garment, 3,
+          exhibition_chest: @chest2_group1,
+          status: 'stored'
+          ) 
+        p @chest2_group1.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+)#.select{ |garment| garment.stored?}
+        p' ====== '
+        p @chest2_group1.his_duddies_can_be_break?
+      end
+      example "用户 释放衣柜 失败" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
     end
   end
 
