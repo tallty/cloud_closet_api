@@ -8,14 +8,15 @@ class VipServices
 	end
 
 	def vip_in_user_info 
-		index = @vip_exp_ary.map{ |exp| exp < @credit }.index(false) - 1
+		index = bsearch_index{|x|x > @credit} 
+		index = index ? index - 1 : @vip_list.count - 1
 		level_now = @vip_list[ index ] 
 		level_next = @vip_list[ index + 1 ] 
 		{
       level_now: level_now.name, 
       level_next: level_next.name, 
       credit_total: @credit,
-      exp_now: @credit - level_now.exp,
+      exp_now: @credit - level_now.expd,
       need_exp: level_next.exp - level_now.exp
     }
 	end
