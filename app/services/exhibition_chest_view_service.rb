@@ -10,7 +10,7 @@ class ExhibitionChestViewService
 		# chunk 不排序..? [1,[]],[2,[]],[1,[]]
 		@exhibition_chests.sort_by(&:exhibition_unit_id).chunk(&:exhibition_unit_id).each do |unit_id, items|
 			next unless items.any? 
-			_chests.concat items.first.need_join ? [ items.first ] : items
+			_chests.concat( items.first.need_join ? [ items.first ] : items )
 		end
 		_chests
 	end

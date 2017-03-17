@@ -9,6 +9,7 @@ class VipServices
 	end
 
 	def vip_in_user_info 
+		return nil unless @vip_exp_ary
 		@vip_exp_ary.bsearch_index{|x|x > @credit}
 		index = @vip_exp_ary.bsearch_index{|x|x > @credit} || @vip_exp_ary.count
 		level_now = @vip_list[ index ]

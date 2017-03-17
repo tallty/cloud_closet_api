@@ -66,14 +66,14 @@ resource "我的衣橱" do
     	user: @user
     	)
     @chest2_group1 = create(:exhibition_chest, 
-      exhibition_unit: @stocking_chest.exhibition_units.first,
+      exhibition_unit: @group_chest1.exhibition_units.first,
       custom_title: '组合柜哈哈航啊',
       valuation_chest: @val_chest4,
       user: @user
       )
 
     @chest2_group2 =  create(:exhibition_chest, 
-      exhibition_unit: @stocking_chest.exhibition_units.second,
+      exhibition_unit: @group_chest1.exhibition_units.second,
       custom_title: '组合柜哈哈航啊222',
       valuation_chest: @val_chest4,
       user: @user
