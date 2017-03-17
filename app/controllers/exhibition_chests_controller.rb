@@ -11,6 +11,8 @@ class ExhibitionChestsController < ApplicationController
 
   def index
     @exhibition_chests = ExhibitionChestViewService.new(@user_chests).in_user_index
+    p '-----------------------'
+   p @chest_other_info = ExhibitionChestViewService.new(@user_chests).chest_other_info(current_user)
     respond_with(@exhibition_chests)
   end
 

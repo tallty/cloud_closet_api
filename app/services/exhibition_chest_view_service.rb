@@ -32,4 +32,18 @@ class ExhibitionChestViewService
 		[ _chest, _garments ]
 	end
 
+	def chest_other_info user
+		graments_count = @exhibition_chests.collect(&:garments).reduce(:+).select{ |garment| garment.stored? }.count
+		storing_garments_count = 
+			user.appointments.map { |appt| 
+				appt.garment_count_info.values.reduce(:+) 
+				}.reduce(:+) - graments_count
+
+		{
+			graments_count: graments_count,
+			storing_garments_count: storing_garments_count
+		}
+	end
+
+
 end
