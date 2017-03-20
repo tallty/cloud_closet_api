@@ -20,7 +20,7 @@ FactoryGirl.define do
   # end
 
   factory :stocking_chest , class: :price_system do
-    # before(:create) do |price_system|  end
+    # before(:create) do create_list(:store_method, 3)  end
   	title '叠放柜'
     price 180
     description '*叠放柜可存放针织类，卫衣棉服等可折叠衣物60件, 也可提供真空袋出售；'

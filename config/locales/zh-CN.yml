@@ -14,7 +14,7 @@ zh-CN:
 
   invoice_aasm_state:
     waiting: '待处理'
-    accepted: '已接受'
+    accepted: '开票成功'
     had_been_send: '已发出'
     refuse: '已拒绝'
 

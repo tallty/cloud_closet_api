@@ -9,7 +9,7 @@ class InvoicesController < ApplicationController
   respond_to :json
 
   def index
-    @invoices = current_user.invoices.all
+    @invoices = current_user.invoices
     respond_with(@invoices)
   end
 

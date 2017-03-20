@@ -30,8 +30,9 @@ class Invoice < ApplicationRecord
 	include AASM
 
 	aasm do
-    state :waiting, :initial => true
-    state :accepted, :refused, :had_been_send
+    state :waiting
+    state :accepted, :initial => true
+    state :refused, :had_been_send
 
     event :accept do
       transitions from: :waiting, to: :accepted
@@ -49,6 +50,8 @@ class Invoice < ApplicationRecord
   def state
   	I18n.t :"invoice_aasm_state.#{aasm_state}"
   end
+
+
 
 	private
 		def set_remaining_limit
