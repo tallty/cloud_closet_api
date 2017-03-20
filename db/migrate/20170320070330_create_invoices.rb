@@ -10,7 +10,7 @@ class CreateInvoices < ActiveRecord::Migration[5.0]
       t.string :postcode
       t.string :address
       t.date :date
-      t.float :blance
+      t.float :remaining_limit
       t.references :user, foreign_key: true
 
       t.timestamps
