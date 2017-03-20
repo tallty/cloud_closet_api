@@ -11,13 +11,7 @@ Rails.application.routes.draw do
   end
   # ------------------------------------------#
 
-  # --------------------Bill Routes----------------------#
-  resources :bills, only: [:show, :index, :create] do
-    collection do
-      get :deposit_bill
-      get :payment_bill
-    end
-  end
+  resources :invoices, only: [:show, :index, :create]
 
   # ------------ UserInfo Routes ------------------#
   resource :user_info, only: [:show, :update] do
@@ -97,6 +91,13 @@ Rails.application.routes.draw do
       resources :exhibition_units
     end
     resources :constant_tags
+    resources :invoices, only: [:show, :index] do 
+      member do 
+        post :accept
+        post :refuse
+        post :send_out
+      end
+    end
   end
   # --------------------------------------------------------#
 

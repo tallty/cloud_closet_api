@@ -12,10 +12,17 @@ zh-CN:
     stored: "已上架"
     canceled: "已取消"
 
+  invoice_aasm_state:
+    waiting: '待处理'
+    accepted: '已接受'
+    had_been_send: '已发出'
+    refuse: '已拒绝'
+
   appointment_itme_status:
     unstore: "未入库"
     storing: "入库中"
     stored: "已入库"
+    
   exhibition_chest_aasm_state:
     waiting: '未发布'
     online: '已发布'

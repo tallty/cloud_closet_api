@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(version: 20170320070330) do
   create_table "invoices", force: :cascade do |t|
     t.string   "title"
     t.float    "amount"
-    t.string   "type"
+    t.string   "invoice_type"
     t.string   "aasm_state"
     t.string   "cel_name"
     t.string   "cel_phone"

@@ -46,6 +46,7 @@ class User < ApplicationRecord
   has_one :user_info, dependent: :destroy
   has_many :offline_recharges
   has_many :ping_requests
+  has_many :invoices
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :purchase_logs, through: :user_info
