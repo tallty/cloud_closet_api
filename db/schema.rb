@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320070330) do
+ActiveRecord::Schema.define(version: 20170320092130) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 20170320070330) do
 
   create_table "exhibition_units", force: :cascade do |t|
     t.string   "title"
-    t.integer  "store_method"
+    t.string   "store_method"
     t.integer  "max_count"
     t.boolean  "need_join"
     t.integer  "price_system_id"
