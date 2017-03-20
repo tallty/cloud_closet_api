@@ -3,7 +3,7 @@ class CreateInvoices < ActiveRecord::Migration[5.0]
     create_table :invoices do |t|
       t.string :title
       t.float :amount
-      t.string :type
+      t.string :invoice_type
       t.string :aasm_state
       t.string :cel_name
       t.string :cel_phone
