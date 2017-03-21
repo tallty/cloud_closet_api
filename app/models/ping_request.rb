@@ -35,7 +35,7 @@ class PingRequest < ApplicationRecord
       :app       => { :id => APP_ID },
       :channel   => self.channel, #'wx_pub',
       #!!!### 临时充值为 0.01 元 ###########
-      :amount    => 1, #self.amount,
+      :amount    => self.amount,
       ################################
       :client_ip => self.client_ip, #Pingplusplus.new.get_client_id,
       :currency  => "cny",
