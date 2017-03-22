@@ -123,12 +123,13 @@ private
 			amount: @amount,
 			credit: @credit || 0, # 积分 可不存在 
 			can_arrears: @can_arrears,
-			is_increased: @is_increased 
+			is_increased: @is_increased,
+			actual_amount: @actual_amount
 		}
 		missing_val = params.map { |key, val| 
 				val ? next : key 
 			}.reject{ |i| 
-				i.nil? || i.in?([:is_increased, :can_arrears]) # 可为true or false
+				i.nil? || i.in?([:is_increased, :can_arrears, :actual_amount]) # 可为true or false
 			}
 		raise "创建参数缺失 #{missing_val}" if missing_val.any?
 		params
