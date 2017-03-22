@@ -103,7 +103,7 @@ class PurchaseLogService
 
 	def set_credit_params # ping_request/offline_recharge
 		object = @ping_request || @offline_recharge
-		@operation = '赠送积分变现为余额'
+		@operation = "充值 #{object.amount}元, 赠送 #{object.credit}元"
 		@payment_method = '余额支付'
 		@detail = 
 			"充值 #{object.amount}元 ; " + 
