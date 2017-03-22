@@ -86,7 +86,7 @@ class PurchaseLogService
 		@payment_method = '微信支付'
 			I18n.t :"pingpp_channel.#{@ping_request.channel}"
 		@detail = ''
-		@amount = @ping_request.amount
+		@amount = @ping_request.amount * 0.01
 		@actual_amount = @amount
 		@is_increased = true
 	end
