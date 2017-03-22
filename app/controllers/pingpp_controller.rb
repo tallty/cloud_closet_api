@@ -20,7 +20,7 @@ class PingppController < ApplicationController
 			channel: _channel,
 			client_ip: request.remote_ip,
 			extra: _extra,
-			amount: params[:amount],
+			amount: params[:amount] * 0.01,
       credit: params[:credit],
 			subject: params[:subject],
 			body: params[:body],
