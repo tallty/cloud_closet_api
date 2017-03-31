@@ -88,6 +88,7 @@ class PurchaseLogService
 		@detail = ''
 		@amount = @ping_request.amount * 0.01
 		@actual_amount = @amount
+		@credit = @amount
 		@is_increased = true
 	end
 
@@ -98,6 +99,7 @@ class PurchaseLogService
 			"为您充值的工作人员电话: #{@offline_recharge.worker_phone}"
 		@amount = @offline_recharge.amount
 		@actual_amount = @amount
+		@credit = @amount
 		@is_increased = true
 	end
 
