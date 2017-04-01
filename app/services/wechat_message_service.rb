@@ -2,8 +2,9 @@ class WechatMessageService
   # e.g. WechatMessageService.new(user).appt_state_msg(@appt)
 
 	def initialize user
-		@openid = user.try(:openid)
-		# @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
+    @user = user
+		# @openid = user.try(:openid)
+		@openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0'
 		raise '用户openid 为空' if @openid.blank?
 		@template = {}
     @merchant_phone = '15800634815'
@@ -17,12 +18,16 @@ class WechatMessageService
       response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
         { openid: @openid, template: @template }
       puts response.body
+p 'self ========'
+p self 
+      UserMsgService.new(@user, 'from_wechat_msg', wechat_msg: self)
     end
   end
 
   # ---- 订单状态改变 微信通知 --- #
 
 	def set_appt_state_msg appt
+    @title = '订单状态改变'
     @appt_seq = appt.seq
     @appt_state = appt.state
     @appt_amount = appt.price == 0 ? "上门评估" : appt.price
@@ -58,7 +63,7 @@ class WechatMessageService
     @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
     @remark = '谢谢您的支持'
     
-    @url = 'http://closet.tallty.com/user'
+    @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
     @template = consume_template
   end
 

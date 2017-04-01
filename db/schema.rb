@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320092130) do
+ActiveRecord::Schema.define(version: 20170323040952) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -424,6 +424,16 @@ ActiveRecord::Schema.define(version: 20170320092130) do
     t.integer  "credit",             default: 0
     t.integer  "recharge_amount",    default: 0
     t.index ["user_id"], name: "index_user_infos_on_user_id"
+  end
+
+  create_table "user_msgs", force: :cascade do |t|
+    t.string   "title"
+    t.string   "abstract"
+    t.string   "url"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_msgs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
