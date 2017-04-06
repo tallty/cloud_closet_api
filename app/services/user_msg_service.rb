@@ -14,8 +14,14 @@ class UserMsgService
 
 	def from_wechat_msg 
 		@title = @wechat_msg.instance_variable_get('@title')
-		@url = @wechat_msg.instance_variable_get('@url')
 		@abstract = @wechat_msg.instance_variable_get('@remark').gsub("\n", ' ')
+		@url = @wechat_msg.instance_variable_get('@url')
+	end
+
+	def vip_level_up
+		@title = "您升级啦!"
+		@abstract = "您想现在是尊贵的#{@info_after_adding[:level_now]}！"
+		@url = 'http://closet.tallty.com/user'
 	end
 
 end

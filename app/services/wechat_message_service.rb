@@ -18,8 +18,7 @@ class WechatMessageService
       response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
         { openid: @openid, template: @template }
       puts response.body
-p 'self ========'
-p self 
+      # 用户消息中心消息
       UserMsgService.new(@user, 'from_wechat_msg', wechat_msg: self)
     end
   end

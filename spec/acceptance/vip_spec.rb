@@ -10,8 +10,9 @@
 #   before do
 #     @user = create(:user)
 #     @user_info = create(:user_info, user: @user, credit: 100)
-
-#     create_list(:vip_level)
+    
+#     create_list(:vip_level, 4)
 #   end
+  
 
 # end
