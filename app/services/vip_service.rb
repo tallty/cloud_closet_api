@@ -22,7 +22,7 @@ class VipService
     }
 	end
 
-	def add credit
+	def credit_add credit
 		@user_info.credit += credit || 0
 		raise '积分增加失败' unless @user_info.save
 		level_up?

@@ -12,7 +12,7 @@ class WechatMessageService
 	end
 
   def send_msg type, arg
-    p "------ set_#{type}--------" 
+    p "---wechat--- set_#{type}--------" 
     send( "set_#{type}", arg )
     unless Rails.env == 'test'
       response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',

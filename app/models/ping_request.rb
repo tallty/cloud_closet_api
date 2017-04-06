@@ -26,6 +26,7 @@
 #
 
 class PingRequest < ApplicationRecord
+  # 注 ： amount 转化为实际金额需要 * 0.01
 
   belongs_to :user
 	

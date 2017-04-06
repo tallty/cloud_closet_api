@@ -1,5 +1,5 @@
 class PurchaseLogService
-
+	# 真实交易成功完成 而后续操作报错 应该有报警。？！
 	# PurchaseLogService.new(user, ['service_cost'], { appointment: @appt })
 	def initialize user, type_ary=[], options={}
 		options.each_pair do |key, value|
@@ -104,6 +104,7 @@ class PurchaseLogService
 	end
 
 	def set_credit_params # ping_request/offline_recharge
+		@ping_request.amount *= 0.01 if @ping_request
 		object = @ping_request || @offline_recharge
 		@operation = "充值 #{object.amount}元, 赠送 #{object.credit}元"
 		@payment_method = '余额支付'
@@ -138,11 +139,16 @@ private
 	end
 
 	def change_balance purchase_log
-		change = purchase_log.is_increased ? '+' : '-'
-		purchase_log.balance = @user_info.balance = @user_info.balance.send(change, purchase_log.amount)# || 0)
+		change = purchase_log.is_increased ? :+ : :-
+		# 增加相应余额
+		purchase_log.balance = 
+			@user_info.balance = 
+				[ @user_info.balance, purchase_log.amount || 0 ].reduce(change)
 		raise '余额不足，扣费失败' if purchase_log.balance < 0 && purchase_log.can_arrears.!
-		@user_info.credit = @user_info.credit.send(change, purchase_log.credit || 0)
-		@user_info.recharge_amount = @user_info.recharge_amount.send(change, purchase_log.actual_amount || 0)
+		# 增加相应积分
+		VipService.new(@user_info).credit_add(purchase_log.credit)
+		# 真实充值金额， 可供开取发票
+		@user_info.recharge_amount = [ @user_info.recharge_amount,( purchase_log.actual_amount || 0 )].reduce(change)
 		@user_info.save!
 		purchase_log.save
 	end
