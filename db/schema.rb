@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323040952) do
+ActiveRecord::Schema.define(version: 20170406103342) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -339,6 +339,14 @@ ActiveRecord::Schema.define(version: 20170323040952) do
     t.boolean  "is_chest"
     t.text     "description"
     t.string   "unit_name"
+  end
+
+  create_table "publish_msgs", force: :cascade do |t|
+    t.string   "title"
+    t.string   "abstract"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "purchase_logs", force: :cascade do |t|
