@@ -7,6 +7,7 @@ resource "工作台相关接口" do
   header "X-Worker-Token", worker_attrs[:authentication_token]
   header "X-Worker-Phone", worker_attrs[:phone]
   before do 
+    create_list(:vip_level, 4)
     # 创建价格表
     @store_methods = create_list(:store_method, 3)
     @stocking_chest = create(:stocking_chest) 
