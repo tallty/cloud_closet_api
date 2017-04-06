@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :user_msg do
-    title "MyString"
-    abstract "MyString"
-    url "MyString"
-    references ""
+    title "我是标题"
+    abstract "我是简述"
+    url "我是链接"
+    
   end
 end

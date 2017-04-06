@@ -22,6 +22,13 @@ Rails.application.routes.draw do
   end
   # ----------------------------------------------#
 
+  # ------------ 消息中心 Routes ------------------#
+  resources :user_msgs, only: [:show, :index]
+  namespace :admin do 
+    resources :system_msgs
+  end
+  # ----------------------------------------------#
+
   # ------------ Garment Routes ------------------#
   resources :garments, only: [:index, :show, :update]
   # ----------------------------------------------#  

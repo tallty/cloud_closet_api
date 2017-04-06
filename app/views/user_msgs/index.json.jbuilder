@@ -1,0 +1,1 @@
+json.user_msgs @user_msgs, partial: 'user_msgs/user_msg', as: :user_msg

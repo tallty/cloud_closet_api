@@ -1,0 +1,1 @@
+json.partial! "user_msgs/user_msg", user_msg: @user_msg

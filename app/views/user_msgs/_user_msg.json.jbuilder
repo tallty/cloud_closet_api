@@ -1,0 +1,1 @@
+json.extract! user_msg, :id, :title, :abstract, :url

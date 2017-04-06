@@ -9,7 +9,7 @@ resource "预约存入衣服到我的衣橱" do
   before do
     @user = create(:user)
     @user_info = create(:user_info, user: @user)
-
+    create_list(:vip_level, 4)
     # 创建价格表
     create_list(:store_method, 3)
     @stocking_chest = create(:stocking_chest) 
