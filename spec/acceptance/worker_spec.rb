@@ -274,7 +274,7 @@ resource "工作台相关接口" do
 
       let(:id) {@offline_recharges.first.id}
 
-      example "工作人员查询某价目详细信息成功" do
+      example "工作人员查询 价目列表 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
