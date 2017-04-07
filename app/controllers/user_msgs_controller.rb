@@ -10,7 +10,6 @@ class UserMsgsController < ApplicationController
 
   def index
     @user_msgs = current_user.user_msgs
-    p  @user_msgs
     respond_with @user_msgs
   end
 

@@ -59,9 +59,19 @@ resource "消息中心相关" do
 	    	header "X-User-Phone", @user.phone
 	    	header "X-User-Token", @user.authentication_token 
 	    	@user_msgs = create_list(:user_msg, 3, user: @user)
+	    	@public_msgs = create_list(:public_msg, 1)
     	end
+
+    	get '/user_msg_center' do
+	      example '用户 访问【消息中心】 获取所有消息（个人+公频）' do
+	        do_request
+	        puts response_body
+	        expect(status).to eq(200)
+	      end
+	    end
+
 	    get '/user_msgs' do
-	      example '用户 获取所有 消息中心消息' do
+	      example '用户 获取所有 个人消息' do
 	        do_request
 	        puts response_body
 	        expect(status).to eq(200)
@@ -70,7 +80,16 @@ resource "消息中心相关" do
 
 	    get '/user_msgs/:id' do
 	    	let(:id) { @user_msgs.first.id } 
-	      example '用户 获取某一 消息中心消息' do
+	      example '用户 获取某一 个人消息' do
+	        do_request
+	        puts response_body
+	        expect(status).to eq(200)
+	      end
+	    end
+
+	    get '/public_msgs/:id' do
+	    	let(:id) { @public_msgs.first.id } 
+	      example '用户 获取某一 公频消息' do
 	        do_request
 	        puts response_body
 	        expect(status).to eq(200)
@@ -129,7 +148,7 @@ resource "消息中心相关" do
     put '/admin/public_msgs/:id' do
     	public_msg_attrs = FactoryGirl.attributes_for(:public_msg)
 			image_attrs = FactoryGirl.attributes_for(:image, photo_type: "public_msg")
-			
+
     	parameter :title, '公频消息 标题', require: false, scope: :public_msg
     	parameter :abstract, '公频消息 摘要', require: false, scope: :public_msg
     	parameter :content, '公频消息 内容', require: false, scope: :public_msg

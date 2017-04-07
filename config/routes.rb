@@ -23,7 +23,9 @@ Rails.application.routes.draw do
   # ----------------------------------------------#
 
   # ------------ 消息中心 Routes ------------------#
+  get 'user_msg_center', to: 'user_msg_center#user_msg_center'
   resources :user_msgs, only: [:show, :index]
+  resources :public_msgs, only: [:show]
   namespace :admin do 
     resources :public_msgs
   end
