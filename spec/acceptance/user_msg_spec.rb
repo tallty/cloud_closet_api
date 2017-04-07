@@ -82,27 +82,80 @@ resource "消息中心相关" do
 
 	describe '管理员' do 
 
-		# before do 
-		# 	@admin = create(:admin)
-		# 	header "X-Admin-Email", @admin.email
-		# 	header "X-Admin-Token", @admin.authentication_token
-		# end
-		# get '/admin/system_msgs' do
-  #     example '用户 获取所有 消息中心消息' do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+		before do 
+			@admin = create(:admin)
+			header "X-Admin-Email", @admin.email
+			header "X-Admin-Token", @admin.authentication_token
+			@public_msgs = create_list(:public_msg, 3)
+		end
+		get '/admin/public_msgs' do
+      example '管理员 获取所有 公频消息' do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #   get '/admin/system_msgs/:id' do
-  #   	let(:id) { @user_msgs.first.id } 
-  #     example '用户 获取某一 消息中心消息' do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+    get '/admin/public_msgs/:id' do
+    	let(:id) { @public_msgs.first.id } 
+      example '管理员 获取某一 公频消息' do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+    post '/admin/public_msgs' do
+    	public_msg_attrs = FactoryGirl.attributes_for(:public_msg)
+			image_attrs = FactoryGirl.attributes_for(:image, photo_type: "public_msg")
+
+    	parameter :title, '公频消息 标题', require: true, scope: :public_msg
+    	parameter :abstract, '公频消息 摘要', require: true, scope: :public_msg
+    	parameter :content, '公频消息 内容', require: true, scope: :public_msg
+    	parameter :public_msg_image_attributes, '公频消息 配图', require: true, scope: :public_msg
+
+ 			let(:title) { public_msg_attrs[:title] }
+ 			let(:abstract) { public_msg_attrs[:abstract] }
+ 			let(:content) { public_msg_attrs[:content] }
+    	let(:public_msg_image_attributes) { image_attrs }
+
+      example '管理员 创建公频消息' do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
+    put '/admin/public_msgs/:id' do
+    	public_msg_attrs = FactoryGirl.attributes_for(:public_msg)
+			image_attrs = FactoryGirl.attributes_for(:image, photo_type: "public_msg")
+			
+    	parameter :title, '公频消息 标题', require: false, scope: :public_msg
+    	parameter :abstract, '公频消息 摘要', require: false, scope: :public_msg
+    	parameter :content, '公频消息 内容', require: false, scope: :public_msg
+    	parameter :public_msg_image_attributes, '公频消息 配图', require: false, scope: :public_msg
+
+ 			let(:title) { public_msg_attrs[:title] }
+ 			# let(:abstract) { public_msg_attrs[:abstract] }
+ 			let(:content) { public_msg_attrs[:content] }
+    	let(:public_msg_image_attributes) { image_attrs }
+
+    	let(:id) { @public_msgs.first.id } 
+      example '管理员 修改某一 公频消息' do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
+    delete '/admin/public_msgs/:id' do
+    	let(:id) { @public_msgs.first.id } 
+      example '管理员 删除某一 公频消息' do
+        do_request
+        puts response_body
+        expect(status).to eq(204)
+      end
+    end
 
 	end
 end

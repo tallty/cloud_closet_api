@@ -4,7 +4,7 @@
 #
 #  id              :integer          not null, primary key
 #  title           :string
-#  store_method    :integer
+#  store_method    :string
 #  max_count       :integer
 #  need_join       :boolean
 #  price_system_id :integer

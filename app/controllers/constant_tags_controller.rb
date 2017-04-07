@@ -1,4 +1,6 @@
 class ConstantTagsController < ApplicationController
+  include ActionView::Layouts
+  include ActionController::MimeResponds
   before_action :set_constant_tag, only: [:show, :update, :destroy]
 
   respond_to :json

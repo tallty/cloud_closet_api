@@ -17,6 +17,12 @@
 #  updated_at  :datetime         not null
 #  openid      :string
 #  metadata    :string
+#  credit      :integer
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_ping_requests_on_user_id  (user_id)
 #
 
 require 'rails_helper'

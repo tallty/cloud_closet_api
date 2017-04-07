@@ -1,0 +1,1 @@
+json.partial! "public_msgs/public_msg", public_msg: @public_msg

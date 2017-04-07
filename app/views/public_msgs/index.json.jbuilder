@@ -1,0 +1,1 @@
+json.public_msgs @public_msgs, partial: 'public_msgs/public_msg', as: :public_msg

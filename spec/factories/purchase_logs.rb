@@ -14,6 +14,7 @@
 #  is_increased   :boolean
 #  credit         :integer
 #  actual_amount  :float
+#  can_arrears    :boolean
 #
 # Indexes
 #
