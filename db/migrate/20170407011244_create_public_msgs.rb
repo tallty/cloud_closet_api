@@ -1,6 +1,6 @@
-class CreatePublishMsgs < ActiveRecord::Migration[5.0]
+class CreatePublicMsgs < ActiveRecord::Migration[5.0]
   def change
-    create_table :publish_msgs do |t|
+    create_table :public_msgs do |t|
       t.string :title
       t.string :abstract
       t.text :content
