@@ -23,6 +23,8 @@
 class AppointmentPriceGroup < ApplicationRecord
   belongs_to :price_system
   belongs_to :appointment
+
+  has_one :valuation_chest
   has_many :appointment_new_chests, dependent: :destroy
   has_many :exhibition_chests, through: :appointment_new_chests
   validates :count, presence: true
@@ -30,9 +32,10 @@ class AppointmentPriceGroup < ApplicationRecord
 
   before_create :restore_price_system_info
   before_create :set_price
-  after_create :create_relate_new_chests
+  
   after_create :create_relate_valuation_chest
- 
+  after_create :create_relate_new_chests
+
   scope :chests, ->{ where( is_chest: true )}
   scope :other_items, ->{ where( is_chest: false )}
 
@@ -52,8 +55,9 @@ class AppointmentPriceGroup < ApplicationRecord
   	def create_relate_valuation_chest
       if self.is_chest
     		raise '用户错误' unless _user = self.appointment.try(:user)
-    		_valuation_chest = _user.valuation_chests.build(
-    				price_system: self.price_system
+    		_valuation_chest = self.build_valuation_chest(
+    				price_system: self.price_system,
+            user: _user
     			)
     		raise '用户计价柜(valuation_chest)创建失败' unless _valuation_chest.save
       end

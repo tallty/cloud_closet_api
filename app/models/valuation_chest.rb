@@ -19,6 +19,7 @@
 class ValuationChest < ApplicationRecord
   belongs_to :price_system
   belongs_to :user
+  belongs_to :appointment_price_group
   has_many :exhibition_chests
   
   delegate :title, :price, to: :price_system#, allow_nil: true

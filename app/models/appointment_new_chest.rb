@@ -32,7 +32,8 @@ class AppointmentNewChest < ApplicationRecord
  			raise '用户错误' unless _user = self.appointment_price_group.appointment.try(:user)
  			_exhibition_chest = _user.exhibition_chests.build(
  					exhibition_unit: self.exhibition_unit,
- 					appointment_new_chest: self	
+ 					appointment_new_chest: self,
+ 					valuation_chest: self.appointment_price_group.valuation_chest
  				)
  			raise '用户展示衣柜创建失败' unless _exhibition_chest.save
 

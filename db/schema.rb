@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407011244) do
+ActiveRecord::Schema.define(version: 20170412083517) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -470,9 +470,11 @@ ActiveRecord::Schema.define(version: 20170407011244) do
     t.integer  "price_system_id"
     t.string   "aasm_state"
     t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.date     "start_time"
+    t.integer  "appointment_price_group_id"
+    t.index ["appointment_price_group_id"], name: "index_valuation_chests_on_appointment_price_group_id"
     t.index ["price_system_id"], name: "index_valuation_chests_on_price_system_id"
     t.index ["user_id"], name: "index_valuation_chests_on_user_id"
   end
