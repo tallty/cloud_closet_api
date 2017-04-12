@@ -100,6 +100,8 @@ resource "工作台相关接口" do
       parameter :full_dress, "礼服数量", required: false, scope: [ :appointment_items, :price_groups ]
       p '-----dd'
       p StoreMethod.all
+
+
       # @store_methods.each do |store_method|
       #   p '-----'
       #   p parameter store_method.title.to_sym, "#{store_method.zh_title}的数量", required: false, scope: [ :appointment, :garment_count_info ]
@@ -108,6 +110,8 @@ resource "工作台相关接口" do
       before do
         @appointments.first.accept!
         @store_methods = create_list(:store_method, 3)
+        p '@user.exhibition_chests----'
+        p @user.exhibition_chests
       end
 
       let(:appointment_id) { @appointments.first.id }
@@ -122,8 +126,8 @@ resource "工作台相关接口" do
               service_cost: 200,
               garment_count_info: 
                 {
-                  hanging: 10,
-                  stacking: 55
+                  hanging: 0,
+                  stacking: 0
                 }
             },
           appointment_items: 
@@ -156,10 +160,10 @@ resource "工作台相关接口" do
         do_request params
         puts response_body
         expect(status).to eq(200)
-        # p '@user.valuation_chests'
-        # p @user.valuation_chests
-        # p '@user.exhibition_chests'
-        # p @user.exhibition_chests
+        p '@user.valuation_chests'
+        p @user.valuation_chests
+        p '@user.exhibition_chests'
+        p @user.exhibition_chests
       end
       describe '失败' do 
         example "【工作人员】修改指定订单下面的订单组 失败（选择的衣橱空间数量不足）" do

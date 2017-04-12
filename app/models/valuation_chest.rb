@@ -20,7 +20,10 @@ class ValuationChest < ApplicationRecord
   belongs_to :price_system
   belongs_to :user
   belongs_to :appointment_price_group
+  
   has_many :exhibition_chests
+  
+  after_create :create_relate_exhibition_chests
   
   delegate :title, :price, to: :price_system#, allow_nil: true
 
@@ -40,4 +43,15 @@ class ValuationChest < ApplicationRecord
     def soft_delete_his_exhi_chest
       self.exhibition_chests.each {|i| i.soft_delete!}
     end
+
+    def create_relate_exhibition_chests
+      self.price_system.exhibition_units.each do |exhibition_unit| 
+        _exhibition_chest = self.exhibition_chests.build(
+          exhibition_unit: exhibition_unit,
+          user: self.user
+        )
+        raise '用户展示衣柜创建失败' unless _exhibition_chest.save
+      end
+    end
+
 end

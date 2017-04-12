@@ -24,17 +24,15 @@ class AppointmentPriceGroup < ApplicationRecord
   belongs_to :price_system
   belongs_to :appointment
 
-  has_one :valuation_chest
-  has_many :appointment_new_chests, dependent: :destroy
-  has_many :exhibition_chests, through: :appointment_new_chests
-  validates :count, presence: true
+  has_many :valuation_chests
+  has_many :exhibition_chests, through: :valuation_chests
 
+  validates :count, presence: true
 
   before_create :restore_price_system_info
   before_create :set_price
   
   after_create :create_relate_valuation_chest
-  after_create :create_relate_new_chests
 
   scope :chests, ->{ where( is_chest: true )}
   scope :other_items, ->{ where( is_chest: false )}
@@ -53,27 +51,14 @@ class AppointmentPriceGroup < ApplicationRecord
   	end
 
   	def create_relate_valuation_chest
-      if self.is_chest
-    		raise '用户错误' unless _user = self.appointment.try(:user)
-    		_valuation_chest = self.build_valuation_chest(
+      return nil unless self.is_chest
+  		raise '用户错误' unless _user = self.appointment.try(:user)
+      count.times do 
+    		_valuation_chest = self.valuation_chests.build(
     				price_system: self.price_system,
             user: _user
     			)
     		raise '用户计价柜(valuation_chest)创建失败' unless _valuation_chest.save
       end
   	end
-
-  	def create_relate_new_chests
-      if self.is_chest
-        self.count.times do 
-  	  		self.price_system.exhibition_units.each do |exhibition_unit| 
-  					_new_chests = self.appointment_new_chests.build(
-              exhibition_unit: exhibition_unit,
-              appointment: self.appointment
-              )
-  					raise '订单 对应新柜子记录项(appointment_new_chests)创建失败' unless _new_chests.save
-  				end
-			 end
-     end
-  	end
-end
+  end

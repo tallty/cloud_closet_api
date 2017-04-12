@@ -23,7 +23,7 @@
 
 FactoryGirl.define do
   factory :appointment_item_group do
-    count 5
+    count 1
     store_month 3
     price 1.5
     type_name "上衣"

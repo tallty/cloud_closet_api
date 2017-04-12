@@ -66,8 +66,6 @@ class Appointment < ApplicationRecord
 
   has_many :graments
   has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
-  has_many :new_chests, class_name: "AppointmentNewChest", dependent: :destroy
-  has_many :new_exhibition_chests, through: :new_chests
 
   after_create :generate_seq
   after_create :send_sms
@@ -152,14 +150,14 @@ class Appointment < ApplicationRecord
   # rescue => error
   end
 
+  def new_chests
+    self.groups.collect(&:exhibition_chests).map(&:to_a).reduce(:+)
+  end
 
   def check_space_and_garment_count
     _count_info =  self.garment_count_info
+    p _count_info
     user = self.user
-    # user.appointments.stor
-
-
-
     self.new_chests.map do |new_chest|
       _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
     end
