@@ -8,6 +8,10 @@ class RentService
 	end
 
 	def appt_new_chest_rent appt
+    appt.val_chests.each do |val_chest|
+      val_chest.update!(start_time: Time.zone.now)
+    end
+    
 		ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
 		
     rent = appt.groups.map { |group| 

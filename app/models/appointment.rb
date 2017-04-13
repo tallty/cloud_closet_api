@@ -66,6 +66,7 @@ class Appointment < ApplicationRecord
 
   has_many :graments
   has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
+  has_many :val_chests, source: 'valuation_chests', through: :groups
 
   after_create :generate_seq
   after_create :send_sms

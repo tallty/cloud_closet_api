@@ -266,6 +266,8 @@ resource "管理后台相关接口" do
         expect(status).to eq(201)
         p '----- purchar_log------'
         p @user.purchase_logs
+        p '----- valuation_chests------'
+        p @user.valuation_chests
       end
     end
 
