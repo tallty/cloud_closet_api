@@ -7,11 +7,12 @@ class RentService
     @units = ExhibitionUnit.all
 	end
 
+  # after admin stored a appt 
 	def appt_new_chest_rent appt
     appt.val_chests.each do |val_chest|
       val_chest.update!(start_time: Time.zone.now)
     end
-    
+
 		ratio = (Time.now.day.to_f / Time.days_in_month(Time.now.month)).round(2)
 		
     rent = appt.groups.map { |group| 
@@ -40,7 +41,7 @@ class RentService
           }
         }
       ).create
-    @user_info.balance -= @monthly_rent.rount(2)
+    @user_info.balance -= @monthly_rent.round(2)
     @user_info.save!
     # 不足本月 紧急提醒
     insufficient_blannce_remind(is_this_month: true) if @user.info.balance < 0 

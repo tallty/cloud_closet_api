@@ -61,8 +61,8 @@ class WechatMessageService
     @balance_now = purchase_log.balance
     @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
     @remark = '谢谢您的支持'
-    
-    @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
+ p '-----url -----'   
+p    @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
     @template = consume_template
   end
 
@@ -177,7 +177,7 @@ class WechatMessageService
   def consume_template
      template = {
       template_id: "hFCXLN4imU5Zh7ZgjjmaHyAxhXotxHu4MwEeJCYAIjk",
-      url: @usl, #{}"http://closet.tallty.com/user",
+      url: @url, #{}"http://closet.tallty.com/user",
       topcolor: "#FF0000",
 
       data: {
