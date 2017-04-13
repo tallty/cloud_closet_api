@@ -47,7 +47,7 @@ class RentService
     insufficient_blannce_remind(is_this_month: true) if @user.info.balance < 0 
     # 不足下个月 提醒
     insufficient_blannce_remind if @user.info.balance <  @monthly_rent
-
+    [ @monthly_rent, @detail ]
   end
 
   # 如果本月余额不足 将发送两条通知
@@ -97,7 +97,7 @@ class RentService
       rent = 0
       info_hash = {}
       @user.valuation_chests.each do |val_chest|
-        
+
         price_system = val_chest.price_system
         if price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
             price_system.exhibition_units.first.need_join && # 显示单位柜 衣服合并显示

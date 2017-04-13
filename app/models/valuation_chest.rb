@@ -28,9 +28,8 @@ class ValuationChest < ApplicationRecord
   delegate :title, :price, to: :price_system#, allow_nil: true
 
   # use unscope to cancel it
-  default_scope { not_deleted }
-  scope :not_deleted, ->{ where("aasm_state not like 'deleted'") }
-  
+  default_scope { where("aasm_state not like 'deleted'") }
+
 	include AASM
 
   aasm do 

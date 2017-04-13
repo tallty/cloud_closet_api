@@ -11,6 +11,10 @@ resource '租金计算 相关' do
     @alone_full_dress_chest = create(:alone_full_dress_chest)
 
     @user = create(:user)
+    @user_info = create(:user_info,
+      user: @user, 
+      balance: 10000
+      )
     @stocking_val = create(:valuation_chest, 
       user: @user,
       price_system: @stocking_chest
@@ -31,7 +35,7 @@ resource '租金计算 相关' do
       user: @user,
       price_system: @alone_full_dress_chest
       )
-    @new_val_ary = [ @stocking_val, @group_val1, @group_val2, @alone_val1, @alone_val2 ]
+    
     
     create(:garment, exhibition_chest: @alone_val1.exhibition_chests.first)
 
@@ -40,25 +44,41 @@ resource '租金计算 相关' do
 
   describe '计算整月租金' do
     
-    it ' ' do 
-      assert_equal 5, @user.valuation_chests.count, '原有 5 计价柜'
+    it '余额足够 测试删除空单礼服柜' do 
       
+      assert_equal 5, @user.valuation_chests.count, '原有 5 计价柜'
+      # do
       _rent, _detail = RentService.new(@user).deducte_monthly_rent
-      p @new_val_ary
+      p _rent
       assert_equal 4, @user.valuation_chests.count, '删除 无衣物的单礼服柜'
       assert_equal 'using', ValuationChest.find(@alone_val1.id).aasm_state, '不删除 有衣物的单礼服柜'
       assert_equal 'deleted', ValuationChest.unscope(:where).find(@alone_val2.id).aasm_state, '删除 无衣物的单礼服柜'
-      _rent_should = @new_val_ary.collect(&:price).reduce(:+)
+      
+      _new_val_ary = [ @stocking_val, @group_val1, @group_val2, @alone_val1 ]
+      _rent_should = _new_val_ary.collect(&:price).reduce(:+)
       assert_equal  _rent_should, _rent, '租金计算'
       
-      describe '删除衣服' do
-        ValuationChest.find(@alone_val1.id).exhibition_chests.collect(&:garments).reduce(:+).map(:delete)
-        assert_nil RentService.new(@user).deducte_monthly_rent
-        assert 3, @user.valuation_chests.count
-      end
-      
-    end  
+    end 
 
+    describe '' do 
+      before do 
+        @user_info.update( balance: 100 )
+      end
+      # 用户收到微信推送
+      it '本月余额不足' do
+        _rent, _detail = RentService.new(@user).deducte_monthly_rent
+      end
+    end
+
+    describe '' do 
+      before do 
+        @user_info.update( balance: 10 )
+      end
+      # 用户收到微信推送 ，管理员收到短信
+      it '下个月本月余额不足' do
+        _rent, _detail = RentService.new(@user).deducte_monthly_rent
+      end
+    end
   end
   
 
