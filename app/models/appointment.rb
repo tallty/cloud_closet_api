@@ -176,18 +176,14 @@ class Appointment < ApplicationRecord
     def after_pay
       PurchaseLogService.new(
           self.user, ['service_cost', 'case_cost'],
-          {
-            appointment: self
-          }
+          { appointment: self }
         ).create
     end
 
     def after_stored
       PurchaseLogService.new(
           user, ['new_chest_rent'], 
-          { 
-            appointment: self
-           }
+          { appointment: self }
         ).create
     end
 
