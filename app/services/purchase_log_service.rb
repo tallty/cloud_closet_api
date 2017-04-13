@@ -37,122 +37,121 @@ class PurchaseLogService
 		purchase_log_ary
 	end
 
-	# -------  消费  ------- #
-
-	def set_service_cost_params # appointment
-		@operation = '服务费'
-		@payment_method = '余额支付'
-		@detail = ''
-		@amount = @appointment.service_cost
-		@is_increased = false
-	end
-
-	def set_case_cost_params # appointment
-		@operation = '护理费'
-		@payment_method = '余额支付'
-		@detail = @appointment.care_type
-		@amount = @appointment.care_cost
-		@is_increased = false
-	end
-
-	def set_montly_rent_params # info
-		@operation = '每月租金'
-		@payment_method = '余额支付'
-		@detail = @info[:detail]
-		@amount = @info[:amount]
-		@is_increased = false
-		@can_arrears = true
-	end
-
-	def set_new_chest_rent_params # appointment
-		@operation = '新赠衣柜的本月租金'
-		@payment_method = '余额支付'
-		@amount, @detail = RentService.new(@user).appt_new_chest_rent(@appointment)
-		@is_increased = false
-		@can_arrears = true
-	end
-
-	def set_distribution_params
-		@operation = '配送'
-		@payment_method = '在线支付'
-		@detail = ''
-		@amount = 0
-		@is_increased = false
-	end
-
- # -------  充值  ------- #
-
-	def set_pingpp_recharge_params # ping_request
-		@operation = '在线充值'
-		@payment_method = '微信支付'
-			I18n.t :"pingpp_channel.#{@ping_request.channel}"
-		@detail = ''
-		@amount = @ping_request.amount * 0.01
-		@actual_amount = @amount
-		@credit = @amount
-		@is_increased = true
-	end
-
-	def set_offline_recharge_params # offline_recharge
-		@operation = '线下充值'
-		@payment_method = '线下充值' || ''
-		@detail = 
-			"为您充值的工作人员电话: #{@offline_recharge.worker_phone}"
-		@amount = @offline_recharge.amount
-		@actual_amount = @amount
-		@credit = @amount
-		@is_increased = true
-	end
-
-	def set_credit_params # ping_request/offline_recharge
-		@ping_request.amount *= 0.01 if @ping_request
-		object = @ping_request || @offline_recharge
-		@operation = "充值 #{object.amount}元, 赠送 #{object.credit}元"
-		@payment_method = '余额支付'
-		@detail = 
-			"充值 #{object.amount}元 ; " + 
-			"赠送 #{object.credit}元"
-		@amount = object.credit
-		@credit = @amount
-		@is_increased = true
-	end
-     
 private
+		# -------  消费  ------- #
 
-	def purchase_log_params
-		params = {
-			operation: @operation,
-			payment_method: @payment_method,
-			detail: @detail,
-			amount: @amount,
-			credit: @credit || 0, # 积分 可不存在 
-			can_arrears: @can_arrears,
-			is_increased: @is_increased,
-			actual_amount: @actual_amount
-		}
-		missing_val = params.map { |key, val| 
-				val ? next : key 
-			}.reject{ |i| 
-				i.nil? || i.in?([:is_increased, :can_arrears, :actual_amount]) # 可为true or false
+		def set_service_cost_params # appointment
+			@operation = '服务费'
+			@payment_method = '余额支付'
+			@detail = ''
+			@amount = @appointment.service_cost
+			@is_increased = false
+		end
+
+		def set_case_cost_params # appointment
+			@operation = '护理费'
+			@payment_method = '余额支付'
+			@detail = @appointment.care_type
+			@amount = @appointment.care_cost
+			@is_increased = false
+		end
+
+		def set_montly_rent_params # info
+			@operation = '每月租金'
+			@payment_method = '余额支付'
+			@detail = @info[:detail]
+			@amount = @info[:amount]
+			@is_increased = false
+			@can_arrears = true
+		end
+
+		def set_new_chest_rent_params # appointment
+			@operation = '新赠衣柜的本月租金'
+			@payment_method = '余额支付'
+			@amount, @detail = RentService.new(@user).appt_new_chest_rent(@appointment)
+			@is_increased = false
+			@can_arrears = true
+		end
+
+		def set_distribution_params
+			@operation = '配送'
+			@payment_method = '在线支付'
+			@detail = ''
+			@amount = 0
+			@is_increased = false
+		end
+
+	 # -------  充值  ------- #
+
+		def set_pingpp_recharge_params # ping_request
+			@operation = '在线充值'
+			@payment_method = '微信支付'
+				I18n.t :"pingpp_channel.#{@ping_request.channel}"
+			@detail = ''
+			@amount = @ping_request.amount * 0.01
+			@actual_amount = @amount
+			@credit = @amount
+			@is_increased = true
+		end
+
+		def set_offline_recharge_params # offline_recharge
+			@operation = '线下充值'
+			@payment_method = '线下充值' || ''
+			@detail = 
+				"为您充值的工作人员电话: #{@offline_recharge.worker_phone}"
+			@amount = @offline_recharge.amount
+			@actual_amount = @amount
+			@credit = @amount
+			@is_increased = true
+		end
+
+		def set_credit_params # ping_request/offline_recharge
+			@ping_request.amount *= 0.01 if @ping_request
+			object = @ping_request || @offline_recharge
+			@operation = "充值 #{object.amount}元, 赠送 #{object.credit}元"
+			@payment_method = '余额支付'
+			@detail = 
+				"充值 #{object.amount}元 ; " + 
+				"赠送 #{object.credit}元"
+			@amount = object.credit
+			@credit = @amount
+			@is_increased = true
+		end
+
+		def purchase_log_params
+			params = {
+				operation: @operation,
+				payment_method: @payment_method,
+				detail: @detail,
+				amount: @amount,
+				credit: @credit || 0, # 积分 可不存在 
+				can_arrears: @can_arrears,
+				is_increased: @is_increased,
+				actual_amount: @actual_amount
 			}
-		raise "创建参数缺失 #{missing_val}" if missing_val.any?
-		params
-	end
+			missing_val = params.map { |key, val| 
+					val ? next : key 
+				}.reject{ |i| 
+					i.nil? || i.in?([:is_increased, :can_arrears, :actual_amount]) # 可为true or false
+				}
+			raise "创建参数缺失 #{missing_val}" if missing_val.any?
+			params
+		end
 
-	def change_balance purchase_log
-		change = purchase_log.is_increased ? :+ : :-
-		# 增加相应余额
-		purchase_log.balance = 
-			@user_info.balance = 
-				[ @user_info.balance, purchase_log.amount || 0 ].reduce(change)
-		raise '余额不足，扣费失败' if purchase_log.balance < 0 && purchase_log.can_arrears.!
-		# 增加相应积分
-		VipService.new(@user_info).credit_add(purchase_log.credit)
-		# 真实充值金额， 可供开取发票
-		@user_info.recharge_amount = [ @user_info.recharge_amount,( purchase_log.actual_amount || 0 )].reduce(change)
-		@user_info.save!
-		purchase_log.save
+		def change_balance purchase_log
+			change = purchase_log.is_increased ? :+ : :-
+			# 增加相应余额
+			purchase_log.balance = 
+				@user_info.balance = 
+					[ @user_info.balance, purchase_log.amount || 0 ].reduce(change)
+			raise '余额不足，扣费失败' if purchase_log.balance < 0 && purchase_log.can_arrears.!
+			# 增加相应积分
+			VipService.new(@user_info).credit_add(purchase_log.credit) unless purchase_log.credit == 0
+			# 真实充值金额， 可供开取发票
+			@user_info.recharge_amount = [ @user_info.recharge_amount,( purchase_log.actual_amount || 0 )].reduce(change)
+			@user_info.save!
+			purchase_log.save
+		end
 	end
-end
 
 

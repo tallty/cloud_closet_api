@@ -50,44 +50,6 @@ class RentService
 
   end
 
-  def get_monthly_rent 
-    rent = 0
-    info_hash = {}
-    # @user.valuation_chests.each do |val_chest|
-    #   price_system = val_chest.price_system
-    #   if price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
-    #       price_system.exhibition_units.first.need_join && # 显示单位柜 衣服合并显示
-    #       val_chest.exhibition_chests.collect(&:garments).blank? # 无衣服
-    #     # 释放该可自动释放衣柜 （单件礼服）
-    #     val_chest.soft_delete!
-    #   end
-    #   if val_chest.exhibition_chests.online.any?
-    #     rent += val_chest.price 
-    #     # 衣柜信息
-    #     info_hash["#{val_chest.price_system_id}"] =  
-    #       (info_hash["#{val_chest.price_system_id}"] || 0 ) + 1
-    #   end 
-
-    # end
-
-    # 因为 exhibition_chest#val_chest_id 缺失， 弃用上方代码
-    # 临时只针对组合柜一种组合
-    info_ary = @user.exhibition_chests.online.chunk(&:exhibition_unit_id).map{|id,ary| [id,ary.count]}
-    info_ary.each do |unit_id, count|
-      price_system = @units.find(unit_id).price_system
-      unless unit_id.to_i.eql?(4)
-        rent += price_system.price * count 
-        info_hash["#{price_system.id}"] =  count
-      end
-    end
-    detail = 
-      info_hash.map do |price_system_id, count|
-        price_system = PriceSystem.find(price_system_id)
-        "#{price_system.title}, * , 数量：#{count}, 单价： #{price_system.price}, 收费：#{(price_system.price * count).round(2)};"
-      end.join(';')
-    [ rent, detail ]
-  end
-
   # 如果本月余额不足 将发送两条通知
 	def insufficient_blannce_remind options={}
     arrears = 
@@ -102,7 +64,7 @@ class RentService
     info = {
       month: options[:is_this_month] ? '本月' : '下个月',
       phone: @user.phone,
-      name: @user_info.name,
+      name: @user_info.nickname,
       balance: @user_info.balance,
       rent: @monthly_rent,
       arrears: arrears
@@ -112,7 +74,10 @@ class RentService
 			msg_type, info
 			)
 		# 通知工作人员
-    SmsService.new('worker').insufficient_blannce_remind(info)
+    Rails.env == 'test' ?
+      SmsService.new('me').insufficient_blannce_remind(info) :
+      SmsService.new('worker').insufficient_blannce_remind(info) 
+
 	end
 
 
@@ -126,5 +91,47 @@ class RentService
 		end
 		
 	end
+
+  private
+    def get_monthly_rent 
+      rent = 0
+      info_hash = {}
+      @user.valuation_chests.each do |val_chest|
+        
+        price_system = val_chest.price_system
+        if price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
+            price_system.exhibition_units.first.need_join && # 显示单位柜 衣服合并显示
+            val_chest.exhibition_chests.collect(&:garments).reduce(:+).empty? # 无衣服
+          # 释放该可自动释放衣柜 （单件礼服）
+          val_chest.soft_delete!
+          next
+        end
+
+        # 因为 exhibition_chest#val_chest_id 缺失， 弃用上方代码
+        # 临时只针对组合柜一种组合
+        # info_ary = @user.exhibition_chests.online.chunk(&:exhibition_unit_id).map{|id,ary| [id,ary.count]}
+        # info_ary.each do |unit_id, count|
+        #   price_system = @units.find(unit_id).price_system
+        #   unless unit_id.to_i.eql?(4)
+        #     rent += price_system.price * count 
+        #     info_hash["#{price_system.id}"] =  count
+        #   end
+        # end
+
+        if val_chest.exhibition_chests.online.any? && val_chest.deleted?.!
+          rent += val_chest.price 
+          # 衣柜信息
+          info_hash["#{val_chest.price_system_id}"] =  
+            (info_hash["#{val_chest.price_system_id}"] || 0 ) + 1
+        end 
+      end
+
+      detail = 
+        info_hash.map do |price_system_id, count|
+          price_system = PriceSystem.find(price_system_id)
+          "#{price_system.title}, * , 数量：#{count}, 单价： #{price_system.price}, 收费：#{(price_system.price * count).round(2)};"
+        end.join(';')
+        [ rent, detail ]
+    end
 
 end
