@@ -17,6 +17,7 @@ class PurchaseLogService
 			@type_ary.each do |type|
 				# undefind method 错误处理？
 				send("set_#{type}_params")
+				next if purchase_log_params[:amount] == 0
 				purchase_log_ary << @user_info.purchase_logs.create!(purchase_log_params)
 			end
 		
