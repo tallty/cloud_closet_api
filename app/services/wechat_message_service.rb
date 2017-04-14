@@ -4,7 +4,6 @@ class WechatMessageService
 	def initialize user
     @user = user
 		@openid = user.try(:openid)
-    @openid = 'olclvwHtOBENZ-rLA2NxsBCVZky0' if Rails.env == 'test'
 		raise '用户openid 为空' if @openid.blank?
 		@template = {}
     @merchant_phone = '15800634815'
@@ -14,13 +13,13 @@ class WechatMessageService
   def send_msg type, arg
     p "---wechat--- set_#{type}--------" 
     send( "set_#{type}", arg )
-    # unless Rails.env == 'test'
+    unless Rails.env == 'test'
       response = Faraday.post 'http://wechat-api.tallty.com/cloud_closet_wechat/template_message',
         { openid: @openid, template: @template }
       puts response.body
       # 用户消息中心消息
       UserMsgService.new(@user, 'from_wechat_msg', wechat_msg: self)
-    # end
+    end
   end
 
   private
