@@ -10,6 +10,7 @@ class CreateDeliveryOrders < ActiveRecord::Migration[5.0]
       t.integer :delivery_cost
       t.integer :service_cost
       t.string :aasm_state
+      t.string :garment_ids
       t.references :user, foreign_key: true
 
       t.timestamps

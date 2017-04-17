@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(version: 20170417064908) do
     t.integer  "delivery_cost"
     t.integer  "service_cost"
     t.string   "aasm_state"
+    t.string   "garment_ids"
     t.integer  "user_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
