@@ -34,7 +34,9 @@ Rails.application.routes.draw do
   # ------------ Garment Routes ------------------#
   resources :garments, only: [:index, :show, :update] do 
     collection do 
-      post :add_to_basket
+      post :add_them_to_basket
+      post :get_out_of_basket
+      get :basket
     end
   end
   # ----------------------------------------------#  

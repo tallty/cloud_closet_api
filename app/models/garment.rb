@@ -13,7 +13,6 @@
 #  row                 :integer
 #  carbit              :integer
 #  place               :integer
-#  aasm_state          :string           default("storing")
 #  status              :string
 #  store_method        :string
 #  appointment_id      :integer

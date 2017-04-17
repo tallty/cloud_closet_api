@@ -19,12 +19,6 @@ class GarmentsController < ApplicationController
     respond_with(@garment)
   end
 
-  # def create
-  #   @garment = Garment.new(garment_params)
-  #   @garment.save
-  #   respond_with(@garment)
-  # end
-
   def update
     @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list]))
     @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list]))
@@ -34,15 +28,30 @@ class GarmentsController < ApplicationController
       respond_with @error, template: 'error', status: 422
   end
 
-  # def destroy
-  #   @garment.destroy
-  #   respond_with(@garment)
-  # end
+  def basket
+    @garments = current_user.garments.in_basket
+    respond_with @garments, template: 'garments/index', status: 200
+  end
+
+  def add_them_to_basket # params[:garment_ids]
+    change_status(['stored'], 'in_basket')
+  end
+
+  def get_out_of_basket
+    change_status(['in_basket'], 'stored')
+  end
 
   private
     def set_garment
       @garment = current_user.garments.stored.find_by_id(params[:id])
       raise 'id 错误, 只允许用户编辑已上架衣服' unless @garment 
+    end
+
+    def change_status from, to
+      DeliveryService.new(current_user).change_garments_status(params, from, to)
+      head 201 
+    rescue => @error
+      respond_with @error, template: 'error', status: 422
     end
 
     def garment_params

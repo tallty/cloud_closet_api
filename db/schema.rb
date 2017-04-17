@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414015141) do
+ActiveRecord::Schema.define(version: 20170417064908) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -266,13 +266,12 @@ ActiveRecord::Schema.define(version: 20170414015141) do
     t.string   "title"
     t.datetime "put_in_time"
     t.datetime "expire_time"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "seq"
     t.integer  "row"
     t.integer  "carbit"
     t.integer  "place"
-    t.string   "aasm_state",          default: "storing"
     t.string   "status"
     t.string   "store_method"
     t.integer  "appointment_id"
