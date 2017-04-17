@@ -55,10 +55,26 @@ class Garment < ApplicationRecord
 
   aasm :column => :status do
     state :storing, :initial => true
-    state :stored
+    state :stored, :in_basket, :delivering, :at_home
 
     event :finish_storing do
       transitions from: [:storing, :stored], to: :stored, after:  :set_put_in_time_and_expire_time
+    end
+
+    event :add_to_basket do 
+      transitions from: :stored, to: :in_basket
+    end
+
+    event :come_back_to_chest do 
+      transitions from: :in_basket, to: :stored
+    end
+
+    event :begin_delivering do 
+      transitions from: :in_basket, to: :delivering
+    end
+
+    event :arrive_home do 
+      transitions from: :delivering, to: :at_home
     end
   end
 
@@ -69,12 +85,12 @@ class Garment < ApplicationRecord
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end
 
-  #存库的数量
+  # 存库的数量
   def garment_count 
     User.find(self.user_id).garments.where(status: 'stored').count 
   end
 
-  #入库中的数量
+  # 入库中的数量
   def storing_garment_count
     User.find(self.user_id).garments.where(status: 'storing').count
   end
