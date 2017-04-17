@@ -57,7 +57,7 @@ private
 		end
 
 		def set_montly_rent_params # info
-			@operation = '每月租金'
+			@operation = "#{Time.zone.now.month}月租金"
 			@payment_method = '余额支付'
 			@detail = @info[:detail]
 			@amount = @info[:amount]

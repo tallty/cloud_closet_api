@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412083517) do
+ActiveRecord::Schema.define(version: 20170414015141) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -184,6 +184,21 @@ ActiveRecord::Schema.define(version: 20170412083517) do
     t.integer  "class_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "delivery_orders", force: :cascade do |t|
+    t.string   "address"
+    t.string   "name"
+    t.string   "phone"
+    t.date     "delivery_time"
+    t.string   "delivery_method"
+    t.string   "remark"
+    t.integer  "delivery_cost"
+    t.integer  "service_cost"
+    t.integer  "user_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["user_id"], name: "index_delivery_orders_on_user_id"
   end
 
   create_table "distribution_items", force: :cascade do |t|

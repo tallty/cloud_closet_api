@@ -50,6 +50,7 @@ class User < ApplicationRecord
   has_many :user_msgs
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
+  has_many :delivery_orders, dependent: :destroy
   has_many :purchase_logs, through: :user_info
   # has_many :bills, dependent: :destroy
   has_many :valuation_chests, dependent: :destroy
