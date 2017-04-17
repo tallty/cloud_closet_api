@@ -32,8 +32,28 @@ Rails.application.routes.draw do
   # ----------------------------------------------#
 
   # ------------ Garment Routes ------------------#
-  resources :garments, only: [:index, :show, :update]
+  resources :garments, only: [:index, :show, :update] do 
+    collection do 
+      post :add_to_basket
+    end
+  end
   # ----------------------------------------------#  
+
+  # ------------ 配送 Routes ------------------#
+  resources :delivery_orders do 
+    collection do 
+      post :pay_it
+      post :cancel_it
+    end
+  end
+
+  namespace :admin do 
+    resources :delivery_orders do 
+      post :send_it_out
+    end
+  end
+  # ----------------------------------------------#   
+
 
    # ------------ ExhibitionChest Routes ------------------#
   resources :exhibition_chests, only: [:index, :show] do 
