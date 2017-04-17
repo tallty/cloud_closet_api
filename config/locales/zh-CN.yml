@@ -26,6 +26,12 @@ zh-CN:
   exhibition_chest_aasm_state:
     waiting: '未发布'
     online: '已发布'
+  garment: 
+    storing: '入库中'
+    stroed: '已入库'
+    in_basket: '配送篮中'
+    delivering: '配送中'
+    at_home: '已到达'
       
   devise:
     failure:

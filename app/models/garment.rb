@@ -33,7 +33,7 @@ class Garment < ApplicationRecord
   # acts_as_taggable # Alias for acts_as_taggable_on :tags
   acts_as_taggable_on :tags
   scope :by_join_date, -> {order("created_at DESC")}
-
+  scope :in_basket, -> { where(status: 'in_basket') }
   belongs_to :user
   belongs_to :exhibition_chest
   belongs_to :appointment
@@ -41,9 +41,6 @@ class Garment < ApplicationRecord
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
 
-  # has_many :detail_images, -> { where photo_type: "detail" }, class_name: "Image", as: :imageable, dependent: :destroy
-  # accepts_nested_attributes_for :detail_images, allow_destroy: true
-  
   has_one :detail_image_1, -> { where photo_type: 'detail_1' }, class_name: 'Image', as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_image_1, allow_destroy: true
 
@@ -113,7 +110,7 @@ class Garment < ApplicationRecord
 
 
   def garment_status
-    I18n.t :"appointment_itme_status.#{status}"
+    I18n.t :"garment.#{status}"
   end
 
   private
