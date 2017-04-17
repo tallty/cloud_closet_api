@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 20170414015141) do
     t.string   "remark"
     t.integer  "delivery_cost"
     t.integer  "service_cost"
+    t.string   "aasm_state"
     t.integer  "user_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
