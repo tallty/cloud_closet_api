@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417064908) do
+ActiveRecord::Schema.define(version: 20170417101155) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -278,7 +278,9 @@ ActiveRecord::Schema.define(version: 20170417064908) do
     t.integer  "appointment_id"
     t.integer  "exhibition_chest_id"
     t.text     "description"
+    t.integer  "delivery_order_id"
     t.index ["appointment_id"], name: "index_garments_on_appointment_id"
+    t.index ["delivery_order_id"], name: "index_garments_on_delivery_order_id"
     t.index ["exhibition_chest_id"], name: "index_garments_on_exhibition_chest_id"
     t.index ["seq"], name: "index_garments_on_seq"
     t.index ["user_id"], name: "index_garments_on_user_id"
