@@ -44,8 +44,7 @@ Rails.application.routes.draw do
   # ------------ 配送 Routes ------------------#
   resources :delivery_orders do 
     collection do 
-      post :pay_it
-      post :cancel_it
+      post :pay
     end
   end
 
