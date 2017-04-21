@@ -32,7 +32,12 @@ zh-CN:
     in_basket: '配送篮中'
     delivering: '配送中'
     at_home: '已到达'
-      
+  delivery_order:
+    unpaid: '未支付'
+    padi: '已支付'
+    delivering: '已发出'
+    finished: '已收货'
+
   devise:
     failure:
       already_authenticated: "登录成功"
