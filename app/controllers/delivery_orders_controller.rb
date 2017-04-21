@@ -4,7 +4,7 @@ class DeliveryOrdersController < ApplicationController
 
   acts_as_token_authentication_handler_for User
 
-  before_action :set_delivery_order, only: [:show, :update, :destroy]
+  before_action :set_delivery_order, only: [:show, :update, :destroy, :pay, :get_home]
 
   respond_to :json
 
@@ -44,6 +44,13 @@ class DeliveryOrdersController < ApplicationController
 
   def pay
     @delivery_order.pay!
+    respond_with @delivery_order, template: 'delivery_orders/show', status: 201
+  rescue => @error
+    respond_with @error, template: 'error', status: 422
+  end
+
+  def get_home
+    @delivery_order.get_home!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
     respond_with @error, template: 'error', status: 422

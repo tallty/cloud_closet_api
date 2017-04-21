@@ -53,10 +53,10 @@ class DeliveryOrder < ApplicationRecord
       transitions from: :paid, to: :delivering
     end
 
-    event :user_got_it do
+    event :get_home do
       transitions from: :delivering, to: :finished
     end
-	end
+  end
 
   def state
     I18n.t :"delivery_order.#{aasm_state}"
@@ -97,7 +97,7 @@ class DeliveryOrder < ApplicationRecord
       # 生成交易记录 purchase_log 并扣费
       PurchaseLogService.new(self.user, ['delivery_order'], 
         delivery_order: self
-      )
+      ).create
     end
 
     def check_garment_ids

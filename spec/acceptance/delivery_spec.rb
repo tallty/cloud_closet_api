@@ -83,7 +83,7 @@ resource "配送 相关" do
         @delivery_order2 = create(:delivery_order, user: @user, 
           garment_ids: @garments_in_basket.collect(&:id) + @stored_garments.collect(&:id)
           )
-        @delivery_order2 = create(:delivery_order, user: @user, 
+        @delivery_order3 = create(:delivery_order, user: @user, 
           garment_ids: @stored_garments.collect(&:id)
           )
       end
@@ -204,17 +204,58 @@ resource "配送 相关" do
         end
       end
 
-      # post 'delivery_order/:id/pay' do
+      post 'delivery_orders/:id/pay' do
+        let(:id) { @delivery_order2.id }
+        example '【用户】支付 配送订单 成功 ' do
+          expect(PurchaseLog.all.count).to eq(0)
+          balance = @user.info.balance
+          do_request
+          puts response_body
+          expect(status).to eq(201)
+          expect(PurchaseLog.all.count).to eq(1)
+          purchase_log = PurchaseLog.first
+          p purchase_log
+          expect(purchase_log.amount).to eq(@delivery_order2.amount)
+          expect(purchase_log.user_info.balance).to eq( balance - @delivery_order2.amount)
+        end
+        
+        describe '失败' do
+          before do
+          # 支付 order 1  将会导致 order 2 部分衣服已支付
+           @delivery_order1.pay!
+          end
+          let(:id) { @delivery_order2.id }
+          example '【用户】支付 配送订单 失败（所选部分衣服已在配送中） ' do
+            do_request
+            puts response_body
+            expect(status).to eq(422)
+          end
+        end
 
-      #   example '【用户】支付 配送订单 成功 ' do
-      #     do_request
-      #     puts response_body
-      #     expect(status).to eq(201)
-      #   end
-      
-      # end
+      end
 
-      # post 'delivery_order/:id/sign_for_delivery'
+      post 'delivery_orders/:id/get_home' do
+        before do
+        # 支付 order 1  将会导致 order 2 部分衣服已支付
+          @delivery_order1.pay!
+          @delivery_order1.admin_send_it_out!
+        end
+        let(:id) { @delivery_order1.id }
+        example '【用户】签收完成 配送订单 成功 ' do
+          do_request
+          puts response_body
+          expect(status).to eq(201)
+        end
+
+        describe '失败' do
+          let(:id) { @delivery_order2.id }
+          example '【用户】签收完成 配送订单 失败（目标订单状态错误） ' do
+            do_request
+            puts response_body
+            expect(status).to eq(422)
+          end
+        end
+      end
 
     end
   end
