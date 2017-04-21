@@ -73,11 +73,11 @@ private
 			@can_arrears = true
 		end
 
-		def set_distribution_params
-			@operation = '配送'
+		def set_delivery_order_params
+			@operation = '衣服配送'
 			@payment_method = '在线支付'
-			@detail = ''
-			@amount = 0
+			@detail = "配送费： #{@delivery_order.delivery_cost}，服务费：#{@delivery_order.service_cost}"
+			@amount = @delivery_order.amount
 			@is_increased = false
 		end
 

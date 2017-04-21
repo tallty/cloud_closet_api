@@ -5,14 +5,27 @@ class DeliveryService
 		@garments = user.garments
 	end
 
-	def change_garments_status params, from, to
-		ids = params[:garment_ids]
-		ids = ids.split(',') if ids.is_a?(String)
-		@garments.where(id: ids).each { |garment|
-			raise '初始状态错误' unless garment.status.in?(from)
-			garment.update!(status: to)
-		}
+	def change_garments_status params, from_ary, to, delivery_order=nil
+		ids = ids.is_a?(String) ? 
+			params[:garment_ids].split(',') :
+			params[:garment_ids]
+		@garments = @garments.where(id: ids)
+
+		check_state from_ary
+
+		ActiveRecord::Base.transaction do
+			@garments.each { |garment|
+				garment.status = to
+				garment.delivery_order = delivery_order if delivery_order
+				garment.save!
+			}
+		end
 	end
 
+	private 
+		def check_state form_ary
+			raise '选择了错误起始状态的衣物' if 
+        @garments.where.not(status: form_ary).any?
+		end
 end
 

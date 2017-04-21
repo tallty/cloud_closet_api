@@ -18,10 +18,12 @@
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
 #  description         :text
+#  delivery_order_id   :integer
 #
 # Indexes
 #
 #  index_garments_on_appointment_id       (appointment_id)
+#  index_garments_on_delivery_order_id    (delivery_order_id)
 #  index_garments_on_exhibition_chest_id  (exhibition_chest_id)
 #  index_garments_on_seq                  (seq)
 #  index_garments_on_user_id              (user_id)
@@ -31,11 +33,11 @@ class Garment < ApplicationRecord
   include AASM
   # acts_as_taggable # Alias for acts_as_taggable_on :tags
   acts_as_taggable_on :tags
-  scope :by_join_date, -> {order("created_at DESC")}
-  scope :in_basket, -> { where(status: 'in_basket') }
+
   belongs_to :user
   belongs_to :exhibition_chest
   belongs_to :appointment
+  belongs_to :delivery_order
 
   has_one :cover_image, -> { where photo_type: "cover" }, class_name: "Image", as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :cover_image, allow_destroy: true
@@ -48,6 +50,7 @@ class Garment < ApplicationRecord
 
   has_one :detail_image_3, -> { where photo_type: 'detail_3' }, class_name: 'Image', as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_image_3, allow_destroy: true
+
 
   aasm :column => :status do
     state :storing, :initial => true
@@ -76,6 +79,10 @@ class Garment < ApplicationRecord
 
   after_create :set_store_method_and_user
   after_create :generate_seq
+
+  
+  scope :by_join_date, -> {order("created_at DESC")}
+  scope :can_be_delivered, -> { where( status: ['stored', 'in_basket'])}
 
   def is_new
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
@@ -106,7 +113,6 @@ class Garment < ApplicationRecord
   def row_carbit_place 
     "#{self.row}-#{self.carbit}-#{self.place}"  
   end
-
 
   def garment_status
     I18n.t :"garment.#{status}"

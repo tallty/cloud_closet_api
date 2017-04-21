@@ -12,6 +12,7 @@
 #  delivery_cost   :integer
 #  service_cost    :integer
 #  aasm_state      :string
+#  garment_ids     :string
 #  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -23,6 +24,11 @@
 
 class DeliveryOrder < ApplicationRecord
   belongs_to :user
+  # 只有当配送订单支付(after_pay)之后 Garment 才与 DeliveryOrder 关联
+  has_many :garments
+
+  validates :user_id, presence: true
+  validate :check_garment_ids
 
   include AASM
 
@@ -47,4 +53,55 @@ class DeliveryOrder < ApplicationRecord
     end
 	end
 
+  def state
+    I18n.t :"delivery_order.#{aasm_state}"
+  end
+
+  def amount
+    delivery_cost + service_cost
+  end
+
+  def garment_ids
+
+    p self.[](:garment_ids)&.split(',')
+  end
+
+  def garment_ids= value
+    self.[]=(:garment_ids, value.join(','))
+  end
+
+  def its_garments
+    garments || self.user.garments.where(id: garment_ids)
+  end
+
+  def can_be_paid
+    self.user.garments.where(id: garment_ids).
+      where.not(status: ['stored', 'in_basket']).any?.!
+  end
+
+  private
+    def after_pay
+      # 改变衣服状态
+      DeliveryGarmentService.new(user).change_garments_status(
+        self.garment_ids, 
+        ['stored', 'in_basket'], 'delivering',
+        self
+      )
+      # 生成交易记录 purchase_log 并扣费
+      PurchaseLogService.new(self.user, ['delivery_order'], 
+        delivery_order: self
+      )
+    end
+
+    def check_garment_ids
+      value = self.garment_ids
+      errors.add(:garment_ids, 'garment_ids input must be an Array') unless value.is_a?(Array)
+      garments = Garment.where(id: value)
+      errors.add(:garment_ids, "存在无效的 garment_id") if 
+        # if there be any garments do not belong to current_user 
+        garments.where.not(user: self.user).any? || 
+        # if there be any garments could not be delivered 
+        garments.where.not(status: ['stored', 'in_basket']).any?
+    end
+  
 end
