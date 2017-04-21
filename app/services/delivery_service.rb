@@ -10,9 +10,7 @@ class DeliveryService
 			params[:garment_ids].split(',') :
 			params[:garment_ids]
 		@garments = @garments.where(id: ids)
-
 		check_state from_ary
-
 		ActiveRecord::Base.transaction do
 			@garments.each { |garment|
 				garment.status = to

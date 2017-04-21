@@ -25,10 +25,15 @@
 class DeliveryOrder < ApplicationRecord
   belongs_to :user
   # 只有当配送订单支付(after_pay)之后 Garment 才与 DeliveryOrder 关联
+  # 所以允许 garment 的 id 同时存在于多个 delivery_order
   has_many :garments
 
-  validates :user_id, presence: true
-  validate :check_garment_ids
+  validates_presence_of :address, :name, :phone, 
+    :delivery_time, :delivery_method, 
+    :remark, :delivery_cost, :service_cost,
+    :garment_ids, :user_id
+
+  validate :check_garment_ids, on: :create
 
   include AASM
 
@@ -62,12 +67,12 @@ class DeliveryOrder < ApplicationRecord
   end
 
   def garment_ids
-
-    p self.[](:garment_ids)&.split(',')
+    self.[](:garment_ids)&.split(',')
   end
 
   def garment_ids= value
-    self.[]=(:garment_ids, value.join(','))
+    raise 'garment_ids input must be an Array' unless value.is_a?(Array)
+    self.[]=(:garment_ids, value.join(',')) 
   end
 
   def its_garments
@@ -81,9 +86,11 @@ class DeliveryOrder < ApplicationRecord
 
   private
     def after_pay
+      # 此处未改变为 paid
       # 改变衣服状态
-      DeliveryGarmentService.new(user).change_garments_status(
-        self.garment_ids, 
+      # 此时 如果选择了错误状态的衣服会此处报错
+      DeliveryService.new(user).change_garments_status(
+        { garment_ids: self.garment_ids }, 
         ['stored', 'in_basket'], 'delivering',
         self
       )
@@ -94,12 +101,10 @@ class DeliveryOrder < ApplicationRecord
     end
 
     def check_garment_ids
-      value = self.garment_ids
-      errors.add(:garment_ids, 'garment_ids input must be an Array') unless value.is_a?(Array)
-      garments = Garment.where(id: value)
+      garments = self.user.garments.where(id: self.garment_ids)
       errors.add(:garment_ids, "存在无效的 garment_id") if 
         # if there be any garments do not belong to current_user 
-        garments.where.not(user: self.user).any? || 
+        garments.count != self.garment_ids.count || 
         # if there be any garments could not be delivered 
         garments.where.not(status: ['stored', 'in_basket']).any?
     end
