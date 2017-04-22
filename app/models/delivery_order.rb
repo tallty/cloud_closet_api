@@ -58,7 +58,7 @@ class DeliveryOrder < ApplicationRecord
     end
 
     event :canceled_by_admin do
-      transitions from: :delivering, to: :cancel, after: :restore_garments
+      transitions from: :paid, to: :canceled, after: :restore_garments
     end
   end
 
@@ -104,6 +104,14 @@ class DeliveryOrder < ApplicationRecord
       PurchaseLogService.new(self.user, ['delivery_order'], 
         delivery_order: self
       ).create
+    end
+
+    def restore_garments
+      # 管理员取消配送订单 放回衣服
+      self.garments.map(&:go_back_to_chest!)
+      # 退钱
+      self.user.info.increment(:balance, self.amount)
+      self.user.info.save!
     end
 
     def check_garment_ids

@@ -75,6 +75,10 @@ class Garment < ApplicationRecord
     event :arrive_home do 
       transitions from: :delivering, to: :at_home
     end
+
+    event :go_back_to_chest do
+      transitions from: :delivering, to: :stored, after: :leave_delivery_order
+    end
   end
 
   after_create :set_store_method_and_user
@@ -128,5 +132,10 @@ class Garment < ApplicationRecord
       self.store_method = self.exhibition_chest.store_method
       self.user = self.exhibition_chest.user
       self.save
+    end
+
+    def leave_delivery_order
+      self.delivery_order_id = nil
+      # self.save
     end
 end

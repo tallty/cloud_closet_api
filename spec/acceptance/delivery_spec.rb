@@ -282,49 +282,115 @@ resource "配送 相关" do
   end
 
 
-  # describe 'About Admin' do
-  #   before do
-  #     @user = create(:user)
-  #     @admin = create(:admin)
-  #     header "X-Admin-Email", @admin.email
-  #     header "X-Admin-Token", @admin.authentication_token
+  describe 'About Admin' do
+    before do
+      @user = create(:user)
+      @admin = create(:admin)
+      header "X-Admin-Email", @admin.email
+      header "X-Admin-Token", @admin.authentication_token
 
-  #     @user_info = create(:user_info, user: @user,
-  #                                     default_address_id: 0 
-  #                         )
-  #     create_list(:address, 2, user_info: @user_info)
-  #     create_list(:vip_level, 4)
-  #     create_list(:store_method, 3)
-  #     @stocking_chest = create(:stocking_chest)
-  #     @chest = create(:exhibition_chest, exhibition_unit:  @stocking_chest.exhibition_units.first)
-  #     @stored_garments = create_list(:garment, 2, user: @user, status: 'stored', exhibition_chest: @chest)
-  #     @garments_in_basket = create_list(:garment, 3 , user: @user, status: 'in_basket', exhibition_chest: @chest)
-  #   end
+      @user_info = create(:user_info, user: @user,
+                                      default_address_id: 0 
+                          )
+      create_list(:address, 2, user_info: @user_info)
+      create_list(:vip_level, 4)
+      create_list(:store_method, 3)
+      @stocking_chest = create(:stocking_chest)
+      @chest = create(:exhibition_chest, exhibition_unit:  @stocking_chest.exhibition_units.first)
+      @stored_garments = create_list(:garment, 2, user: @user, status: 'stored', exhibition_chest: @chest)
+      @garments_in_basket = create_list(:garment, 3 , user: @user, status: 'in_basket', exhibition_chest: @chest)
+      @delivery_order1 = create(:delivery_order, user: @user, 
+          garment_ids: @garments_in_basket.collect(&:id)
+          )
+      @delivery_order2 = create(:delivery_order, user: @user, 
+        garment_ids: @garments_in_basket.collect(&:id) + @stored_garments.collect(&:id)
+        )
+      @delivery_order3 = create(:delivery_order, user: @user, 
+        garment_ids: @stored_garments.collect(&:id)
+        )
+    end
 
-  #   get '/admin/delivery_orders' do 
-  #     parameter :page, "当前页", require: false
-  #     parameter :per_page, "每页的数量", require: false
-  #     parameter :need_garment_info, '是否需要衣服信息', required: false
+    get '/admin/delivery_orders' do 
+      parameter :page, "当前页", require: false
+      parameter :per_page, "每页的数量", require: false
+      parameter :need_garment_info, '是否需要衣服信息', required: false
 
-  #     parameter :state, '查询状态，默认返回全部， 
-  #       paid 已支付, delivering 已发出, finished 已完成'
+      parameter :state, '查询状态，默认返回全部， 
+        paid 已支付, delivering 已发出, finished 已完成'
 
-  #     let(:page) { 2 }
-  #     let(:per_page) { 2 }
-  #     let(:need_garment_info) { false }
+      let(:page) { 2 }
+      let(:per_page) { 2 }
+      let(:need_garment_info) { false }
 
-  #     example "【管理员】查询 某状态 配送订单列表成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      example "【管理员】查询 某状态 配送订单列表成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #   get '/admin/delivery_orders' do 
+    get '/admin/delivery_orders/:id' do 
+      let(:id) { @delivery_order2.id }
+      example "【用户】查询 某配送订单详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #   end
+    post 'admin/delivery_orders/:id/cancel' do
+      before do
+      # 支付 order 1  将会导致 order 2 部分衣服已支付
+        @delivery_order1.pay!
+      end
 
-  # end
+      let(:id) { @delivery_order1.id }
+
+      example '【管理员】取消某已支付配送订单 成功（衣服返回用户柜子，并退款） ' do
+        order = @delivery_order1
+        user_info = @delivery_order1.user.info
+        balance = user_info.balance
+        do_request
+        puts response_body
+        
+        expect(status).to eq(201)
+        expect(DeliveryOrder.find(order.id).user.info.balance).to eq(balance + order.amount)
+        expect(order.its_garments.collect(&:status).uniq).to eq(['stored'])
+      end
+
+      describe '失败' do
+        let(:id) { @delivery_order2.id }
+        example '【管理员】取消某配送订单失败 ' do
+          do_request
+          puts response_body
+          expect(status).to eq(422)
+        end
+      end
+    end
+
+      post 'admin/delivery_orders/:id/send_out' do
+        before do
+        # 支付 order 1  将会导致 order 2 部分衣服已支付
+          @delivery_order1.pay!
+        end
+        let(:id) { @delivery_order1.id }
+        example '【管理员】某配送订单 发货 成功 ' do
+          do_request
+          puts response_body
+          expect(status).to eq(201)
+        end
+
+        describe '失败' do
+          let(:id) { @delivery_order2.id }
+          example '【管理员】为 某配送订单 发货 失败（目标订单状态错误） ' do
+            do_request
+            puts response_body
+            expect(status).to eq(422)
+          end
+        end
+      end
+
+  end
 
 
 end

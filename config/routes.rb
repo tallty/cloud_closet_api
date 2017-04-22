@@ -51,7 +51,10 @@ Rails.application.routes.draw do
 
   namespace :admin do 
     resources :delivery_orders do 
-      post :send_it_out
+      member do
+        post :send_out
+        post :cancel
+      end
     end
   end
   # ----------------------------------------------#   
