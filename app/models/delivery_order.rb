@@ -56,6 +56,10 @@ class DeliveryOrder < ApplicationRecord
     event :get_home do
       transitions from: :delivering, to: :finished
     end
+
+    event :canceled_by_admin do
+      transitions from: :delivering, to: :cancel, after: :restore_garments
+    end
   end
 
   def state
@@ -67,7 +71,7 @@ class DeliveryOrder < ApplicationRecord
   end
 
   def garment_ids
-    self.[](:garment_ids)&.split(',')
+    self.[](:garment_ids)&.split(',')&.map(&:to_i)
   end
 
   def garment_ids= value
@@ -76,7 +80,9 @@ class DeliveryOrder < ApplicationRecord
   end
 
   def its_garments
-    garments || self.user.garments.where(id: garment_ids)
+    self.garments.any? ?
+      self.garments :
+      self.user.garments.where(id: garment_ids)
   end
 
   def can_be_paid

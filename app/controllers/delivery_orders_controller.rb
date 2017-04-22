@@ -9,13 +9,15 @@ class DeliveryOrdersController < ApplicationController
   respond_to :json
 
   def index # params[:state]
-    @page = params[:page] || 1
-    @per_page = params[:per_page] || 10
-    @delivery_orders = current_user.delivery_orders&.send(params[:state] || :all)
+    page = params[:page] || 1
+    per_page = params[:per_page] || 10
+    @need_garment_info = params[:need_garment_info]
+    @delivery_orders = current_user.delivery_orders&.send(params[:state] || :all).paginate(page: page, per_page: per_page)
     respond_with(@delivery_orders)
   end
 
   def show
+    @need_garment_info = true
     respond_with(@delivery_order)
   end
 
