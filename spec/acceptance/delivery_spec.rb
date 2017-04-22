@@ -98,21 +98,30 @@ resource "配送 相关" do
 
         let(:page) { 2 }
         let(:per_page) { 2 }
-        # let(:need_garment_info) { true }
+        let(:need_garment_info) { false }
 
         example "【用户】获取配送订单列表成功（所有状态）" do
-          # p @delivery_order2
           do_request
+          p params
           puts response_body
           expect(status).to eq(200)
+          expect(response_body['delivery_orders']['garments']).to eq(nil)
         end
 
         describe '可查询' do
+          before do
+            @delivery_order1.pay!
+          end
+          let(:page) { 1 }
+          let(:per_page) { 2 }
           let(:state) { 'paid' }
+          let(:need_garment_info) { true }
+
           example "【用户】查询 某状态 配送订单列表成功" do
             do_request
             puts response_body
             expect(status).to eq(200)
+            expect(JSON.parse(response_body)['delivery_orders'].first['garments']).to be_truthy
           end
         end
       end
@@ -267,8 +276,9 @@ resource "配送 相关" do
   # describe 'About Admin' do
   #   before do
   #     @user = create(:user)
-  #     header "X-User-Phone", @user.phone
-  #     header "X-User-Token", @user.authentication_token
+  #     @admin = create(:admin)
+  #     header "X-Admin-Email", @admin.email
+  #     header "X-Admin-Token", @admin.authentication_token
 
   #     @user_info = create(:user_info, user: @user,
   #                                     default_address_id: 0 
@@ -282,5 +292,29 @@ resource "配送 相关" do
   #     @garments_in_basket = create_list(:garment, 3 , user: @user, status: 'in_basket', exhibition_chest: @chest)
   #   end
 
+  #   get '/admin/delivery_orders' do 
+  #       parameter :page, "当前页", require: false
+  #       parameter :per_page, "每页的数量", require: false
+  #       parameter :need_garment_info, '是否需要衣服信息', required: false
+
+  #       parameter :state, '查询状态，默认返回全部， 
+  #         可使用值：unpaid 未支付, paid 已支付, delivering 已发出, finished 已完成'
+
+  #       let(:page) { 2 }
+  #       let(:per_page) { 2 }
+  #       let(:need_garment_info) { false }
+
+  #       example "【管理员】查询 某状态 配送订单列表成功" do
+  #         # p @delivery_order2
+  #         do_request
+  #         puts response_body
+  #         expect(status).to eq(200)
+  #       end
+
+        
+  #   end
+
   # end
+
+
 end

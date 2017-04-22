@@ -17,7 +17,6 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def show
-    @need_garment_info = true
     respond_with(@delivery_order)
   end
 

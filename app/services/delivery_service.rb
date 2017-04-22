@@ -5,6 +5,7 @@ class DeliveryService
 		@garments = user.garments
 	end
 
+	# 批量更新状态 必要时附上 dlivery_order
 	def change_garments_status params, from_ary, to, delivery_order=nil
 		ids = ids.is_a?(String) ? 
 			params[:garment_ids].split(',') :
