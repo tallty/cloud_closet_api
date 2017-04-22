@@ -126,6 +126,15 @@ resource "配送 相关" do
         end
       end
 
+      get '/delivery_orders/:id' do 
+        let(:id) { @delivery_order2.id }
+        example "【用户】查询 某配送订单详情成功" do
+          do_request
+          puts response_body
+          expect(status).to eq(200)
+        end
+      end
+
       post 'delivery_orders' do
         parameter :address, '收货人 地址', required: true, scope: :delivery_order
         parameter :name, '收货人 姓名', required: true, scope: :delivery_order
@@ -293,25 +302,26 @@ resource "配送 相关" do
   #   end
 
   #   get '/admin/delivery_orders' do 
-  #       parameter :page, "当前页", require: false
-  #       parameter :per_page, "每页的数量", require: false
-  #       parameter :need_garment_info, '是否需要衣服信息', required: false
+  #     parameter :page, "当前页", require: false
+  #     parameter :per_page, "每页的数量", require: false
+  #     parameter :need_garment_info, '是否需要衣服信息', required: false
 
-  #       parameter :state, '查询状态，默认返回全部， 
-  #         可使用值：unpaid 未支付, paid 已支付, delivering 已发出, finished 已完成'
+  #     parameter :state, '查询状态，默认返回全部， 
+  #       paid 已支付, delivering 已发出, finished 已完成'
 
-  #       let(:page) { 2 }
-  #       let(:per_page) { 2 }
-  #       let(:need_garment_info) { false }
+  #     let(:page) { 2 }
+  #     let(:per_page) { 2 }
+  #     let(:need_garment_info) { false }
 
-  #       example "【管理员】查询 某状态 配送订单列表成功" do
-  #         # p @delivery_order2
-  #         do_request
-  #         puts response_body
-  #         expect(status).to eq(200)
-  #       end
+  #     example "【管理员】查询 某状态 配送订单列表成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
+  #   end
 
-        
+  #   get '/admin/delivery_orders' do 
+
   #   end
 
   # end
