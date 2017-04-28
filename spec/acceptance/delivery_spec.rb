@@ -270,7 +270,7 @@ resource "配送 相关" do
 
         describe '失败' do
           let(:id) { @delivery_order2.id }
-          example '【用户】签收完成 配送订单 失败（目标订单状态错误） ' do
+          example '【用户】签收完成 配送订单 失败（目标订单状态错误' do
             do_request
             puts response_body
             expect(status).to eq(422)

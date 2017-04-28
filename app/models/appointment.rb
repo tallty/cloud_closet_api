@@ -152,7 +152,8 @@ class Appointment < ApplicationRecord
   end
 
   def new_chests
-    self.groups.collect(&:exhibition_chests).map(&:to_a).reduce(:+)
+    # 直接使用 though 到达 exhibition_chest 会报错 ambiguous column name: aasm_state
+    self.groups.collect(&:valuation_chests).reduce(:+).collect(&:exhibition_chests).map(&:to_a).reduce(:+)
   end
 
   def check_space_and_garment_count

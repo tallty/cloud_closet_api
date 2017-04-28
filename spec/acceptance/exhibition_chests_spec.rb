@@ -83,7 +83,7 @@ resource "我的衣橱" do
     @garments = create_list(
     	:garment, 3,
     	exhibition_chest: @exhi_chests.first,
-      aasm_state: 'storing'
+      status: 'storing'
     	) 
     @exhi_chests.each {|x|x.release!}
     # test alone_full_dress_chest view output

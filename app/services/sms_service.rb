@@ -4,7 +4,7 @@ class SmsService
 		'13605028695',
 		]
 	@me_list = [
-		'13605028695'
+		# '13605028695'
 	]
 
 	def initialize to_whom

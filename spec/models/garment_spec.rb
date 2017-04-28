@@ -34,6 +34,6 @@ RSpec.describe Garment, type: :model do
   it { should belong_to(:user) } 
   it { should have_one(:cover_image) } 
   3.times do |i|
-  	eval("it { should have_one(:detail_image_#{i}) }")
+  	eval("it { should have_one(:detail_image_#{ i +1 }) }")
   end
 end

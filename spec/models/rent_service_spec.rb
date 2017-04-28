@@ -1,4 +1,4 @@
-require 'acceptance_helper'
+require 'rails_spec'
 
 resource '租金计算 相关' do
   header 'Accept', 'application/json'
