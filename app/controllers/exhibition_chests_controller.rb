@@ -32,13 +32,12 @@ class ExhibitionChestsController < ApplicationController
 
   def update
     @exhibition_chest.update(exhibition_chest_params)
-  p 'heheheheheh'
-  p @exhibition_chest
     head 201
   end
 
   def the_same_store_method
-    @exhibition_chests = @user_chests.store_method_is(@exhibition_chest.store_method)
+    # 排除 自己
+    @exhibition_chests = @user_chests.store_method_is(@exhibition_chest.store_method).reject{|x| x.eql?(@exhibition_chest)}
     respond_with @exhibition_chests, template: 'exhibition_chests/index'
   end
 
@@ -47,7 +46,7 @@ class ExhibitionChestsController < ApplicationController
     @exhibition_chest.garments.where(id: params[:garment_ids]).each do |garment|
       garment.exhibition_chest_id = params[:to_exhibition_chest_id]
      p '===='
-     p  garment.save
+     p  garment.save!
     end
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   end

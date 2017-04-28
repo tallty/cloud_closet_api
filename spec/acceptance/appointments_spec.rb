@@ -7,6 +7,9 @@
 #   header "X-User-Token", user_attrs[:authentication_token]
 #   header "X-User-Phone", user_attrs[:phone]
 #   before do
+    # allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
+    #     @sent = true
+    #   }
 #     @user = create(:user)
 #     @user_info = create(:user_info, user: @user)
 #     create_list(:vip_level, 4)

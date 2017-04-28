@@ -7,6 +7,9 @@ resource "我的衣橱" do
   header "X-User-Token", user_attrs[:authentication_token]
   header "X-User-Phone", user_attrs[:phone]
   before do
+    allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
+      @sent = true
+    }
     create_list(:vip_level, 4)
   	# 创建价格表
     create_list(:store_method, 3)
