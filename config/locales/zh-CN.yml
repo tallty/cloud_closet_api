@@ -34,7 +34,7 @@ zh-CN:
     at_home: '已到达'
   delivery_order:
     unpaid: '未支付'
-    padi: '已支付'
+    paid: '已支付'
     delivering: '已发出'
     finished: '已收货'
     cancel: '已取消'
