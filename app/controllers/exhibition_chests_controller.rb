@@ -32,7 +32,9 @@ class ExhibitionChestsController < ApplicationController
 
   def update
     @exhibition_chest.update(exhibition_chest_params)
-    respond_with(@exhibition_chest)
+  p 'heheheheheh'
+  p @exhibition_chest
+    head 201
   end
 
   def the_same_store_method
@@ -72,6 +74,6 @@ class ExhibitionChestsController < ApplicationController
     end
 
     def exhibition_chest_params
-      params[:exhibition_chest]
+      params.require(:exhibition_chest).permit(:custom_title)
     end
 end

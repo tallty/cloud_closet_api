@@ -179,6 +179,19 @@ resource "我的衣橱" do
     end
   end
 
+  put 'exhibition_chests/:id' do
+
+    parameter :custom_title, '自定义衣柜名', scope: :exhibition_chest
+    let(:id) {@exhi_chests.first.id}
+    let(:custom_title) { '我是 用户自定义衣柜名称' }
+
+    example "用户修该衣柜属性，（现只支持 自定义衣柜名）" do
+      do_request
+      puts response_body
+      expect(status).to eq(201)
+    end
+  end
+
   post 'exhibition_chests/:id/delete_his_val_chest' do
 
     let(:id) {@chest2_group1.id}

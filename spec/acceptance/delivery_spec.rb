@@ -331,7 +331,7 @@ resource "配送 相关" do
 
     get '/admin/delivery_orders/:id' do 
       let(:id) { @delivery_order2.id }
-      example "【用户】查询 某配送订单详情成功" do
+      example "【管理员】查询 某配送订单详情成功" do
         do_request
         puts response_body
         expect(status).to eq(200)

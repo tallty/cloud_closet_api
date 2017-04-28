@@ -61,7 +61,7 @@ Rails.application.routes.draw do
 
 
    # ------------ ExhibitionChest Routes ------------------#
-  resources :exhibition_chests, only: [:index, :show] do 
+  resources :exhibition_chests, only: [:index, :show, :update] do 
     member do 
       post 'move_garment' #----!
       post 'delete_his_val_chest'
