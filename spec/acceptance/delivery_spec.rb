@@ -217,7 +217,7 @@ resource "配送 相关" do
 
       delete 'delivery_orders/:id' do
         let(:id) { @delivery_order2.id }
-        example '删除 配送订单 成功 ' do
+        example '【用户】删除 配送订单（仅未支付订单） 成功 ' do
           do_request
           puts response_body
           expect(status).to eq(204)

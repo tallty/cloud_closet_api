@@ -74,8 +74,11 @@ class ExhibitionChest < ApplicationRecord
   end
 
   def delete_his_val_chest
-    raise '绑定衣柜中仍有衣服，不能释放该衣柜'  unless   his_duddies_can_be_break? 
-    self.valuation_chest.soft_delete! 
+    raise '绑定衣柜中仍有衣服，不能释放该衣柜' unless his_duddies_can_be_break? 
+    ActiveRecord::Base.transaction do
+      self.valuation_chest.soft_delete! 
+      self.soft_delete!
+    end
   end
 
   def move_garment
