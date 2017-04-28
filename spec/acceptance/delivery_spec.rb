@@ -102,7 +102,6 @@ resource "配送 相关" do
 
         example "【用户】获取配送订单列表成功（所有状态）" do
           do_request
-          p params
           puts response_body
           expect(status).to eq(200)
           expect(response_body['delivery_orders']['garments']).to eq(nil)

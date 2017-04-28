@@ -16,6 +16,7 @@
 #  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  seq             :string
 #
 # Indexes
 #
@@ -35,6 +36,8 @@ class DeliveryOrder < ApplicationRecord
 
   validate :check_garment_ids, on: :create
 
+  after_create :generate_seq
+  
   include AASM
 
   aasm do 
@@ -91,6 +94,12 @@ class DeliveryOrder < ApplicationRecord
   end
 
   private
+
+    def generate_seq
+      self.seq = "D#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"
+      self.save
+    end
+
     def after_pay
       # 此处未改变为 paid
       # 改变衣服状态
@@ -117,6 +126,7 @@ class DeliveryOrder < ApplicationRecord
     def check_garment_ids
       garments = self.user.garments.where(id: self.garment_ids)
       errors.add(:garment_ids, "存在无效的 garment_id") if 
+        garments.nil?
         # if there be any garments do not belong to current_user 
         garments.count != self.garment_ids.count || 
         # if there be any garments could not be delivered 
