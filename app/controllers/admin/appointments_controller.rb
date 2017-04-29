@@ -22,6 +22,7 @@ class Admin::AppointmentsController < ApplicationController
 
   def its_chests
     @exhibition_chests = @admin_appointment.user.his_chest_not_full
+    @exhibition_chests = ExhibitionChestViewService.new(@exhibition_chests).in_user_index
     respond_with @exhibition_chests, template: 'admin/exhibition_chests/index'
   end
 
