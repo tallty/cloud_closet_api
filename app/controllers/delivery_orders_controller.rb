@@ -12,7 +12,7 @@ class DeliveryOrdersController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 10
     @need_garment_info = params[:need_garment_info]
-    @delivery_orders = current_user.delivery_orders&.send(params[:state] || :all).paginate(page: page, per_page: per_page)
+    @delivery_orders = current_user.delivery_orders&.send(params[:state] || :all).paginate(page: page, per_page: per_page).order('delivery_time DESC')
     respond_with(@delivery_orders)
   end
 

@@ -22,6 +22,6 @@ module ExhibitionChestSpaceInfo
 
 	def it_has_space
     remain_space_count > 0
-  end
+	end
 
 end
