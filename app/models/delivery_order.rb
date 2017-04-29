@@ -30,8 +30,8 @@ class DeliveryOrder < ApplicationRecord
   has_many :garments
 
   validates_presence_of :address, :name, :phone, 
-    :delivery_time, :delivery_method, 
-    :remark, :delivery_cost, :service_cost,
+    :delivery_time, :delivery_method,
+    :delivery_cost, :service_cost,
     :garment_ids, :user_id
 
   validate :check_garment_ids, on: :create
