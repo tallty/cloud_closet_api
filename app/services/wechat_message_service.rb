@@ -121,7 +121,7 @@ class WechatMessageService
         paid: "亲，您的配送订单已完成付款。\n我们将准时为您送出 ~\n",
         delivering: "亲，您的衣服已发出。\n很快就能见到您啦 ~\n",
         canceled: "亲，您的配送订单已取消。\n款项已退还，衣服已经回到您的衣橱里啦 ~ \n",
-        finished: "亲，衣服已到家。\n再会 ~ \n"
+        finished: "亲，衣服已到家。\n期待为您下次服务 ~ \n"
       }
     end
     
