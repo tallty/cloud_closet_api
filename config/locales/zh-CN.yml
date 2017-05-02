@@ -37,7 +37,7 @@ zh-CN:
     paid: '已支付'
     delivering: '已发出'
     finished: '已收货'
-    cancel: '已取消'
+    canceled: '已取消'
 
   devise:
     failure:
