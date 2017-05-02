@@ -139,7 +139,7 @@ class WechatMessageService
           },
           keyword1: {
             color: "#757575",
-            value: @merchant_nameΩ
+            value: @merchant_name
           },
           keyword2: 
           {
