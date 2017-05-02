@@ -41,7 +41,7 @@ class WechatMessageService
     # ---- 配送订单 状态改变（被取消） 微信通知 --- #
 
     def set_delivery_order_state_msg delivery_order
-      @title = '亲，您的配送订单状态变更，请注意查看'
+      @title = delivery_order_title_list[delivery_order.aasm_state.to_sym] || '亲，您的配送订单状态变更，请注意查看'
       @seq = delivery_order.seq
       @state = delivery_order.state
       @amount = delivery_order.amount
