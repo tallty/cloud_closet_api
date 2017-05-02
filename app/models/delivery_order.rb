@@ -37,6 +37,7 @@ class DeliveryOrder < ApplicationRecord
   validate :check_garment_ids, on: :create
 
   after_create :generate_seq
+  after_save :send_wechat_msg, if: :aasm_state_changed?
   
   include AASM
 
@@ -94,6 +95,12 @@ class DeliveryOrder < ApplicationRecord
   end
 
   private
+
+    def send_wechat_appt_state_msg
+      WechatMessageService.new(self.user).send_msg(
+        'delivery_order_state_msg', self
+        )
+    end
 
     def generate_seq
       self.seq = "D#{Time.zone.now.strftime('%Y%m%d')}#{id.to_s.rjust(6, '0')}"

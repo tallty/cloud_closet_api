@@ -1,5 +1,5 @@
 class WechatMessageService
-  # e.g. WechatMessageService.new(user).appt_state_msg(@appt)
+  # e.g. WechatMessageService.new(user).state_msg(@appt)
 
 	def initialize user
     @user = user
@@ -26,16 +26,28 @@ class WechatMessageService
     # ---- 订单状态改变 微信通知 --- #
 
   	def set_appt_state_msg appt
-      @title = '订单状态改变'
-      @appt_seq = appt.seq
-      @appt_state = appt.state
-      @appt_amount = appt.price == 0 ? "上门评估" : appt.price
+      @title = '亲，您的预约订单状态变更，请注意查看'
+      @seq = appt.seq
+      @state = appt.state
+      @amount = appt.price == 0 ? "上门评估" : appt.price
       @remark = appt_remark_list[appt.aasm_state.to_sym]
       
       @url = appt.stored? ? 
               'http://closet.tallty.com/MyCloset' :
               'http://closet.tallty.com/orders'
-      @template = appt_state_template
+      @template = state_template
+    end
+
+    # ---- 配送订单 状态改变（被取消） 微信通知 --- #
+
+    def set_delivery_order_state_msg delivery_order
+      @title = '亲，您的配送订单状态变更，请注意查看'
+      @seq = delivery_order.seq
+      @state = delivery_order.aasm_state
+      @amount = delivery_order.amount
+      @remark = "如有疑问，敬请咨询客服热线：#{@merchant_phone}", 
+      @url = 'http://closet.tallty.com/orders'
+      @template = state_template
     end
 
     # ---- 充值 微信通知 --- #
@@ -62,7 +74,7 @@ class WechatMessageService
       @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
       @remark = '谢谢您的支持'
    p '-----url -----'   
-  p    @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
+   p  @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
       @template = consume_template
     end
 
@@ -105,7 +117,7 @@ class WechatMessageService
     
     # ---- 微信模板 --- #
 
-    def appt_state_template 
+    def state_template 
      template = {
         template_id: "6M5zwt6mJeqk6E29HnVj2qdlyA68O9E-NNP4voT1wBU",
         url: @url,
@@ -126,15 +138,15 @@ class WechatMessageService
           },
           keyword3: {
             color: "#757575",
-            value: @appt_seq
+            value: @seq
           },
           keyword4: {
             color: "#757575",
-            value: @appt_state
+            value: @state
           },
           keyword5: {
             color: "#757575",
-            value: @appt_amount
+            value: @amount
           },
           remark: {
             color: "#173177",
