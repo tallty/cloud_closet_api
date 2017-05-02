@@ -70,7 +70,10 @@ class ExhibitionChest < ApplicationRecord
   include ExhibitionChestSpaceInfo
 
   def his_duddies_can_be_break?
-    self.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+).select{ |garment| garment.stored?}.blank?
+    self.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+).select{ |garment| 
+      garment.where(status: ['stored', ':in_basket', 'delivering'])
+      # 存在配送中的衣服，可能会退回，此时亦不能删除衣柜
+    }.blank?
   end
 
   def delete_his_val_chest
