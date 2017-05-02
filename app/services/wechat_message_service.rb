@@ -43,9 +43,9 @@ class WechatMessageService
     def set_delivery_order_state_msg delivery_order
       @title = '亲，您的配送订单状态变更，请注意查看'
       @seq = delivery_order.seq
-      @state = delivery_order.aasm_state
+      @state = delivery_order.state
       @amount = delivery_order.amount
-      @remark = "如有疑问，敬请咨询客服热线：#{@merchant_phone}", 
+      @remark = "如有疑问，敬请咨询客服热线：#{@merchant_phone}"
       @url = 'http://closet.tallty.com/orders'
       @template = state_template
     end
@@ -114,6 +114,16 @@ class WechatMessageService
         canceled: ''
       }
     end
+
+    def delivery_order_title_list
+      {
+        unpaid: '亲，您的配送订单已创建',
+        paid: '亲，您的配送订单已完成付款，我们将准时为您送出 ~',
+        deliverying: '亲，您的衣服已发出，马上就能见到您啦 ~',
+        canceled: '亲，您的配送订单已取消，衣服已经回到您的衣橱里啦 ~',
+        finish: '亲，衣服已到家。'
+      }
+    end
     
     # ---- 微信模板 --- #
 
@@ -125,7 +135,7 @@ class WechatMessageService
         data: {
           first: {
             color: "#0A0A0A",
-            value: "亲，您的预约订单状态变更，请注意查看。"
+            value: @title
           },
           keyword1: {
             color: "#757575",
