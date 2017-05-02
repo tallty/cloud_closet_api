@@ -118,10 +118,10 @@ class WechatMessageService
     def delivery_order_title_list
       {
         unpaid: '亲，您的配送订单已创建',
-        paid: '亲，您的配送订单已完成付款，我们将准时为您送出 ~',
-        deliverying: '亲，您的衣服已发出，马上就能见到您啦 ~',
-        canceled: '亲，您的配送订单已取消，衣服已经回到您的衣橱里啦 ~',
-        finish: '亲，衣服已到家。'
+        paid: "亲，您的配送订单已完成付款。\n我们将准时为您送出 ~",
+        delivering: "亲，您的衣服已发出。\n马上就能见到您啦 ~",
+        canceled: "亲，您的配送订单已取消。\n衣服已经回到您的衣橱里啦 ~",
+        finished: "亲，衣服已到家。\n再会 ~"
       }
     end
     

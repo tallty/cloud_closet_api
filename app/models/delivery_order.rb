@@ -99,7 +99,7 @@ class DeliveryOrder < ApplicationRecord
     def send_wechat_delivery_order_state_msg
       WechatMessageService.new(self.user).send_msg(
         'delivery_order_state_msg', self
-        )
+        ) unless aasm_state == 'unpaid'
     end
 
     def generate_seq
