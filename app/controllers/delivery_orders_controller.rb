@@ -23,6 +23,7 @@ class DeliveryOrdersController < ApplicationController
   def create # params[:garment_ids]
   	@delivery_order = current_user.delivery_orders.create!(delivery_order_params)
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
+  rescue => @error
     respond_with @error, template: 'error', status: 422
   end
 
@@ -30,6 +31,7 @@ class DeliveryOrdersController < ApplicationController
     raise '只可修改未支付订单' unless @delivery_order.unpaid?
     @delivery_order.update!(delivery_order_params)  
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
+  rescue => @error
     respond_with @error, template: 'error', status: 422
   end
 
@@ -37,18 +39,21 @@ class DeliveryOrdersController < ApplicationController
     raise '只可删除修改未支付订单' unless @delivery_order.unpaid?
     @delivery_order.destroy!
     head 204
+  rescue => @error
     respond_with @error, template: 'error', status: 422
   end
 
   def pay
     @delivery_order.pay!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
+  rescue => @error
     respond_with @error, template: 'error', status: 422
   end
 
   def get_home
     @delivery_order.get_home!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
+  rescue => @error
     respond_with @error, template: 'error', status: 422
   end
 
