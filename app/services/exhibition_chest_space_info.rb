@@ -23,5 +23,18 @@ module ExhibitionChestSpaceInfo
 	def it_has_space
     remain_space_count > 0
 	end
+	
+	#---- 不合并 单礼服柜 ----
+	def max_space_count_alone
+		self.max_count
+	end
 
+	def be_token_space_count_alone
+		self.garments.count
+	end
+
+	def remain_space_count_alone
+		self.max_space_count_alone - self.be_token_space_count_alone
+	end
+	
 end
