@@ -92,14 +92,15 @@ class RentService
 		
 	end
 
-  private
+  # private
     def get_monthly_rent 
       rent = 0
       info_hash = {}
       @user.valuation_chests.where.not(start_time: nil).each do |val_chest|
 
         price_system = val_chest.price_system
-        if price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
+        if val_chest.exhibition_chests.where.not(aasm_state: 'online').blank? &&
+            price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
             price_system.exhibition_units.first.need_join && # 显示单位柜 衣服合并显示
             val_chest.exhibition_chests.collect(&:garments).reduce(:+).empty? # 无衣服
           # 释放该可自动释放衣柜 （单件礼服）
