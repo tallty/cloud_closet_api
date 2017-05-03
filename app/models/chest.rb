@@ -3,8 +3,8 @@
 # Table name: chests
 #
 #  id                     :integer          not null, primary key
-#  title                  :string
-#  chest_type             :string
+#  title                  :string(191)
+#  chest_type             :string(191)
 #  max_count              :integer
 #  user_id                :integer
 #  price_system_id        :integer
@@ -13,12 +13,17 @@
 #  end_day                :date
 #  start_day              :date
 #  last_time_inc_by_month :integer
-#  aasm_state             :string
+#  aasm_state             :string(191)
 #
 # Indexes
 #
 #  index_chests_on_price_system_id  (price_system_id)
 #  index_chests_on_user_id          (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_d4c886f09b  (user_id => users.id)
+#  fk_rails_f3b63cc6ff  (price_system_id => price_systems.id)
 #
 
 class Chest < ApplicationRecord

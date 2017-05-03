@@ -4,10 +4,10 @@
 #
 #  id                       :integer          not null, primary key
 #  exhibition_unit_id       :integer
-#  custom_title             :string
+#  custom_title             :string(191)
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  aasm_state               :string
+#  aasm_state               :string(191)
 #  valuation_chest_id       :integer
 #  appointment_new_chest_id :integer
 #  user_id                  :integer
@@ -18,6 +18,12 @@
 #  index_exhibition_chests_on_exhibition_unit_id        (exhibition_unit_id)
 #  index_exhibition_chests_on_user_id                   (user_id)
 #  index_exhibition_chests_on_valuation_chest_id        (valuation_chest_id)
+#
+# Foreign Keys
+#
+#  fk_rails_4cbc7a1094  (appointment_new_chest_id => appointment_new_chests.id)
+#  fk_rails_53a998be13  (exhibition_unit_id => exhibition_units.id)
+#  fk_rails_b8e3f70d2c  (user_id => users.id)
 #
 
 class ExhibitionChest < ApplicationRecord

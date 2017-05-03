@@ -3,9 +3,9 @@
 # Table name: public_msgs
 #
 #  id         :integer          not null, primary key
-#  title      :string
-#  abstract   :string
-#  content    :text
+#  title      :string(191)
+#  abstract   :string(191)
+#  content    :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

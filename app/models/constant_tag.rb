@@ -3,7 +3,7 @@
 # Table name: constant_tags
 #
 #  id         :integer          not null, primary key
-#  title      :string
+#  title      :string(191)
 #  class_type :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

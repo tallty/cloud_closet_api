@@ -3,22 +3,26 @@
 # Table name: purchase_logs
 #
 #  id             :integer          not null, primary key
-#  operation      :string
-#  payment_method :string
+#  operation      :string(191)
+#  payment_method :string(191)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_info_id   :integer
-#  detail         :text
-#  balance        :float
-#  amount         :float
+#  detail         :text(65535)
+#  balance        :float(24)
+#  amount         :float(24)
 #  is_increased   :boolean
-#  credit         :integer
-#  actual_amount  :float
+#  credit         :integer          default(0)
+#  actual_amount  :float(24)        default(0.0)
 #  can_arrears    :boolean
 #
 # Indexes
 #
 #  index_purchase_logs_on_user_info_id  (user_info_id)
+#
+# Foreign Keys
+#
+#  fk_rails_037d3ad690  (user_info_id => user_infos.id)
 #
 
 class PurchaseLog < ApplicationRecord

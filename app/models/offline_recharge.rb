@@ -3,11 +3,11 @@
 # Table name: offline_recharges
 #
 #  id           :integer          not null, primary key
-#  amount       :float
+#  amount       :float(24)
 #  credit       :integer
-#  is_confirmed :boolean
 #  worker_id    :integer
 #  user_id      :integer
+#  is_confirmed :boolean
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
@@ -15,6 +15,11 @@
 #
 #  index_offline_recharges_on_user_id    (user_id)
 #  index_offline_recharges_on_worker_id  (worker_id)
+#
+# Foreign Keys
+#
+#  fk_rails_773a46b927  (user_id => users.id)
+#  fk_rails_7f3fedf1c1  (worker_id => workers.id)
 #
 
 class OfflineRecharge < ApplicationRecord

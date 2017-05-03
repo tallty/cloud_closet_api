@@ -3,9 +3,9 @@
 # Table name: user_msgs
 #
 #  id         :integer          not null, primary key
-#  title      :string
-#  abstract   :string
-#  url        :string
+#  title      :string(191)
+#  abstract   :string(191)
+#  url        :string(191)
 #  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -13,6 +13,10 @@
 # Indexes
 #
 #  index_user_msgs_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_17a96993eb  (user_id => users.id)
 #
 
 class UserMsg < ApplicationRecord

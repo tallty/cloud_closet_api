@@ -4,7 +4,7 @@
 #
 #  id                         :integer          not null, primary key
 #  price_system_id            :integer
-#  aasm_state                 :string
+#  aasm_state                 :string(191)
 #  user_id                    :integer
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
@@ -16,6 +16,11 @@
 #  index_valuation_chests_on_appointment_price_group_id  (appointment_price_group_id)
 #  index_valuation_chests_on_price_system_id             (price_system_id)
 #  index_valuation_chests_on_user_id                     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_60ff624795  (user_id => users.id)
+#  fk_rails_6d4b7a9f3f  (price_system_id => price_systems.id)
 #
 
 class ValuationChest < ApplicationRecord

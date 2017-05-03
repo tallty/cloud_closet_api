@@ -3,8 +3,8 @@
 # Table name: wechat_sessions
 #
 #  id         :integer          not null, primary key
-#  openid     :string           not null
-#  hash_store :string
+#  openid     :string(191)      not null
+#  hash_store :string(191)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

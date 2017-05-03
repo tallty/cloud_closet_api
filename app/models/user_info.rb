@@ -4,18 +4,22 @@
 #
 #  id                 :integer          not null, primary key
 #  user_id            :integer
-#  nickname           :string
-#  mail               :string
+#  nickname           :string(191)
+#  mail               :string(191)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  default_address_id :integer
-#  balance            :float            default(0.0)
+#  balance            :float(24)        default(0.0)
 #  credit             :integer          default(0)
 #  recharge_amount    :integer          default(0)
 #
 # Indexes
 #
 #  index_user_infos_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_ed96de4cb0  (user_id => users.id)
 #
 
 class UserInfo < ApplicationRecord

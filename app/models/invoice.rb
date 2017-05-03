@@ -3,16 +3,16 @@
 # Table name: invoices
 #
 #  id              :integer          not null, primary key
-#  title           :string
-#  amount          :float
-#  invoice_type    :string
-#  aasm_state      :string
-#  cel_name        :string
-#  cel_phone       :string
-#  postcode        :string
-#  address         :string
+#  title           :string(191)
+#  amount          :float(24)
+#  invoice_type    :string(191)
+#  aasm_state      :string(191)
+#  cel_name        :string(191)
+#  cel_phone       :string(191)
+#  postcode        :string(191)
+#  address         :string(191)
 #  date            :date
-#  remaining_limit :float
+#  remaining_limit :float(24)
 #  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -20,6 +20,10 @@
 # Indexes
 #
 #  index_invoices_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_3d1522a0d8  (user_id => users.id)
 #
 
 class Invoice < ApplicationRecord
