@@ -187,6 +187,7 @@ class Appointment < ApplicationRecord
     end
 
     def after_stored
+      # 收取新订单租金，记录订单开始时间
       PurchaseLogService.new(
           user, ['new_chest_rent'], 
           { appointment: self }
