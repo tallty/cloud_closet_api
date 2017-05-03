@@ -36,42 +36,45 @@ ExhibitionUnit.create!  (
 		{ id: 5, title: "礼服柜", store_method: 'full_dress', max_count: 12, need_join: false, price_system_id: 5 },
 		
 		])
-# RechargeRule.destroy_all
-# RechargeRule.create! (
-# 	[
-# 		{ id: 1, amount: 1000, credits: 0 },
-# 		{ id: 2, amount: 2000, credits: 0 },
-# 		{ id: 3, amount: 3000, credits: 100 },
-# 		{ id: 4, amount: 5000, credits: 300 },
-# 		{ id: 5, amount: 10000, credits: 800 },
-# 		{ id: 6, amount: 20000, credits: 2000 },
-# 		{ id: 7, amount: 50000, credits: 6000 },
-# 		{ id: 8, amount: 100000, credits: 20000 },
-# 	])
-
-# ConstantTag.create (
-# 	[
-# 		{ title: '上衣', class_type: 'garment'},
-# 		{ title: '半裙', class_type: 'garment'},
-# 		{ title: '连衣裙', class_type: 'garment'},
-# 		{ title: '裤装', class_type: 'garment'},
-# 		{ title: '外套', class_type: 'garment'},
-# 		{ title: '羽绒服', class_type: 'garment'},
-# 		{ title: '泳装', class_type: 'garment'},
-# 		{ title: '春秋', class_type: 'garment'},
-# 		{ title: '冬', class_type: 'garment'},
-# 		{ title: '夏', class_type: 'garment'},	
-# 	])
-# VipLevel.destroy_all
-# VipLevel.create!(
-# 	[
-# 		{ name: '普通会员', rank: 1, exp: 0, birthday_gift: 30 },
-# 		{ name: '银卡会员', rank: 2, exp: 800, birthday_gift: 30 },
-# 		{ name: '金卡会员', rank: 3, exp: 6000, birthday_gift: 30 },
-# 		{ name: '砖石卡会员', rank: 4, exp: 20000, birthday_gift: 30 },
-# 	]
-# 	)
-
+RechargeRule.destroy_all
+RechargeRule.create! (
+	[
+		{ id: 1, amount: 1000, credits: 0 },
+		{ id: 2, amount: 2000, credits: 0 },
+		{ id: 3, amount: 3000, credits: 100 },
+		{ id: 4, amount: 5000, credits: 300 },
+		{ id: 5, amount: 10000, credits: 800 },
+		{ id: 6, amount: 20000, credits: 2000 },
+		{ id: 7, amount: 50000, credits: 6000 },
+		{ id: 8, amount: 100000, credits: 20000 },
+	])
+ConstantTag.destroy_all
+ConstantTag.create! (
+	[
+		{ title: '上衣', class_type: 'garment'},
+		{ title: '半裙', class_type: 'garment'},
+		{ title: '连衣裙', class_type: 'garment'},
+		{ title: '裤装', class_type: 'garment'},
+		{ title: '外套', class_type: 'garment'},
+		{ title: '羽绒服', class_type: 'garment'},
+		{ title: '泳装', class_type: 'garment'},
+		{ title: '春秋', class_type: 'garment'},
+		{ title: '冬', class_type: 'garment'},
+		{ title: '夏', class_type: 'garment'},	
+	])
+VipLevel.destroy_all
+VipLevel.create!(
+	[
+		{ name: '普通会员', rank: 1, exp: 0, birthday_gift: 30 },
+		{ name: '银卡会员', rank: 2, exp: 800, birthday_gift: 30 },
+		{ name: '金卡会员', rank: 3, exp: 6000, birthday_gift: 30 },
+		{ name: '砖石卡会员', rank: 4, exp: 20000, birthday_gift: 30 },
+	]
+)
+Worder.where(phone: '123123123').delete!
+Worker.create!([
+	{ phone: '12312312311', password: 'hahaha', authentication_token: '5DRnB4zrGeLkrkRsK92X' }
+])
 
 
 
