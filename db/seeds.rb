@@ -75,7 +75,8 @@ Worder.where(phone: '123123123').delete!
 Worker.create!([
 	{ phone: '12312312311', password: 'hahaha', authentication_token: '5DRnB4zrGeLkrkRsK92X' }
 ])
-
+Admin.destroy_all
+Admin.create(email: 'hahaha@qq.com', password: 'hahaha')
 
 
 
