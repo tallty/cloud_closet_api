@@ -96,7 +96,7 @@ class RentService
     def get_monthly_rent 
       rent = 0
       info_hash = {}
-      @user.valuation_chests.each do |val_chest|
+      @user.valuation_chests.where.not(start_time: nil).each do |val_chest|
 
         price_system = val_chest.price_system
         if price_system.exhibition_units.count == 1 &&  # 仅有一个显示单位柜
@@ -106,17 +106,6 @@ class RentService
           val_chest.soft_delete!
           next
         end
-
-        # 因为 exhibition_chest#val_chest_id 缺失， 弃用上方代码
-        # 临时只针对组合柜一种组合
-        # info_ary = @user.exhibition_chests.online.chunk(&:exhibition_unit_id).map{|id,ary| [id,ary.count]}
-        # info_ary.each do |unit_id, count|
-        #   price_system = @units.find(unit_id).price_system
-        #   unless unit_id.to_i.eql?(4)
-        #     rent += price_system.price * count 
-        #     info_hash["#{price_system.id}"] =  count
-        #   end
-        # end
 
         if val_chest.exhibition_chests.online.any? && val_chest.deleted?.!
           rent += val_chest.price 
