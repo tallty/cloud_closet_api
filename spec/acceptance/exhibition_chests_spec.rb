@@ -213,9 +213,6 @@ resource "我的衣橱" do
           exhibition_chest: @chest2_group1,
           status: 'stored'
           ) 
-        p @chest2_group1.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+)#.select{ |garment| garment.stored?}
-        p' ====== '
-        p @chest2_group1.his_duddies_can_be_break?
       end
       example "用户 释放衣柜 失败" do
         do_request

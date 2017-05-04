@@ -54,7 +54,7 @@ class ExhibitionChestsController < ApplicationController
     @exhibition_chest.delete_his_val_chest
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   # def destroy
