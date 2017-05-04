@@ -24,8 +24,8 @@ class GarmentsController < ApplicationController
     @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list]))
     @garment.update(garment_params) if garment_params
     respond_with @garment, template: 'garments/show', status: 201
-    rescue => @error
-      respond_with @error, template: 'error', status: 422
+  rescue => @error
+    raise MyError.new(@error)
   end
 
   def basket
@@ -56,7 +56,7 @@ class GarmentsController < ApplicationController
       DeliveryService.new(current_user).change_garments_status(params, from, to)
       head 201 
     rescue => @error
-      respond_with @error, template: 'error', status: 422
+      raise MyError.new(@error)
     end
 
     def garment_params
