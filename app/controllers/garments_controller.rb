@@ -41,6 +41,11 @@ class GarmentsController < ApplicationController
     change_status(['in_basket'], 'stored')
   end
 
+  def select_by_tags
+    @garments = current_user.garments.tagged_with(params[:tags])
+    respond_with @garments, template: 'garments/index', status: 200
+  end
+
   private
     def set_garment
       @garment = current_user.garments.stored.find_by_id(params[:id])

@@ -43,39 +43,48 @@ resource "我的衣橱" do
 
 
 
-  # get '/garments' do
+  get '/garments' do
 
-  #   parameter :page, "当前页", require: false
-  #   parameter :per_page, "每页的数量", require: false
+    parameter :page, "当前页", require: false
+    parameter :per_page, "每页的数量", require: false
 
-  #   let(:page) {2}
-  #   let(:per_page) {2}
+    let(:page) {2}
+    let(:per_page) {2}
 
-  #   example "用户查询我的衣橱中的衣服列表成功" do
-  #     do_request
-  #     puts response_body
-  #     expect(status).to eq(200)
-  #   end
-  # end
+    example "用户查询我的衣橱中的衣服列表成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
+  end
 
-  # get 'garments/:id' do
-  #   user_attrs = FactoryGirl.attributes_for(:user)
+  get 'garments/:id' do
 
-  #   header "X-User-Token", user_attrs[:authentication_token]
-  #   header "X-User-Phone", user_attrs[:phone]
+    let(:id) {@garments.first.id}
 
-  #   before do
-  #     @user = create(:user)
-  #     @garments = create_list(:garment, 5, user: @user)
-  #   end
+    example "用户查询我的衣橱指定衣服详情成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+    end
+  end
 
-  #   let(:id) {@garments.first.id}
+  get '/garments/select_by_tags' do
+    parameter :tags, '衣服标签，传入数组 或 以英文逗号隔开的字符串'
+    
+    before do
+      @garments.first.tag_list.add('上衣')
+      @garments.first.save
+    end
 
-  #   example "用户查询我的衣橱指定衣服详情成功" do
-  #     do_request
-  #     puts response_body
-  #     expect(status).to eq(200)
-  #   end
-  # end
+    let(:tags) {['上衣']}
+
+    example "用户按- 标签 -查询衣服成功" do
+      do_request
+      puts response_body
+      expect(status).to eq(200)
+      expect(JSON.parse(response_body)['garments'].count).to eq 1
+    end
+  end
 
 end

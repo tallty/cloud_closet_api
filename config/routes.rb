@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       post :add_them_to_basket
       post :get_out_of_basket
       get :basket
+      get :select_by_tags
     end
   end
   # ----------------------------------------------#  

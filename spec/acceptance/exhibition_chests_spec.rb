@@ -218,10 +218,10 @@ resource "我的衣橱" do
         p @chest2_group1.his_duddies_can_be_break?
       end
       example "用户 释放衣柜 失败" do
-      do_request
-      puts response_body
-      expect(status).to eq(200)
-    end
+        do_request
+        puts response_body
+        expect(status).to eq(422)
+      end
     end
   end
 
