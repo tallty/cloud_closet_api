@@ -43,7 +43,7 @@ resource "配送 相关" do
 
         describe '失败' do 
           let(:garment_ids) { [ @garments_in_basket.collect(&:id)] }
-          example "【用户】加入衣服至【配送篮】失败， 衣服起始状态错误(不对错误id报错）" do
+          example "【用户】加入衣服至【配送篮】失败， 衣服起始状态错误(不对错误id报错" do
             do_request
             puts response_body
             expect(status).to eq(422)

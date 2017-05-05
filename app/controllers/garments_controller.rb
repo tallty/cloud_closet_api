@@ -23,6 +23,7 @@ class GarmentsController < ApplicationController
     @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list]))
     @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list]))
     @garment.update(garment_params) if garment_params
+    @garment.save
     respond_with @garment, template: 'garments/show', status: 201
   rescue => @error
     raise MyError.new(@error)

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
   rescue_from 'MyError' do |exception|
     Rails.logger.info ' --------- exception ---------'
     Rails.logger.info exception.message
-    render json: exception, status: 422
+    render json:{ error: exception }, status: 422
   end
 
   protected
