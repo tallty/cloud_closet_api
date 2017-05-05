@@ -109,7 +109,7 @@ private
 			@ping_request.amount *= 0.01 if @ping_request
 			object = @ping_request || @offline_recharge
 			@operation = "充值 #{object.amount}元, 赠送 #{object.credit}元"
-			@payment_method = '余额支付'
+			@payment_method = '充值返现'
 			@detail = 
 				"充值 #{object.amount}元 ; " + 
 				"赠送 #{object.credit}元"
