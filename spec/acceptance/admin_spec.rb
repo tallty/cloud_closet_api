@@ -4,6 +4,9 @@ resource "管理后台相关接口" do
   header "Accept", "application/json"
 
   before do 
+    allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
+      @sent = true
+    }
     create_list(:store_method, 3)
     create_list(:garment_tag, 3)
     create_list(:vip_level, 4)
@@ -62,9 +65,7 @@ resource "管理后台相关接口" do
 
     header "X-Admin-Token", @admin.authentication_token
     header "X-Admin-Email", @admin.email
-    allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
-      @sent = true
-    }
+
   end
 
 
@@ -176,10 +177,10 @@ resource "管理后台相关接口" do
       end
     end
 
-    put 'admin/exhibition_chests/:id/garments/:id' do
+    put 'admin/exhibition_chests/:exhibition_chest_id/garments/:id' do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
 
-      parameter :appointment_id, "当前订单id", required: true
+      # parameter :appointment_id, "当前订单id", required: true
       # 文字描述
       parameter :title, "衣服标题", require: false, scope: :garment
       parameter :description, "衣服描述信息", require: false, scope: :garment
@@ -197,7 +198,7 @@ resource "管理后台相关接口" do
       parameter :detail_image_3_attributes, "衣服的详细图片3", require: false, scope: :garment
 
       let(:exhibition_chest_id) { @exhibition_chests.first.id }
-      let(:appointment_id) { @appointments.first.id }
+      # let(:appointment_id) { @appointments.first.id }
       let(:id) { @exhibition_chests.first.garments.first.id }
       let(:title) { "garemnt new title" }
       let(:description) { '我是新简述 新简述新简述' }
@@ -212,6 +213,8 @@ resource "管理后台相关接口" do
       let(:detail_image_3_attributes) { image_attrs }
 
       example "管理员修改 对应衣柜中的衣服的详细信息成功" do
+        p '@exhibition_chests.first.id'
+        p @exhibition_chests.first.id
         do_request
         puts response_body
         expect(status).to eq(201)

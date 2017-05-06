@@ -28,9 +28,12 @@ class Admin::GarmentsController < ApplicationController
     @garment.update(detail_image_2_params)
     @garment.update(detail_image_3_params)
     respond_with @garment, template: 'garments/show', status: 201
+  rescue => @error
+    raise MyError.new(@error)
   end
 
   def update
+    p params[:exhibition_chest_id]
     @garment = ExhibitionChest.find(params[:exhibition_chest_id]).garments.find(params[:id])
     @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list])) if p tag_params[:add_tag_list]
     @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list])) if p tag_params[:remove_tag_list]
@@ -46,7 +49,6 @@ class Admin::GarmentsController < ApplicationController
     #管理员入库衣服后 衣服状态改为 已入库
     @garment.do_finish_storing 
     #设置 入库时间 与 过期时间
-
     respond_with @garment, template: "garments/show", status: 201
   rescue => @error
     raise MyError.new(@error)

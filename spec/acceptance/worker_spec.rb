@@ -21,6 +21,9 @@ resource "工作台相关接口" do
 
     header "X-Worker-Token", @worker.authentication_token
     header "X-Worker-Phone", @worker.phone
+    allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
+      @sent = true
+    }
   end
 
    describe 'worker authentication' do
