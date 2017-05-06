@@ -40,7 +40,7 @@ class ExhibitionChest < ApplicationRecord
   include AASM
 
   # use unscope to cancel it
-  default_scope { where("aasm_state not like 'deleted'") }
+  default_scope { where.not(aasm_state: 'delete') }
 
   aasm do 
   	state :waiting, :initial => true
