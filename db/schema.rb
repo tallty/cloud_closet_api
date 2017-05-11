@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428152857) do
+ActiveRecord::Schema.define(version: 20170511035042) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_info_id"
@@ -361,6 +361,7 @@ ActiveRecord::Schema.define(version: 20170428152857) do
     t.string   "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "auth_key"
     t.index ["phone"], name: "index_sms_tokens_on_phone", using: :btree
   end
 
