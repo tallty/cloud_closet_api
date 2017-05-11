@@ -71,7 +71,7 @@ VipLevel.create!(
 		{ name: '砖石卡会员', rank: 4, exp: 20000, birthday_gift: 30 },
 	]
 )
-Worder.where(phone: '123123123').delete!
+Worker.delete_all
 Worker.create!([
 	{ phone: '12312312311', password: 'hahaha', authentication_token: '5DRnB4zrGeLkrkRsK92X' }
 ])
