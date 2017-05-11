@@ -224,7 +224,7 @@ resource "管理后台相关接口" do
     get 'admin/exhibition_chests/:id/garments' do
       let(:id) { @exhibition_chests.first.id }
 
-      example "管理员某衣柜的所有衣服 成功" do
+      example "管理员查看 某衣柜的所有衣服 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)
@@ -235,7 +235,7 @@ resource "管理后台相关接口" do
       let(:exhibition_chest_id) { @exhibition_chests.first }
       let(:id) { @exhibition_chests.first.garments.first.id }
 
-      example "管理员某衣柜中 某一衣服 成功" do
+      example "管理员查看某衣柜中 某一衣服 成功" do
         do_request
         puts response_body
         expect(status).to eq(200)

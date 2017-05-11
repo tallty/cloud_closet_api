@@ -21,5 +21,6 @@ FactoryGirl.define do
   factory :offline_recharge do
     amount 1000
     credit 200
+    auth_code '1111'
   end
 end

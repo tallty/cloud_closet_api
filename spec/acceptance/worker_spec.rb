@@ -2,10 +2,6 @@ require 'acceptance_helper'
 
 resource "工作台相关接口" do
   header "Accept", "application/json"
-
-
- 
-
   before do 
     create_list(:vip_level, 4)
     # 创建价格表
@@ -278,52 +274,114 @@ resource "工作台相关接口" do
 
   # end
 
-  # describe '线下充值' do
+  describe '线下充值' do
 
-  #   before do 
-  #     @offline_recharges = create_list(
-  #         :offline_recharge, 3,
-  #         user: @user,
-  #         worker: @worker
-  #       )
-  #   end
+    before do 
+      SmsToken.create(auth_key: "worker-#{@worker.phone}-1000", token: '1111')
+      @offline_recharges = create_list(
+          :offline_recharge, 3,
+          amount: 1000,
+          user: @user,
+          worker: @worker,
+          auth_code: '1111'
+        )
+      allow(SmsToken).to receive(:send_msg)  {
+        {"code"=>0, "msg"=>nil, "detail"=>""}
+      }
+    end
 
-  #   post 'worker/offline_recharges' do
+    get 'worker/offline_recharges' do
 
-  #     parameter :user_id, "用户id", required: true, scope: :offline_recharge
-  #     parameter :amount, "充值金额", required: true, scope: :offline_recharge
-  #     parameter :credit, "赠送积分", required: true, scope: :offline_recharge
+      example "工作人员查询 充值规则 价目列表 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
 
-  #     let(:user_id) { @user.id }
-  #     let(:amount) { 2000 }
-  #     let(:credit) { 200 }
+    post 'worker/offline_recharges/get_auth_code' do
+      # 生成 offline_recharge时 需要验证金额 、验证code
+      parameter :amount, '申请充值的金额', scope: :offline_recharge
 
-  #     example "【new】工作人员 创建线下充值成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(201)
-  #     end
-  #   end
+      let(:amount) { 100 }
+      
+      example "【new】工作人员 申请获取 授权码（指定金额）” 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
 
-  #   get 'worker/offline_recharges' do
+    post 'worker/offline_recharges' do
 
-  #     example "工作人员查询 价目列表 成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+      parameter :user_id, "用户id", required: true, scope: :offline_recharge
+      parameter :amount, "充值金额", required: true, scope: :offline_recharge
+      parameter :credit, "赠送积分", required: true, scope: :offline_recharge
+      parameter :auth_code, '充值授权码', require: true, scope: :offline_recharge
+      let(:user_id) { @user.id }
+      let(:amount) { 2000 }
+      let(:credit) { 200 }
+      let(:auth_code) { '1234' }
 
-  #   get 'worker/offline_recharges/:id' do
+      describe 'success' do
+        before do
+          SmsToken.create(auth_key: "worker-#{@worker.phone}-2000", token: '1234')
+        end
+        example "【new】工作人员 创建线下充值成功" do
+          do_request
+          puts response_body
+          expect(status).to eq(201)
+        end
+      end
 
-  #     let(:id) {@offline_recharges.first.id}
+      describe 'fail' do
+        example "【new】工作人员 创建线下充值 失败（未获取授权码、授权金额错误）" do
+          do_request
+          puts response_body
+          expect(status).to eq(422)
+        end
 
-  #     example "工作人员查询某价目详细信息成功" do
-  #       do_request
-  #       puts response_body
-  #       expect(status).to eq(200)
-  #     end
-  #   end
+        describe '验证码失效' do
+          before do
+            SmsToken.create(
+              auth_key: "worker-#{@worker.phone}-2000", token: '1234',
+              updated_at: Time.zone.yesterday
+            )
+          end
+          example "【new】工作人员 创建线下充值失败（授权码已过期" do
+            do_request
+            puts response_body
+            expect(status).to eq(422)
+          end
+        end
 
-  # end
+        describe '验证码 错误' do
+          before do
+            SmsToken.create(
+              auth_key: "worker-#{@worker.phone}-2000", token: 'hahaha'
+            )
+          end
+          example "【new】工作人员 创建线下充值失败（授权码填写错误" do
+            do_request
+            puts response_body
+            expect(status).to eq(422)
+          end
+        end
+
+      end
+      
+    end
+
+    get 'worker/offline_recharges/:id' do
+
+      let(:id) {@offline_recharges.first.id}
+
+      example "工作人员查询某价目详细信息成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
+  end
 end

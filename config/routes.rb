@@ -95,7 +95,11 @@ Rails.application.routes.draw do
       end
       get 'state_query', on: :collection
     end    
-    resources :offline_recharges, only: [:index, :show, :create]
+    resources :offline_recharges, only: [:index, :show, :create] do
+      collection do
+        post 'get_auth_code'
+      end 
+    end
     resources :price_systems, only: [:index, :show]
   end
   # -------------------------------------------------------- 

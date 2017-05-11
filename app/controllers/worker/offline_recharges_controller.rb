@@ -17,10 +17,14 @@ class Worker::OfflineRechargesController < ApplicationController
     respond_with @offline_recharge, template: 'offline_recharges/show', status: 200
   end
 
+  def get_auth_code
+    SmsToken.offline_recharge_auth_get(current_worker, get_auth_code_params)
+    head 201 
+  end
+
   def create
   	raise '用户id 错误' unless User.find_by_id( offline_recharge_params[:user_id] )
-    @offline_recharge =  current_worker.offline_recharges.build( offline_recharge_params )
-    @offline_recharge.save
+    @offline_recharge =  current_worker.offline_recharges.create!( offline_recharge_params )
     respond_with @offline_recharge, template: 'offline_recharges/show', status: 201
   rescue => @error
   	respond_with @error, template: 'error', status: 422
@@ -43,7 +47,13 @@ class Worker::OfflineRechargesController < ApplicationController
 
     def offline_recharge_params
     	params.require(:offline_recharge).permit(
-    			:amount, :credit, :user_id
+    			:amount, :credit, :user_id, :auth_code
     		)
+    end
+
+    def get_auth_code_params
+      params.require(:offline_recharge).permit(
+        :amount
+      )
     end
 end

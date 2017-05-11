@@ -16,6 +16,6 @@
 FactoryGirl.define do
   factory :sms_token do
     phone "13813813811"
-    token "123456"
+    token "1111"
   end
 end

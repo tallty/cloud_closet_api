@@ -25,8 +25,11 @@
 class OfflineRecharge < ApplicationRecord
 	belongs_to :user
 	belongs_to :worker
+	validate :ckeck_auth_code, on: :create
 	after_create :create_purchase_log
 
+	attr_accessor :auth_code
+	
 	def user_phone
 		user.phone
 	end
@@ -40,8 +43,11 @@ class OfflineRecharge < ApplicationRecord
 	end
 
 	private
+		def ckeck_auth_code
+			SmsToken.offline_recharge_code_auth_validate?(self)
+		end
+
 		def create_purchase_log
-			p 'here'
 			PurchaseLogService.new(
 					self.user, ['offline_recharge', 'credit'],
 					{
