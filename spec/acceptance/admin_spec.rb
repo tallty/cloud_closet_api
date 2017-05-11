@@ -346,11 +346,14 @@ resource "管理后台相关接口" do
     describe '线下充值' do
 
       before do 
+        SmsToken.create(auth_key: "worker-#{@worker.phone}-1000", token: '1111')
         @offline_recharges = create_list(
             :offline_recharge, 3,
             user: @user,
-            worker: @worker
+            worker: @worker,
+            auth_code: '1111'
           )
+          
       end
 
       post 'admin/offline_recharges/:id/to_confirmed_or_not' do
