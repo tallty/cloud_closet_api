@@ -68,9 +68,9 @@ class Appointment < ApplicationRecord
 
   belongs_to :user
 
-  has_many :graments
+  has_many :graments, dependent: :destroy
   has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
-  has_many :val_chests, source: 'valuation_chests', through: :groups
+  has_many :val_chests, source: 'valuation_chests', through: :groups, dependent: :destroy
 
   after_create :generate_seq
   after_create :send_sms

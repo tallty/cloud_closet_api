@@ -24,8 +24,8 @@
 
 class UserInfo < ApplicationRecord
   belongs_to :user, dependent: :destroy
-  has_many :addresses
-  has_many :purchase_logs
+  has_many :addresses, dependent: :destroy
+  has_many :purchase_logs, dependent: :destroy
   
   delegate :phone, to: :user
 

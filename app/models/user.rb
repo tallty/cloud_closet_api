@@ -44,14 +44,14 @@ class User < ApplicationRecord
   validate :sms_token_validate, on: :create
 
   has_one :user_info, dependent: :destroy
-  has_many :offline_recharges
-  has_many :ping_requests
-  has_many :invoices
-  has_many :user_msgs
+  has_many :offline_recharges, dependent: :destroy
+  has_many :ping_requests, dependent: :destroy
+  has_many :invoices, dependent: :destroy
+  has_many :user_msgs, dependent: :destroy
   has_many :garments, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :delivery_orders, dependent: :destroy
-  has_many :purchase_logs, through: :user_info
+  has_many :purchase_logs, through: :user_info, dependent: :destroy
   # has_many :bills, dependent: :destroy
   has_many :valuation_chests, dependent: :destroy
   has_many :exhibition_chests, dependent: :destroy
