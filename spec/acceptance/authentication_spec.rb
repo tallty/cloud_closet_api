@@ -40,21 +40,19 @@ resource "用户注册登录" do
         puts response_body
         expect(status).to eq(422)
       end
+      
+      describe ' 验证码错误' do
+        let(:phone) { sms_attrs[:phone] }
+        let(:password) { user_attrs[:password] }
+        let(:sms_token) { "323232" }
 
-      let(:phone) { sms_attrs[:phone] }
-      let(:password) { user_attrs[:password] }
-      let(:sms_token) { "323232" }
-
-      example "用户注册失败（验证码错误）" do
-        create :sms_token
-        do_request
-        puts response_body
-        expect(status).to eq(422)
+        example "用户注册失败（验证码错误）" do
+          create :sms_token
+          do_request
+          puts response_body
+          expect(status).to eq(422)
+        end
       end
-
-      let(:phone) { sms_attrs[:phone] }
-      let(:password) { user_attrs[:password] }
-      let(:sms_token) { sms_attrs[:token] }
 
       example "用户注册失败（该手机号已被注册）" do
         create :sms_token
