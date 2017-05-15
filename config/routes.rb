@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :workers
   devise_for :admins
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users_registrations"}
 
   # ------------ SMS Routes ------------------#
   resources :sms_tokens, only: [:show]  do
