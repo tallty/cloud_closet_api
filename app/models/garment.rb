@@ -4,37 +4,29 @@
 #
 #  id                  :integer          not null, primary key
 #  user_id             :integer
-#  title               :string(191)
+#  title               :string
 #  put_in_time         :datetime
 #  expire_time         :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  seq                 :string(191)
+#  seq                 :string
 #  row                 :integer
 #  carbit              :integer
 #  place               :integer
-#  status              :string(191)
-#  chest_id            :integer
-#  store_method        :string(191)
+#  status              :string
+#  store_method        :string
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
-#  description         :text(65535)
+#  description         :text
 #  delivery_order_id   :integer
 #
 # Indexes
 #
 #  index_garments_on_appointment_id       (appointment_id)
-#  index_garments_on_chest_id             (chest_id)
 #  index_garments_on_delivery_order_id    (delivery_order_id)
 #  index_garments_on_exhibition_chest_id  (exhibition_chest_id)
 #  index_garments_on_seq                  (seq)
 #  index_garments_on_user_id              (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_0b3b253780  (user_id => users.id)
-#  fk_rails_55d96a5397  (chest_id => chests.id)
-#  fk_rails_85ba3fbd75  (delivery_order_id => delivery_orders.id)
 #
 
 class Garment < ApplicationRecord

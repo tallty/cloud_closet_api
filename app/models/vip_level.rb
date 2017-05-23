@@ -3,7 +3,7 @@
 # Table name: vip_levels
 #
 #  id            :integer          not null, primary key
-#  name          :string(191)
+#  name          :string
 #  exp           :integer
 #  birthday_gift :integer
 #  created_at    :datetime         not null

@@ -3,10 +3,11 @@
 # Table name: sms_tokens
 #
 #  id         :integer          not null, primary key
-#  phone      :string(191)
-#  token      :string(191)
+#  phone      :string
+#  token      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  auth_key   :string
 #
 # Indexes
 #

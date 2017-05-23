@@ -4,21 +4,17 @@
 #
 #  id             :integer          not null, primary key
 #  user_info_id   :integer
-#  name           :string(191)
-#  address_detail :string(191)
-#  phone          :string(191)
+#  name           :string
+#  address_detail :string
+#  phone          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  house_number   :string(191)
+#  house_number   :string
 #  sex            :integer
 #
 # Indexes
 #
 #  index_addresses_on_user_info_id  (user_info_id)
-#
-# Foreign Keys
-#
-#  fk_rails_7e2a135908  (user_info_id => user_infos.id)
 #
 
 class Address < ApplicationRecord

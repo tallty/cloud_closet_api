@@ -3,35 +3,32 @@
 # Table name: appointments
 #
 #  id                 :integer          not null, primary key
-#  address            :string(191)
-#  name               :string(191)
-#  phone              :string(191)
+#  address            :string
+#  name               :string
+#  phone              :string
 #  number             :integer
 #  date               :date
 #  user_id            :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  seq                :string(191)
-#  aasm_state         :string(191)
-#  price              :float(24)        default(0.0)
-#  detail             :string(191)
-#  remark             :text(65535)
-#  care_type          :string(191)
-#  care_cost          :float(24)
-#  service_cost       :float(24)
-#  rent_charge        :float(24)
-#  garment_count_info :string(191)
+#  seq                :string
+#  aasm_state         :string
+#  price              :float            default(0.0)
+#  detail             :string
+#  remark             :text
+#  care_type          :string
+#  care_cost          :float
+#  service_cost       :float
+#  rent_charge        :float
+#  garment_count_info :string
 #  hanging_count      :integer          default(0)
 #  stacking_count     :integer          default(0)
 #  full_dress_count   :integer          default(0)
+#  number_alias       :string
 #
 # Indexes
 #
 #  index_appointments_on_user_id  (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_9e31213785  (user_id => users.id)
 #
 
 class Appointment < ApplicationRecord

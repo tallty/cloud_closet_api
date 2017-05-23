@@ -3,8 +3,8 @@
 # Table name: exhibition_units
 #
 #  id              :integer          not null, primary key
-#  title           :string(191)
-#  store_method    :string(191)
+#  title           :string
+#  store_method    :string
 #  max_count       :integer
 #  need_join       :boolean
 #  price_system_id :integer
@@ -14,10 +14,6 @@
 # Indexes
 #
 #  index_exhibition_units_on_price_system_id  (price_system_id)
-#
-# Foreign Keys
-#
-#  fk_rails_5572abb806  (price_system_id => price_systems.id)
 #
 
 class ExhibitionUnit < ApplicationRecord

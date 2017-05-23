@@ -5,25 +5,20 @@
 #  id              :integer          not null, primary key
 #  appointment_id  :integer
 #  store_month     :integer
-#  price           :float(24)
+#  price           :float
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  type_name       :string(191)
+#  type_name       :string
 #  price_system_id :integer
 #  chest_id        :integer
 #  is_chest        :boolean
-#  count_info      :string(191)
+#  count_info      :string
 #
 # Indexes
 #
 #  index_appointment_item_groups_on_appointment_id   (appointment_id)
 #  index_appointment_item_groups_on_chest_id         (chest_id)
 #  index_appointment_item_groups_on_price_system_id  (price_system_id)
-#
-# Foreign Keys
-#
-#  fk_rails_3d1fce74ca  (price_system_id => price_systems.id)
-#  fk_rails_6df1ac2abe  (appointment_id => appointments.id)
 #
 
 class AppointmentItemGroup < ApplicationRecord

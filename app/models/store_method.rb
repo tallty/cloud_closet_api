@@ -3,8 +3,8 @@
 # Table name: store_methods
 #
 #  id         :integer          not null, primary key
-#  title      :string(191)
-#  zh_title   :string(191)
+#  title      :string
+#  zh_title   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

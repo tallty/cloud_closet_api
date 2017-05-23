@@ -40,6 +40,7 @@ FactoryGirl.define do
     care_cost 111
     care_type '普通护理'
     service_cost 222
+    number_alias '10-20件'
     # detail "衣服*2"
   end
 end

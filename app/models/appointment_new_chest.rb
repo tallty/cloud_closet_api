@@ -15,11 +15,6 @@
 #  index_appointment_new_chests_on_appointment_price_group_id  (appointment_price_group_id)
 #  index_appointment_new_chests_on_exhibition_unit_id          (exhibition_unit_id)
 #
-# Foreign Keys
-#
-#  fk_rails_2d7ebd729b  (appointment_price_group_id => appointment_price_groups.id)
-#  fk_rails_5bd8d3c674  (appointment_id => appointments.id)
-#
 
 class AppointmentNewChest < ApplicationRecord
   belongs_to :appointment # need?

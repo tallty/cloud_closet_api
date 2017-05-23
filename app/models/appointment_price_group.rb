@@ -7,10 +7,10 @@
 #  appointment_id  :integer
 #  count           :integer
 #  store_month     :integer
-#  unit_price      :float(24)
-#  price           :float(24)
+#  unit_price      :float
+#  price           :float
 #  is_chest        :boolean
-#  title           :string(191)
+#  title           :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
@@ -18,11 +18,6 @@
 #
 #  index_appointment_price_groups_on_appointment_id   (appointment_id)
 #  index_appointment_price_groups_on_price_system_id  (price_system_id)
-#
-# Foreign Keys
-#
-#  fk_rails_6d54f51f6b  (appointment_id => appointments.id)
-#  fk_rails_d214ae844c  (price_system_id => price_systems.id)
 #
 
 class AppointmentPriceGroup < ApplicationRecord

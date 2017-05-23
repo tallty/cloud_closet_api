@@ -6,25 +6,19 @@
 #  garment_id                :integer
 #  appointment_id            :integer
 #  store_month               :integer
-#  price                     :float(24)
+#  price                     :float
 #  status                    :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  appointment_item_group_id :integer
-#  aasm_state                :string(191)      default("storing")
-#  store_mode                :string(191)
+#  aasm_state                :string           default("storing")
+#  store_mode                :string
 #
 # Indexes
 #
 #  index_appointment_items_on_appointment_id             (appointment_id)
 #  index_appointment_items_on_appointment_item_group_id  (appointment_item_group_id)
 #  index_appointment_items_on_garment_id                 (garment_id)
-#
-# Foreign Keys
-#
-#  fk_rails_989306b84d  (appointment_id => appointments.id)
-#  fk_rails_b5f15fb7fe  (garment_id => garments.id)
-#  fk_rails_f01b3da157  (appointment_item_group_id => appointment_item_groups.id)
 #
 
 # 弃用

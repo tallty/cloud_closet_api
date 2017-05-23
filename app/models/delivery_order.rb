@@ -3,28 +3,24 @@
 # Table name: delivery_orders
 #
 #  id              :integer          not null, primary key
-#  address         :string(191)
-#  name            :string(191)
-#  phone           :string(191)
+#  address         :string
+#  name            :string
+#  phone           :string
 #  delivery_time   :date
-#  delivery_method :string(191)
-#  remark          :string(191)
+#  delivery_method :string
+#  remark          :string
 #  delivery_cost   :integer
 #  service_cost    :integer
-#  aasm_state      :string(191)
-#  garment_ids     :string(191)
+#  aasm_state      :string
+#  garment_ids     :string
 #  user_id         :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  seq             :string(191)
+#  seq             :string
 #
 # Indexes
 #
 #  index_delivery_orders_on_user_id  (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_b85d71c896  (user_id => users.id)
 #
 
 class DeliveryOrder < ApplicationRecord

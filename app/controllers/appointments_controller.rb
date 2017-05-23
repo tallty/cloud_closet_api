@@ -77,7 +77,7 @@ class AppointmentsController < ApplicationController
 
     def appointment_params
       params.require(:appointment).permit(
-        :address, :name, :phone, :number, :date#,:detail 提供详情可修改
+        :address, :name, :phone, :number, :date, :number_alias#,:detail 提供详情可修改
         )
     end
 end

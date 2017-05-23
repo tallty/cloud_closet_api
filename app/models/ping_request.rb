@@ -3,30 +3,26 @@
 # Table name: ping_requests
 #
 #  id          :integer          not null, primary key
-#  object_type :string(191)
-#  ping_id     :string(191)
+#  object_type :string
+#  ping_id     :string
 #  complete    :boolean
 #  amount      :integer
-#  subject     :string(191)
-#  body        :string(191)
-#  client_ip   :string(191)
-#  extra       :string(191)
-#  order_no    :string(191)
-#  channel     :string(191)
+#  subject     :string
+#  body        :string
+#  client_ip   :string
+#  extra       :string
+#  order_no    :string
+#  channel     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  openid      :string(191)
-#  metadata    :string(191)
+#  openid      :string
+#  metadata    :string
 #  credit      :integer
 #  user_id     :integer
 #
 # Indexes
 #
 #  index_ping_requests_on_user_id  (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_a1cd59727f  (user_id => users.id)
 #
 
 class PingRequest < ApplicationRecord

@@ -6,10 +6,10 @@
 #  price       :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  title       :string(191)
+#  title       :string
 #  is_chest    :boolean
-#  description :text(65535)
-#  unit_name   :string(191)
+#  description :text
+#  unit_name   :string
 #
 
 class PriceSystem < ApplicationRecord
