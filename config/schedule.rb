@@ -7,8 +7,8 @@
 #
 set :output, "./log/cron_log.log"
 
-every '0 1 1 * *' do
-  runner "RentService.deducte_all_user_rent"
-end
+# every '0 1 1 * *' do
+#   runner "RentService.deducte_all_user_rent"
+# end
 
 # Learn more: http://github.com/javan/whenever

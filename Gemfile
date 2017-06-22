@@ -66,7 +66,7 @@ gem 'acts-as-taggable-on', '~> 4.0'
 # SMS
 gem 'china_sms'
 #
-gem 'whenever'
+# gem 'whenever'
 ###############################################################################
 
 group :development, :test do

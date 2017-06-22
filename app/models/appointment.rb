@@ -55,7 +55,7 @@ class Appointment < ApplicationRecord
     end
 
     event :stored do
-      transitions from: :storing, to: :stored, :after => :after_stored
+      transitions from: :storing, to: :stored
     end
 
     event :cancel do
@@ -92,14 +92,18 @@ class Appointment < ApplicationRecord
     self[:garment_count_info] && self[:garment_count_info].split(',').map{ |x| x.split(':')}.map {|store_method, count|[store_method, count.to_i]}.to_h
   end
 
+  def other_price
+    self.groups.other_items.map { |group| 
+      group.price 
+    }.reduce(:+) || 0
+  end
+
   def price_except_rent
     # 服务费 护理费 真空袋等护理配件费
     _care_cost = self.care_cost || 0
     _service_cost = self.service_cost || 0
-    _other_price = self.groups.other_items.map { |group| 
-        group.price 
-      }.reduce(:+) || 0
-    _service_cost + _care_cost + _other_price
+    
+    _service_cost + _care_cost + other_price
   end
 
   def count_price
@@ -109,6 +113,7 @@ class Appointment < ApplicationRecord
         group.price 
       }.reduce(:+)
     raise '请填写正确的服务费用、护理费用' unless self.service_cost && self.care_cost
+    # price = rent_charge + service_cost + care_cost + 真空袋等
     self.price = self.price_except_rent 
     self.price += self.rent_charge if self.rent_charge
 
@@ -159,8 +164,6 @@ class Appointment < ApplicationRecord
 
   def check_space_and_garment_count
     _count_info =  self.garment_count_info
-    p _count_info
-    user = self.user
     self.new_chests.map do |new_chest|
       _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
     end
@@ -178,15 +181,7 @@ class Appointment < ApplicationRecord
 
     def after_pay
       PurchaseLogService.new(
-          self.user, ['service_cost', 'case_cost'],
-          { appointment: self }
-        ).create
-    end
-
-    def after_stored
-      # 收取新订单租金，记录订单开始时间
-      PurchaseLogService.new(
-          user, ['new_chest_rent'], 
+          self.user, ['appt_paid_successfully'],
           { appointment: self }
         ).create
     end

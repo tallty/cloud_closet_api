@@ -54,7 +54,6 @@ GEM
     builder (3.2.3)
     byebug (9.0.6)
     china_sms (0.0.7)
-    chronic (0.10.2)
     climate_control (0.1.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
@@ -221,8 +220,6 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    whenever (0.9.7)
-      chronic (>= 0.6.3)
     will_paginate (3.1.5)
 
 PLATFORMS
@@ -258,7 +255,6 @@ DEPENDENCIES
   sqlite3
   thin
   tzinfo-data
-  whenever
   will_paginate (~> 3.1.0)
 
 BUNDLED WITH

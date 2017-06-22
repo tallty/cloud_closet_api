@@ -23,7 +23,7 @@ class PurchaseLogService
 		
 			# 确认全部创建后 
 			purchase_log_ary.each do |purchase_log|
-				# 操作用户余额
+				# 操作 用户 余额
 				change_balance(purchase_log)
 				# 发送 充值/消费 微信消息
 				WechatMessageService.new(@user).send_msg(
@@ -40,37 +40,50 @@ class PurchaseLogService
 private
 		# -------  消费  ------- #
 
-		def set_service_cost_params # appointment
-			@operation = '服务费'
-			@payment_method = '余额支付'
-			@detail = ''
-			@amount = @appointment.service_cost
-			@is_increased = false
-		end
+		# def set_service_cost_params # appointment
+		# 	@operation = '服务费'
+		# 	@payment_method = '余额支付'
+		# 	@detail = ''
+		# 	@amount = @appointment.service_cost
+		# 	@is_increased = false
+		# end
 
-		def set_case_cost_params # appointment
-			@operation = '护理费'
-			@payment_method = '余额支付'
-			@detail = @appointment.care_type
-			@amount = @appointment.care_cost
-			@is_increased = false
-		end
+		# def set_case_cost_params # appointment
+		# 	@operation = '护理费'
+		# 	@payment_method = '余额支付'
+		# 	@detail = @appointment.care_type
+		# 	@amount = @appointment.care_cost
+		# 	@is_increased = false
+		# end
 
-		def set_montly_rent_params # info
-			@operation = "#{Time.zone.now.month}月租金"
-			@payment_method = '余额支付'
-			@detail = @info[:detail]
-			@amount = @info[:amount]
-			@is_increased = false
-			@can_arrears = true
-		end
+		# def set_montly_rent_params # info
+		# 	@operation = "#{Time.zone.now.month}月租金"
+		# 	@payment_method = '余额支付'
+		# 	@detail = @info[:detail]
+		# 	@amount = @info[:amount]
+		# 	@is_increased = false
+		# 	@can_arrears = true
+		# end
 
-		def set_new_chest_rent_params # appointment
-			@operation = '新赠衣柜的本月租金'
+		# def set_new_chest_rent_params # appointment
+		# 	@operation = '新赠衣柜的租金'
+		# 	@payment_method = '余额支付'
+		# 	@amount, @detail = RentService.new(@user).appt_new_chest_rent(@appointment)
+		# 	@is_increased = false
+		# 	@can_arrears = true
+		# end
+
+		def set_appt_paid_successfully_params
+			@operation = '入库订单支付成功'
 			@payment_method = '余额支付'
-			@amount, @detail = RentService.new(@user).appt_new_chest_rent(@appointment)
+			@amount = @appointment.price 
+			@detail = 
+				"衣柜总租金： #{@appointment.rent_charge}，
+				服务费：#{@appointment.service_cost},
+				护理费：#{@appointment.care_cost}，
+				真空袋等其他费用：#{@appointment.other_price}。"
 			@is_increased = false
-			@can_arrears = true
+			@can_arrears = false
 		end
 
 		def set_delivery_order_params
@@ -94,7 +107,7 @@ private
 			@is_increased = true
 		end
 
-		def set_offline_recharge_params # offline_recharge
+		def set_offline_recharge_paras # offline_recharge
 			@operation = '线下充值'
 			@payment_method = '线下充值' || ''
 			@detail = 
