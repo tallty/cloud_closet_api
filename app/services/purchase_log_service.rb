@@ -107,7 +107,7 @@ private
 			@is_increased = true
 		end
 
-		def set_offline_recharge_paras # offline_recharge
+		def set_offline_recharge_params # offline_recharge
 			@operation = '线下充值'
 			@payment_method = '线下充值' || ''
 			@detail = 
