@@ -41,11 +41,9 @@ class ExhibitionChestsController < ApplicationController
   end
 
   def move_garment # garment_ids to_exhibition_chest_id
-  p params
     @exhibition_chest.garments.where(id: params[:garment_ids]).each do |garment|
       garment.exhibition_chest_id = params[:to_exhibition_chest_id]
-     p '===='
-     p  garment.save!
+      garment.save!
     end
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   end
@@ -64,7 +62,7 @@ class ExhibitionChestsController < ApplicationController
 
   private
     def set_user_chests
-      @user_chests = current_user.exhibition_chests.online
+      @user_chests = current_user.exhibition_chests
     end
 
     def set_exhibition_chest

@@ -11,6 +11,7 @@
 #  valuation_chest_id       :integer
 #  appointment_new_chest_id :integer
 #  user_id                  :integer
+#  expiring_time            :datetime
 #
 # Indexes
 #
@@ -53,6 +54,10 @@ class ExhibitionChest < ApplicationRecord
     I18n.t :"exhibition_chest_aasm_state.#{aasm_state}"
   end
 
+  def is_about_to_expire
+    exprie_time < Time.zone.now + 1.month
+  end
+
   scope :has_space, ->{
     select{ |chest| chest.it_has_space }
    }
@@ -66,6 +71,9 @@ class ExhibitionChest < ApplicationRecord
       exhibition_unit: it.exhibition_unit
       )
     }
+  scope :about_to_expire, ->{
+    select{ |chest| chest.is_about_to_expire }
+  }
 
   include ExhibitionChestSpaceInfo
 
@@ -82,14 +90,6 @@ class ExhibitionChest < ApplicationRecord
       self.valuation_chest.soft_delete! 
       self.soft_delete!
     end
-  end
-
-  def move_garment
-    
-  end
-
-  def enough_space_to_move
-    # garments.stored
   end
 
   def release_new_garments

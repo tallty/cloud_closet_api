@@ -51,7 +51,8 @@ class ValuationChest < ApplicationRecord
       self.price_system.exhibition_units.each do |exhibition_unit| 
         _exhibition_chest = self.exhibition_chests.build(
           exhibition_unit: exhibition_unit,
-          user: self.user
+          user: self.user,
+          expiring_time: Time.zone.now + self.appointment_price_group.store_month.months
         )
         raise '用户展示衣柜创建失败' unless _exhibition_chest.save
       end

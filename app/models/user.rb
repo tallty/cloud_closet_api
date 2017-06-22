@@ -89,6 +89,10 @@ class User < ApplicationRecord
     self.exhibition_chests.has_space
   end
 
+  def any_chests_about_to_expire
+    self.exhibition_chests.about_to_expire.any?
+  end
+
   # user phone as the authentication key, so email is not required default
   def email_required?
     false
