@@ -32,7 +32,8 @@ resource "管理后台相关接口" do
     price_system_ary.each do |price_system|
       create(:appointment_price_group, 
           appointment: @appointments.first,
-          price_system: price_system
+          price_system: price_system,
+          store_month: 2
           )
     end
     @appointments.first.accept!
@@ -50,12 +51,15 @@ resource "管理后台相关接口" do
     # 创建用户原有衣柜
     @valuation_chest = create(:valuation_chest,
       price_system: @stocking_chest,
-      user: @user)
+      user: @user,
+      appointment_price_group: AppointmentPriceGroup.first
+    )
     @exhibition_chest1 = create(:exhibition_chest, 
       exhibition_unit: @stocking_chest.exhibition_units.first,
       custom_title: 'aaaaaaaaaaaaaa',
       valuation_chest: @valuation_chest,
-      user: @user
+      user: @user,
+      expire_time: Time.zone.now + 2.month
       )
     @garments = create_list(
       :garment, 3,
@@ -383,6 +387,23 @@ resource "管理后台相关接口" do
           do_request
           puts response_body
           expect(status).to eq(200)
+        end
+      end
+    end
+
+    describe '用户 与 衣柜 列表' do
+      get 'admin/users' do
+        parameter :page, "当前页", require: false
+        parameter :per_page, "每页的数量", require: false
+
+        let(:page) { 1 }
+        let(:per_page) { 2 }
+        example "管理员  用户列表" do
+          do_request
+          puts response_body
+          expect(status).to eq(200)
+          # 第一个用户的所有衣柜都未即将到期
+          expect(response_body['users'].first['any_chests_about_to_expire']).to be_nil
         end
       end
     end

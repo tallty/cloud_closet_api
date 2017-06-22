@@ -57,6 +57,7 @@ Rails.application.routes.draw do
         post :cancel
       end
     end
+    resources :users, only: [:index, :show]
   end
   # ----------------------------------------------#   
 

@@ -11,7 +11,7 @@
 #  valuation_chest_id       :integer
 #  appointment_new_chest_id :integer
 #  user_id                  :integer
-#  expiring_time            :datetime
+#  expire_time              :datetime
 #
 # Indexes
 #
@@ -55,7 +55,7 @@ class ExhibitionChest < ApplicationRecord
   end
 
   def is_about_to_expire
-    exprie_time < Time.zone.now + 1.month
+    expire_time < Time.zone.now + 1.month
   end
 
   scope :has_space, ->{
