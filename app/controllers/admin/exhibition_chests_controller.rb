@@ -26,13 +26,15 @@ class Admin::ExhibitionChestsController < ApplicationController
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   rescue => @error
     respond_with @error, template: 'error', status: 422
-  rescue
-
   end
 
   def update
-    @exhibition_chest.update(exhibition_chest_params)
-    respond_with(@exhibition_chest)
+    if @exhibition_chest.need_join
+      render( json: { error: '单礼服不支持修改上限，请添加或删除单礼服柜' }, status: 422 )
+    else
+      @exhibition_chest.update(exhibition_chest_params)
+      respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+    end
   end
 
   def destroy
@@ -46,6 +48,8 @@ class Admin::ExhibitionChestsController < ApplicationController
     end
 
     def exhibition_chest_params
-      params[:exhibition_chest]
+      params.require(:exhibition_chest).permit(
+        :max_count
+      )
     end
 end

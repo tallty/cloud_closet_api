@@ -12,6 +12,7 @@
 #  appointment_new_chest_id :integer
 #  user_id                  :integer
 #  expire_time              :datetime
+#  max_count                :integer
 #
 # Indexes
 #
@@ -29,7 +30,7 @@ class ExhibitionChest < ApplicationRecord
   
   has_many :garments
 
-  delegate :title, :store_method, :max_count,
+  delegate :title, :store_method,
     :need_join, :price_system_id, to: :exhibition_unit#, allow_nil: false
 
   include AASM
@@ -52,6 +53,10 @@ class ExhibitionChest < ApplicationRecord
 
   def state
     I18n.t :"exhibition_chest_aasm_state.#{aasm_state}"
+  end
+
+  def max_count
+    read_attribute(:max_count) || self.exhibition_unit.max_count
   end
 
   def is_about_to_expire

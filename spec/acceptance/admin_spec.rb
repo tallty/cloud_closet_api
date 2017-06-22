@@ -140,6 +140,29 @@ resource "管理后台相关接口" do
       end
     end
 
+    put 'admin/exhibition_chests/:id' do
+      parameter :max_count, scope: :exhibition_chest
+
+      let(:id) { @exhibition_chest1.id }
+      let(:max_count) { 99 }
+      example "管理员 修改衣柜 存衣上限 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+
+      describe '单礼服柜 不能修改上限' do
+        let(:id) { ExhibitionChest.all.select{ |chest| chest.need_join }.first.id }
+        let(:max_count) { 99 }
+
+        example "管理员 修改衣柜 存衣上限 失败（ 单礼服柜 不能修改上限）" do
+          do_request
+          puts response_body
+          expect(status).to eq(422)
+        end
+      end
+    end
+
     post 'admin/exhibition_chests/:id/garments' do
       image_attrs = FactoryGirl.attributes_for(:image, photo_type: "avatar")
       garment_attrs = FactoryGirl.attributes_for(:garment)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170622071026) do
+ActiveRecord::Schema.define(version: 20170622085923) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 20170622071026) do
     t.integer  "appointment_new_chest_id"
     t.integer  "user_id"
     t.datetime "expire_time"
+    t.integer  "max_count"
     t.index ["appointment_new_chest_id"], name: "index_exhibition_chests_on_appointment_new_chest_id"
     t.index ["exhibition_unit_id"], name: "index_exhibition_chests_on_exhibition_unit_id"
     t.index ["user_id"], name: "index_exhibition_chests_on_user_id"

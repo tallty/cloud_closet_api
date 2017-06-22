@@ -57,7 +57,6 @@ Rails.application.routes.draw do
         post :cancel
       end
     end
-    resources :users, only: [:index, :show]
   end
   # ----------------------------------------------#   
 
@@ -113,6 +112,8 @@ Rails.application.routes.draw do
         get 'its_chests'
       end
     end
+    
+    resources :users, only: [:index, :show]
 
     resources :offline_recharges, only: [:index, :show] do 
       member do 
