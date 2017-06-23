@@ -112,13 +112,15 @@ Rails.application.routes.draw do
         get 'its_chests'
       end
     end
-    
-    resources :users, only: [:index, :show]
-
+ 
     resources :offline_recharges, only: [:index, :show] do 
       member do 
         post 'to_confirmed_or_not'
       end
+    end
+       
+    resources :users, only: [:index, :show] do
+      resources :exhibition_chests, only: :index
     end
 
     resources :exhibition_chests do 

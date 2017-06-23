@@ -248,12 +248,21 @@ resource "管理后台相关接口" do
       end
     end
 
+    get 'admin/users/:id/exhibition_chests' do
+      let(:id) { @user.id }
+      example "管理员查看 某用户的所有衣柜【库存管理】" do
+        do_request
+        puts response_body
+        expect(status).to eq(200)
+      end
+    end
+
     get 'admin/exhibition_chests/:id/garments' do
       let(:id) { @exhibition_chests.first.id }
 
       example "管理员查看 某衣柜的所有衣服 成功" do
         do_request
-        puts response_body
+        # puts response_body
         expect(status).to eq(200)
       end
     end
