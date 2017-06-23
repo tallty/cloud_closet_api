@@ -126,6 +126,7 @@ Rails.application.routes.draw do
     resources :exhibition_chests do 
       member do 
         post 'release'
+        post 'lease_renewal'
       end
       resources :garments
     end

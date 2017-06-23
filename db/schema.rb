@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170622085923) do
+ActiveRecord::Schema.define(version: 20170623102716) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -95,10 +95,12 @@ ActiveRecord::Schema.define(version: 20170622085923) do
     t.float    "price"
     t.boolean  "is_chest"
     t.string   "title"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "service_order_id"
     t.index ["appointment_id"], name: "index_appointment_price_groups_on_appointment_id"
     t.index ["price_system_id"], name: "index_appointment_price_groups_on_price_system_id"
+    t.index ["service_order_id"], name: "index_appointment_price_groups_on_service_order_id"
   end
 
   create_table "appointments", force: :cascade do |t|
@@ -392,6 +394,16 @@ ActiveRecord::Schema.define(version: 20170622085923) do
     t.float    "credits",    default: 0.0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "service_orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.float    "rent"
+    t.float    "care_cost"
+    t.float    "service_cost"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_service_orders_on_user_id"
   end
 
   create_table "sms_tokens", force: :cascade do |t|

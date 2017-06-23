@@ -189,7 +189,7 @@ class Appointment < ApplicationRecord
 
     def create_chests
       ActiveRecord::Base.transaction do
-        self.groups.each(&:create_relate_valuation_chest)
+        self.groups.chests.each(&:create_relate_valuation_chest)
       end
     end
 
