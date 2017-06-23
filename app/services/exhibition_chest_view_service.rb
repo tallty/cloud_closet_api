@@ -5,10 +5,6 @@ class ExhibitionChestViewService
 		@exhibition_units = ExhibitionUnit.all
 	end
 
-	def in_admin_index
-		in_user_index
-	end
-
 	def in_user_index
 		_chests = []
 		# chunk 不排序..? [1,[]],[2,[]],[1,[]]
@@ -19,7 +15,7 @@ class ExhibitionChestViewService
 		_chests
 	end
 
-	def in_admin_show chest_id
+	def in_user_show chest_id
 		_chest = @exhibition_chests.find_by_id(id)
 		raise 'id错误' unless _chest
 		# 替换 衣橱详细页 garment
@@ -33,12 +29,7 @@ class ExhibitionChestViewService
 		else
 			_garments = _chest.garments
 		end
-		[ _chest, _garments ]
-	end
-
-	def in_user_show chest_id
-		chest, all_garments = in_admin_show(chest_id)
-		[ chest, all_garments.in_chest]
+		[ _chest, _garments.in_chest ]
 	end
 
 	def chest_other_info user
