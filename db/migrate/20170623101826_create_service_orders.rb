@@ -6,6 +6,7 @@ class CreateServiceOrders < ActiveRecord::Migration[5.0]
       t.float :care_cost
       t.float :service_cost
       t.string :operation
+      t.string :remark
 
       t.timestamps
     end

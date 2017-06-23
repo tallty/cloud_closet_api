@@ -402,6 +402,7 @@ ActiveRecord::Schema.define(version: 20170623102716) do
     t.float    "care_cost"
     t.float    "service_cost"
     t.string   "operation"
+    t.string   "remark"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["user_id"], name: "index_service_orders_on_user_id"
