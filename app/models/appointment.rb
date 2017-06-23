@@ -180,10 +180,17 @@ class Appointment < ApplicationRecord
     end
 
     def after_pay
+      create_chests
       PurchaseLogService.new(
           self.user, ['appt_paid_successfully'],
           { appointment: self }
         ).create
+    end
+
+    def create_chests
+      ActiveRecord::Base.transaction do
+        self.groups.each(&:create_relate_valuation_chest)
+      end
     end
 
     def generate_seq

@@ -31,11 +31,20 @@ class AppointmentPriceGroup < ApplicationRecord
 
   before_create :restore_price_system_info
   before_create :set_price
-  
-  after_create :create_relate_valuation_chest
 
   scope :chests, ->{ where( is_chest: true )}
   scope :other_items, ->{ where( is_chest: false )}
+
+  def create_relate_valuation_chest
+    return nil unless self.is_chest
+    raise '用户错误' unless _user = self.appointment.try(:user)
+    count.times do 
+      valuation_chests.create!(
+          price_system: self.price_system,
+          user: _user
+      ) rescue ( raise '用户计价柜(valuation_chest)创建失败' )
+    end
+  end
 
   private
   	def restore_price_system_info
@@ -50,15 +59,5 @@ class AppointmentPriceGroup < ApplicationRecord
   		self.price = (unit_price * count * ( store_month || 1 )).round(2)
   	end
 
-  	def create_relate_valuation_chest
-      return nil unless self.is_chest
-  		raise '用户错误' unless _user = self.appointment.try(:user)
-      count.times do 
-    		_valuation_chest = self.valuation_chests.build(
-    				price_system: self.price_system,
-            user: _user
-    			)
-    		raise '用户计价柜(valuation_chest)创建失败' unless _valuation_chest.save
-      end
-  	end
+  	
   end
