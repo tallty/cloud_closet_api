@@ -33,7 +33,7 @@ class Admin::AppointmentsController < ApplicationController
   end
 
   def update
-    @admin_appointment.update(garment_count_info: params[:appointment][:garment_count_info])
+    @admin_appointment.update(appointment_params.as_json)
     respond_with @admin_appointment, template: "admin/appointments/show", status: 200
   end
 
@@ -45,7 +45,7 @@ class Admin::AppointmentsController < ApplicationController
 
     def appointment_params
       params.require(:appointment).permit(
-        :garment_count_info
+        garment_count_info: [:hanging, :stacking, :full_dress]
       )
     end
 end

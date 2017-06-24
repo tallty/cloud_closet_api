@@ -171,24 +171,24 @@ resource "我的衣橱" do
   end
 
 
-  post 'exhibition_chests/:id/move_garment' do
+  # post 'exhibition_chests/:id/move_garment' do
 
-    parameter :garment_ids, "选择的garment id 数组", require: true
-    parameter :to_exhibition_chest_id, "目标衣柜", require: true
+  #   parameter :garment_ids, "选择的garment id 数组", require: true
+  #   parameter :to_exhibition_chest_id, "目标衣柜", require: true
 
-    let(:id) {@exhi_chests.first.id}
-    let(:garment_ids) { @exhi_chests.first.garments.collect(&:id)[0,1] }
-    let(:to_exhibition_chest_id) { @exhi_chests.second.id }
+  #   let(:id) {@exhi_chests.first.id}
+  #   let(:garment_ids) { @exhi_chests.first.garments.collect(&:id)[0,1] }
+  #   let(:to_exhibition_chest_id) { @exhi_chests.second.id }
 
-    example "用户 移动衣服（无验证）列表 成功" do
-      p @exhi_chests.first.garments.count
-      do_request
-      puts response_body
-      expect(status).to eq(201)
-      p ';====after==='
-      p @exhi_chests.first.garments.count
-    end
-  end
+  #   example "用户 移动衣服（无验证）列表 成功" do
+  #     p @exhi_chests.first.garments.count
+  #     do_request
+  #     puts response_body
+  #     expect(status).to eq(201)
+  #     p ';====after==='
+  #     p @exhi_chests.first.garments.count
+  #   end
+  # end
 
   put 'exhibition_chests/:id' do
 
@@ -203,31 +203,31 @@ resource "我的衣橱" do
     end
   end
 
-  post 'exhibition_chests/:id/delete_his_val_chest' do
+  # post 'exhibition_chests/:id/delete_his_val_chest' do
 
-    let(:id) {@chest2_group1.id}
+  #   let(:id) {@chest2_group1.id}
 
-    example "用户 释放衣柜 成功" do
+  #   example "用户 释放衣柜 成功" do
       
-      do_request
-      puts response_body
-      expect(status).to eq(201)
-    end
+  #     do_request
+  #     puts response_body
+  #     expect(status).to eq(201)
+  #   end
 
-    describe '失败' do 
-      before do 
-        create_list(
-          :garment, 3,
-          exhibition_chest: @chest2_group1,
-          status: 'stored'
-          ) 
-      end
-      example "用户 释放衣柜 失败" do
-        do_request
-        puts response_body
-        expect(status).to eq(422)
-      end
-    end
-  end
+  #   describe '失败' do 
+  #     before do 
+  #       create_list(
+  #         :garment, 3,
+  #         exhibition_chest: @chest2_group1,
+  #         status: 'stored'
+  #         ) 
+  #     end
+  #     example "用户 释放衣柜 失败" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(422)
+  #     end
+  #   end
+  # end
 
 end

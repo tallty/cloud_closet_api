@@ -146,15 +146,22 @@ resource "管理后台相关接口" do
         require: true, scope: :appointment
       
       let(:id) { @appointments.first.id }
-      let(:garment_count_info) {
-        { hanging: 999, stacking: 999, full_dress: 999 }
-      }
+
 
       example "【new】管理员 修改订单  存衣数量 成功" do
-        do_request
+        params = {
+          appointment:{
+            garment_count_info: {
+              hanging: 999,
+              stacking: 999,
+              full_dress: 999
+            }
+          }
+        }
+        do_request params
         puts response_body
-        expect(@appointments.first.garment_count_info).to eq(
-          { hanging: 999, stacking: 999, full_dress: 999 }
+        expect(JSON.parse(response_body)['garment_count_info']).to eq(
+          { 'hanging'=> 999, 'stacking'=> 999, 'full_dress' => 999 }
         )
         expect(status).to eq(200)
       end
