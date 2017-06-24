@@ -59,6 +59,10 @@ class ExhibitionChest < ApplicationRecord
     read_attribute(:max_count) || self.exhibition_unit.max_count
   end
 
+  def custom_title
+    read_attribute(:custom_title) || title
+  end
+
   def is_about_to_expire
     expire_time < Time.zone.now + 1.month
   end
@@ -81,6 +85,25 @@ class ExhibitionChest < ApplicationRecord
   }
 
   include ExhibitionChestSpaceInfo
+
+  def lease_renewal month
+    month = month.to_i
+    raise '月份必须为正整数' unless month > 0
+    ActiveRecord::Base.transaction do
+      # 组合柜将一起延期
+      _chests = valuation_chest.exhibition_chests
+      _chests.each do |chest|
+        chest.expire_time += month.months
+        chest.save
+      end
+      # 创建服务订单 并收费
+      user.service_orders.create!(
+          rent: valuation_chest.price.to_i * month,
+          operation: '衣橱续租',
+          remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月"
+        )
+    end
+  end
 
   def his_duddies_can_be_break?
     self.valuation_chest.exhibition_chests.collect(&:garments).reduce(:+).select{ |garment| 

@@ -10,7 +10,6 @@ class PurchaseLogService
    	@type_ary = type_ary
 	end
 
-
 	def create 
 		purchase_log_ary = []
 		ActiveRecord::Base.transaction do
@@ -78,10 +77,11 @@ private
 			@payment_method = '余额支付'
 			@amount = @appointment.price 
 			@detail = 
-				"衣柜总租金： #{@appointment.rent_charge}，
-				服务费：#{@appointment.service_cost},
-				护理费：#{@appointment.care_cost}，
-				真空袋等其他费用：#{@appointment.other_price}。"
+				"衣柜总租金： #{@appointment.rent_charge} 元，
+				服务费：#{@appointment.service_cost} 元,
+				护理费：#{@appointment.care_cost} 元，
+				真空袋等其他费用：#{@appointment.other_price} 元，
+				总计：#{@appointment.price} 元。"
 			@is_increased = false
 			@can_arrears = false
 		end
@@ -89,9 +89,25 @@ private
 		def set_delivery_order_params
 			@operation = '衣服配送'
 			@payment_method = '在线支付'
-			@detail = "配送费： #{@delivery_order.delivery_cost}，服务费：#{@delivery_order.service_cost}"
+			@detail = "配送费： #{@delivery_order.delivery_cost} 元，服务费：#{@delivery_order.service_cost} 元"
 			@amount = @delivery_order.amount
 			@is_increased = false
+		end
+
+		def set_service_order_params # 服务订单
+			@operation = '服务收费'
+			@payment_method = '余额支付'
+			@amount = @service_order.price 
+			@detail = @service_order.operation == '衣橱续租' ?
+				"衣橱续租，#{@service_order.remark}，
+				消费租金：#{@service_order.rent} 元。" :
+				
+				"衣柜总租金： #{@service_order.rent_charge} 元，
+				服务费：#{@service_order.service_cost},
+				护理费：#{@service_order.care_cost} 元，
+				总计：#{@service_order.price} 元"
+			@is_increased = false
+			@can_arrears = false
 		end
 
 	 # -------  充值  ------- #
@@ -130,6 +146,8 @@ private
 			@credit = @amount
 			@is_increased = true
 		end
+
+		# ----------------------------------------------------
 
 		def purchase_log_params
 			params = {

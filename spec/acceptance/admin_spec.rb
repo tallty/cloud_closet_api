@@ -240,8 +240,6 @@ resource "管理后台相关接口" do
       let(:detail_image_3_attributes) { image_attrs }
 
       example "管理员修改 对应衣柜中的衣服的详细信息成功" do
-        p '@exhibition_chests.first.id'
-        p @exhibition_chests.first.id
         do_request
         puts response_body
         expect(status).to eq(201)
@@ -250,10 +248,49 @@ resource "管理后台相关接口" do
 
     get 'admin/users/:id/exhibition_chests' do
       let(:id) { @user.id }
-      example "管理员查看 某用户的所有衣柜【库存管理】" do
+      example "【new】管理员查看 某用户的所有衣柜【库存管理】" do
         do_request
         puts response_body
         expect(status).to eq(200)
+      end
+    end
+
+    post 'admin/exhibition_chests/:id/lease_renewal' do
+      parameter :renewal_month, required: true
+      before do
+        @expire_time_was = @exhibition_chests.first.expire_time
+      end
+      let(:id) { @exhibition_chests.first.id }
+      let(:renewal_month) { 1 }
+      example "【new】管理员 对某衣橱 续柜 成功" do
+        do_request
+        expect(@exhibition_chests.first.expire_time).to eq(@expire_time_was + 1.month)
+        puts response_body
+        expect(status).to eq(201)
+      end
+
+      describe '【new】管理员 对某衣柜 续柜 成功（组合柜将同时续柜）' do
+        
+        before do
+          @group_exh_chest1, @group_exh_chest2 = ValuationChest.where(price_system: @group_chest1).first.exhibition_chests.to_a
+          @expire_time_was1 = @group_exh_chest1.expire_time
+        end
+
+        let(:id) { @group_exh_chest1.id }
+        let(:renewal_month) { 1 }
+
+        example "【new】管理员 对某衣橱 续柜 成功" do
+          do_request
+          # 组合柜 一起延期
+          expect(@group_exh_chest1.expire_time.strftime("%Y-%m-%d %H:%M")).to eq(@group_exh_chest2.expire_time.strftime("%Y-%m-%d %H:%M"))
+          expect(ExhibitionChest.find(@group_exh_chest1.id).expire_time).to eq(@expire_time_was1 + 1.month)
+          # 生成 purchase_log 成功
+          expect(ServiceOrder.count).to eq(1)
+          expect(PurchaseLog.last.amount).to eq(ValuationChest.where(price_system: @group_chest1).first.price * 1)
+          
+          puts response_body
+          expect(status).to eq(201)
+        end
       end
     end
 
@@ -262,7 +299,7 @@ resource "管理后台相关接口" do
 
       example "管理员查看 某衣柜的所有衣服 成功" do
         do_request
-        # puts response_body
+        puts response_body
         expect(status).to eq(200)
       end
     end
@@ -306,10 +343,6 @@ resource "管理后台相关接口" do
         do_request
         puts response_body
         expect(status).to eq(201)
-        p '----- purchar_log------'
-        p @user.purchase_logs
-        p '----- valuation_chests------'
-        p @user.valuation_chests
       end
     end
 

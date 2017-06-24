@@ -1,5 +1,5 @@
 class Admin::ExhibitionChestsController < ApplicationController
-  before_action :set_exhibition_chest, only: [:release, :show, :update, :destroy]
+  before_action :set_exhibition_chest, only: [:release, :update, :destroy, :lease_renewal]
   include ActionView::Layouts
   include ActionController::MimeResponds
 
@@ -13,16 +13,6 @@ class Admin::ExhibitionChestsController < ApplicationController
       ExhibitionChest.all
     respond_with(@exhibition_chests)
   end
-
-  def show
-    respond_with(@exhibition_chest)
-  end
-
-  # def create
-  #   @exhibition_chest = ExhibitionChest.new(exhibition_chest_params)
-  #   @exhibition_chest.save
-  #   respond_with(@exhibition_chest)
-  # end
 
   def release
     @exhibition_chest.release!
@@ -38,6 +28,13 @@ class Admin::ExhibitionChestsController < ApplicationController
       @exhibition_chest.update(exhibition_chest_params)
       respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
     end
+  end
+
+  def lease_renewal
+    @exhibition_chest.lease_renewal params[:renewal_month]
+    respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+  rescue => @error
+    respond_with @error, template: 'error', status: 422
   end
 
   def destroy
