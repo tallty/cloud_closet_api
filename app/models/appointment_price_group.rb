@@ -39,7 +39,7 @@ class AppointmentPriceGroup < ApplicationRecord
   scope :other_items, ->{ where( is_chest: false )}
 
   def create_relate_valuation_chest
-    raise '用户错误' unless _user = self.appointment.try(:user)
+    raise '用户错误' unless _user = self.appointment.try(:user) || self.service_order.try(:user)
     count.times do 
       valuation_chests.create!(
           price_system: self.price_system,

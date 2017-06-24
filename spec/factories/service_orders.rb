@@ -1,8 +1,7 @@
 FactoryGirl.define do
   factory :service_order do
-    references ""
-    rent 1.5
-    care_cost 1.5
-    service_cost 1.5
+    rent 400
+    care_cost 300
+    service_cost 200
   end
 end

@@ -51,17 +51,25 @@ resource "我的衣橱" do
     # 创建用户原有衣柜
     @val_chest1 = create(:valuation_chest,
     	price_system: @stocking_chest,
-    	user: @user)
+    	user: @user,
+      appointment_price_group: AppointmentPriceGroup.first
+      )
     @val_chest2 = create(:valuation_chest,
       price_system: @alone_full_dress_chest,
-      user: @user)
+    	user: @user,
+      appointment_price_group: AppointmentPriceGroup.first
+      )
     @val_chest3 = create(:valuation_chest,
       price_system: @alone_full_dress_chest,
-      user: @user)
+    	user: @user,
+      appointment_price_group: AppointmentPriceGroup.first
+      )
     # 组合柜
     @val_chest4 = create(:valuation_chest,
       price_system: @group_chest1,
-      user: @user)
+    	user: @user,
+      appointment_price_group: AppointmentPriceGroup.first
+      )
 
     @chest1 = create(:exhibition_chest, 
     	exhibition_unit: @stocking_chest.exhibition_units.first,

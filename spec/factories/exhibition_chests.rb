@@ -24,5 +24,6 @@ FactoryGirl.define do
   factory :exhibition_chest do
     exhibition_unit nil
     custom_title "MyString"
+    expire_time Time.zone.now + 1.month
   end
 end

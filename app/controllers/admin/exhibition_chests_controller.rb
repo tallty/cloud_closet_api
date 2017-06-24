@@ -7,7 +7,7 @@ class Admin::ExhibitionChestsController < ApplicationController
   respond_to :json
 
   def index
-    user = User.find(params[:user_id])
+    user = User.find_by_id(params[:user_id])
     @exhibition_chests = user ? 
       ExhibitionChestViewService.new(user.exhibition_chests).in_user_index :
       ExhibitionChest.all
@@ -26,7 +26,7 @@ class Admin::ExhibitionChestsController < ApplicationController
       render( json: { error: '单礼服不支持修改上限，请添加或删除单礼服柜' }, status: 422 )
     else
       @exhibition_chest.update(exhibition_chest_params)
-      respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
+      respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 200
     end
   end
 

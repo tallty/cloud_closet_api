@@ -16,7 +16,7 @@ class ExhibitionChestViewService
 	end
 
 	def in_user_show chest_id
-		_chest = @exhibition_chests.find_by_id(id)
+		_chest = @exhibition_chests.find_by_id(chest_id)
 		raise 'id错误' unless _chest
 		# 替换 衣橱详细页 garment
 		_garments = []
@@ -29,7 +29,11 @@ class ExhibitionChestViewService
 		else
 			_garments = _chest.garments
 		end
-		[ _chest, _garments.in_chest ]
+		[ 
+			_chest, 
+			_garments.select{ 
+				|garment| garment.status.in?(['storing', 'stored', 'in_basket'])} 
+			]
 	end
 
 	def chest_other_info user

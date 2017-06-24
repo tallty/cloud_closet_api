@@ -106,7 +106,7 @@ Rails.application.routes.draw do
 
   # ------------ Admin Routes ------------------------------#
   namespace :admin do
-    resources :appointments, only: [:index, :show] do
+    resources :appointments, only: [:index, :show, :update] do
       member do 
         post 'stored'
         get 'its_chests'
@@ -121,7 +121,10 @@ Rails.application.routes.draw do
        
     resources :users, only: [:index, :show] do
       resources :exhibition_chests, only: :index
+      resources :service_orders, only: [:index, :create]
     end
+
+    resources :service_orders, only: [:index, :show]
 
     resources :exhibition_chests do 
       member do 

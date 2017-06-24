@@ -99,13 +99,15 @@ private
 			@payment_method = '余额支付'
 			@amount = @service_order.price 
 			@detail = @service_order.operation == '衣橱续租' ?
+			
 				"衣橱续租，#{@service_order.remark}，
 				消费租金：#{@service_order.rent} 元。" :
 				
-				"衣柜总租金： #{@service_order.rent_charge} 元，
+				"衣柜总租金： #{@service_order.rent} 元，
 				服务费：#{@service_order.service_cost},
 				护理费：#{@service_order.care_cost} 元，
 				总计：#{@service_order.price} 元"
+
 			@is_increased = false
 			@can_arrears = false
 		end

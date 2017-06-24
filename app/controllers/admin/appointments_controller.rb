@@ -32,20 +32,9 @@ class Admin::AppointmentsController < ApplicationController
     respond_with(@admin_appointment, template: "admin/appointments/show", status: 201)
   end
 
-  def create
-    @appointment = Admin::Appointment.new(appointment_params)
-    @appointment.save
-    respond_with @appointment, template: "appointments/show", status: 201
-  end
-
   def update
-    @appointment.update(appointment_params)
-    respond_with @appointment, template: "appointments/show", status: 201
-  end
-
-  def destroy
-    @appointment.destroy
-    respond_with @appointment, template: "appointments/show", status: 204
+    @admin_appointment.update(garment_count_info: params[:appointment][:garment_count_info])
+    respond_with @admin_appointment, template: "admin/appointments/show", status: 200
   end
 
   private
@@ -55,6 +44,8 @@ class Admin::AppointmentsController < ApplicationController
     end
 
     def appointment_params
-      params[:appointment]
+      params.require(:appointment).permit(
+        :garment_count_info
+      )
     end
 end

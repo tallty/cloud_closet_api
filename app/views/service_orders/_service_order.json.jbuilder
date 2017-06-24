@@ -1,0 +1,2 @@
+json.extract! service_order, :id, :price, :rent, :service_cost, :care_cost, :operation, :remark
+json.groups service_order.groups, partial: 'appointment_price_groups/appointment_price_group', as: :appointment_price_group

@@ -97,11 +97,12 @@ class ExhibitionChest < ApplicationRecord
         chest.save
       end
       # 创建服务订单 并收费
-      user.service_orders.create!(
+      order = user.service_orders.create!(
           rent: valuation_chest.price.to_i * month,
           operation: '衣橱续租',
           remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月"
         )
+      order.cut_balance
     end
   end
 
