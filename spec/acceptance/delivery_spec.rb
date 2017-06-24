@@ -313,6 +313,7 @@ resource "配送 相关" do
       parameter :page, "当前页", require: false
       parameter :per_page, "每页的数量", require: false
       parameter :need_garment_info, '是否需要衣服信息', required: false
+      parameter :user_id, '用户id', require: false
 
       parameter :state, '查询状态，默认返回全部， 
         paid 已支付, delivering 已发出, finished 已完成'
@@ -325,6 +326,15 @@ resource "配送 相关" do
         do_request
         puts response_body
         expect(status).to eq(200)
+      end
+      describe '【新增用户id查询】' do
+        let(:user_id) { @user.id }
+        
+        example "【new】【管理员】查询 某状态 配送订单列表成功" do
+          do_request
+          puts response_body
+          expect(status).to eq(200)
+        end
       end
     end
 

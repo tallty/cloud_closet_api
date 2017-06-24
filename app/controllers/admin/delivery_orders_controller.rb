@@ -12,7 +12,8 @@ class Admin::DeliveryOrdersController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 10
     @need_garment_info = params[:need_garment_info]
-    @delivery_orders = DeliveryOrder&.send(params[:state] || :all).paginate(page: page, per_page: per_page)
+    delivery_orders = User.find_by_id(params[:user_id]).try(:delivery_orders) || DeliveryOrder.all
+    @delivery_orders = delivery_orders&.send(params[:state] || :all).paginate(page: page, per_page: per_page)
     respond_with @delivery_orders, template: 'delivery_orders/index', status: 200
   end
 

@@ -120,6 +120,7 @@ Rails.application.routes.draw do
     end
        
     resources :users, only: [:index, :show] do
+      resources :delivery_orders, only: :index
       resources :exhibition_chests, only: :index
       resources :service_orders, only: [:index, :create]
     end

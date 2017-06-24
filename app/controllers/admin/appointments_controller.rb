@@ -12,7 +12,8 @@ class Admin::AppointmentsController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 10
     @query_state = params[:query_state].present? ? params[:query_state] : "storing"
-    @admin_appointments = Appointment.all.appointment_state(@query_state).by_join_date.paginate(page: page, per_page: per_page)
+    appointments = User.find_by_id(params[:user_id]).try(:appointments) || Appointment.all
+    @admin_appointments = appointments.appointment_state(@query_state).by_join_date.paginate(page: page, per_page: per_page)
     respond_with(@admin_appointments)
   end
 
