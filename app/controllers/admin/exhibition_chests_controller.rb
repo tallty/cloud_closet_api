@@ -7,9 +7,9 @@ class Admin::ExhibitionChestsController < ApplicationController
   respond_to :json
 
   def index
-    user = User.find_by_id(params[:user_id])
-    @exhibition_chests = user ? 
-      ExhibitionChestViewService.new(user.exhibition_chests).in_user_index :
+    @user = User.find_by_id(params[:user_id])
+    @exhibition_chests = @user ? 
+      ExhibitionChestViewService.new(@user.exhibition_chests).in_user_index :
       ExhibitionChest.all
     respond_with(@exhibition_chests)
   end

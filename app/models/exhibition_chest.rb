@@ -63,6 +63,10 @@ class ExhibitionChest < ApplicationRecord
     read_attribute(:custom_title) || title
   end
 
+  def is_expired
+    expire_time < Time.zone.now
+  end
+
   def is_about_to_expire
     expire_time < Time.zone.now + 1.month
   end
