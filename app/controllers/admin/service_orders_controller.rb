@@ -30,8 +30,8 @@ class Admin::ServiceOrdersController < ApplicationController
     else
       head 404
     end
-  rescue => error
-    render json: { error: error }, status: 422
+  # rescue => error
+  #   render json: { error: error }, status: 422
   end
 
   def destroy
@@ -47,7 +47,7 @@ class Admin::ServiceOrdersController < ApplicationController
     def service_order_params
       params.require(:service_order).permit(
           :remark, :care_cost, :service_cost, :operation
-        )
+        ) if params[:service_order]
     end
     
     def service_order_group_params 
@@ -55,6 +55,6 @@ class Admin::ServiceOrdersController < ApplicationController
         price_groups: [
           :price_system_id, :count, :store_month
         ]
-      )
+      ) if params[:service_order_groups]
     end
 end

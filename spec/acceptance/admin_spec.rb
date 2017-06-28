@@ -479,11 +479,50 @@ resource "管理后台相关接口" do
         expect(status).to eq(201)
       end
 
+      describe '只填写柜子' do
+        example "【new】管理员  创建服务订单（不填写柜子 " do
+          params = {
+            user_id: @user.id,
+            service_order_groups: 
+            {
+              price_groups: [
+                {
+                  price_system_id: @stocking_chest.id,
+                  count: 1,
+                  store_month: 3,
+                },
+              ]
+            }
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(201)
+        end
+      end
+
+      describe '不填写柜子' do
+        example "【new】管理员  创建服务订单  只填写柜子 " do
+          params = {
+            user_id: @user.id,
+            service_order:
+              {
+                remark: '我是备注',
+                care_cost: 100,
+                service_cost: 200,
+              }
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(201)
+        end
+      end
+
       describe '余额不足' do
         before do
           @user_info.balance = 0
           @user_info.save
-          p @user_info
         end
         example "【new】管理员  创建服务订单 失败（余额不足" do
           params = {
@@ -501,21 +540,6 @@ resource "管理后台相关接口" do
                     price_system_id: @stocking_chest.id,
                     count: 1,
                     store_month: 3,
-                  },
-                  {
-                    price_system_id: @group_chest1.id,
-                    count: 2,
-                    store_month: 4,
-                  },
-                  {
-                    price_system_id: @vacuum_bag_medium.id,
-                    count: 2,
-                    store_month: 2,
-                  },
-                  {
-                    price_system_id: @alone_full_dress_chest.id,
-                    count: 4,
-                    store_month: 6,
                   },
                 ]
               }
