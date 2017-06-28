@@ -478,6 +478,54 @@ resource "管理后台相关接口" do
         puts response_body
         expect(status).to eq(201)
       end
+
+      describe '余额不足' do
+        before do
+          @user_info.balance = 0
+          @user_info.save
+          p @user_info
+        end
+        example "【new】管理员  创建服务订单 失败（余额不足" do
+          params = {
+            user_id: @user.id,
+            service_order:
+              {
+                remark: '我是备注',
+                care_cost: 100,
+                service_cost: 200,
+              },
+            service_order_groups: 
+              {
+                price_groups: [
+                  {
+                    price_system_id: @stocking_chest.id,
+                    count: 1,
+                    store_month: 3,
+                  },
+                  {
+                    price_system_id: @group_chest1.id,
+                    count: 2,
+                    store_month: 4,
+                  },
+                  {
+                    price_system_id: @vacuum_bag_medium.id,
+                    count: 2,
+                    store_month: 2,
+                  },
+                  {
+                    price_system_id: @alone_full_dress_chest.id,
+                    count: 4,
+                    store_month: 6,
+                  },
+                ]
+              }
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(422)
+        end
+      end
     end
   end
 
