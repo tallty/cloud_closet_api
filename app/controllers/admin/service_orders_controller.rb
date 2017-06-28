@@ -13,7 +13,7 @@ class Admin::ServiceOrdersController < ApplicationController
       user = User.find_by_id(params[:user_id])
       user ? @service_orders = user.service_orders : ( head 404; return)
     else
-      @service_orderss = ServiceOrder.all
+      @service_orders = ServiceOrder.all
     end
     respond_with @service_orders, template: 'service_orders/index'
   end
