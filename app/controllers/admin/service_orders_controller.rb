@@ -30,8 +30,8 @@ class Admin::ServiceOrdersController < ApplicationController
     else
       head 404
     end
-  # rescue => error
-  #   render json: { error: error }, status: 422
+  rescue => error
+    render json: { error: error }, status: 422
   end
 
   def destroy
