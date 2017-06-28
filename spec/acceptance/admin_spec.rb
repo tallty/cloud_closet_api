@@ -518,6 +518,17 @@ resource "管理后台相关接口" do
           expect(status).to eq(201)
         end
       end
+      describe '禁止创建空订单' do
+        example "【new】管理员  创建服务订单 失败 禁止创建空订单 " do
+          params = {
+            user_id: @user.id,
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(422)
+        end
+      end
 
       describe '余额不足' do
         before do

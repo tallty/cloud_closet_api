@@ -26,6 +26,7 @@ class ServiceOrder < ApplicationRecord
   end
 
   def self.create_by_admin user, service_order_params, service_order_group_params
+    raise '禁止创建空订单。' unless service_order_params || service_order_group_params
    ActiveRecord::Base.transaction do
       _service_order = user.service_orders.new
       _service_order.update!(service_order_params) if service_order_params
