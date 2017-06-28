@@ -104,7 +104,7 @@ private
 				消费租金：#{@service_order.rent} 元。" :
 				
 				"衣柜总租金： #{@service_order.rent} 元，
-				服务费：#{@service_order.service_cost},
+				服务费：#{@service_order.service_cost} 元，
 				护理费：#{@service_order.care_cost} 元，
 				总计：#{@service_order.price} 元"
 
