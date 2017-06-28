@@ -132,14 +132,14 @@ resource "管理后台相关接口" do
       end
     end
 
-    get 'admin/appointments/:id/its_chests' do
-    	let(:id) { @appointments.first.id }
-      example "管理员获取指定的订单下面的所有 该用户可操作衣柜 成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+    # get 'admin/appointments/:id/its_chests' do
+    # 	let(:id) { @appointments.first.id }
+    #   example "管理员获取指定的订单下面的所有 该用户可操作衣柜 成功" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(200)
+    #   end
+    # end
 
      put 'admin/appointments/:id' do
       parameter :garment_count_info, 
