@@ -39,8 +39,8 @@ class ExhibitionChest < ApplicationRecord
   default_scope { where.not(aasm_state: 'delete') }
 
   aasm do 
-  	state :waiting, :initial => true
-    state :online, :deleted
+  	state :online, :initial => true
+    state :waiting, :online, :deleted
     event :release do 
       transitions from: [:waiting, :online], to: :online, :after => :release_new_garments
     end
