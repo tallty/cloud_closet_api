@@ -87,7 +87,7 @@ class Garment < ApplicationRecord
   
   scope :by_join_date, -> {order("created_at DESC")}
   scope :can_be_delivered, -> { where( status: ['stored', 'in_basket'])}
-  scope :in_chest, -> { where( status: ['storing', 'stored', 'in_basket'])}
+  scope :in_chest, -> { where( status: ['storing', 'caring', 'stored', 'in_basket', 'delivering'])}
   def is_new
     put_in_time.blank? || put_in_time > Time.zone.now - 3.day
   end

@@ -10,8 +10,8 @@ module ExhibitionChestSpaceInfo
 
 	def be_token_space_count
 		self.need_join ?
-			ExhibitionChest.those_buddies_need_join_by(self).map { |chest| chest.garments.stored.count }.reduce(:+) :
-			self.garments.stored.count
+			ExhibitionChest.those_buddies_need_join_by(self).map { |chest| chest.garments.in_chest.count }.reduce(:+) :
+			self.garments.in_chest.count
 		# rescue
 		# 	self.garments.count
 	end

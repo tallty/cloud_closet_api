@@ -32,15 +32,15 @@ class ExhibitionChestViewService
 		[ 
 			_chest, 
 			_garments.reject{ 
-				|garment| garment.status.in?(['in_basket'])} 
+				|garment| garment.at_home?
 			]
 	end
 
 	def chest_other_info user
 		# garment_count   包含几种状态的衣服？？？？？？
 		# 现在显示的是 仅 stored 
-		graments_count = @exhibition_chests.collect(&:garments).reduce(:+)&.select{ 
-				|garment| garment.status.in?(['storing', 'stored', 'in_basket'])
+		graments_count = @exhibition_chests.collect(&:garments).reduce(:+)&.reject{ 
+				|garment| garment.at_home?
 			}&.count || 0
 		storing_garments_count = user.garments.storing.count
 
