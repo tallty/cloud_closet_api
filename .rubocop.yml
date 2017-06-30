@@ -368,7 +368,7 @@ Security/Eval:
 
 ################## Style #################################
 
-Style/AccessModifierIndentation:
+Layout/AccessModifierIndentation:
   Description: Check indentation of private/protected visibility modifiers.
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#indent-public-private-protected'
   Enabled: false

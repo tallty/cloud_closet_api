@@ -11,7 +11,7 @@ class GarmentsController < ApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 10
-    @garments = current_user.garments.where(status: 'stored').paginate(page: page, per_page: per_page)
+    @garments = current_user.garments.where.not(status: ['in_basket', 'at_home']).paginate(page: page, per_page: per_page)
     respond_with(@garments)
   end
 
