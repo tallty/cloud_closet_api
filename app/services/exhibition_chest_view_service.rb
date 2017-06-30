@@ -38,8 +38,6 @@ class ExhibitionChestViewService
 	end
 
 	def chest_other_info user
-		# garment_count   包含几种状态的衣服？？？？？？
-		# 现在显示的是 仅 stored 
 		graments_count = @exhibition_chests.collect(&:garments).reduce(:+)&.reject{ 
 				|garment| garment.at_home?
 			}&.count || 0

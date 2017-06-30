@@ -102,6 +102,10 @@ class Garment < ApplicationRecord
     User.find(self.user_id).garments.where(status: 'storing').count
   end
 
+  def put_in_time
+    created_at
+  end
+
   #管理员入库衣服后 衣服状态改为 已入库
   def do_finish_storing 
     self.finish_storing! unless self.status == 'stored'
