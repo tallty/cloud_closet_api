@@ -32,8 +32,9 @@ class ExhibitionChestViewService
 		[ 
 			_chest, 
 			_garments.reject{ 
-				|garment| garment.at_home?
-			]
+				|garment| garment.at_home 
+			}
+		]
 	end
 
 	def chest_other_info user
