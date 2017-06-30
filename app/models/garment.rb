@@ -54,7 +54,7 @@ class Garment < ApplicationRecord
 
   aasm :column => :status do
     state :storing, :initial => true
-    state :stored, :in_basket, :delivering, :at_home
+    state :caring, :stored, :in_basket, :delivering, :at_home
 
     event :finish_storing do
       transitions from: [:storing, :stored], to: :stored, after:  :set_put_in_time_and_expire_time

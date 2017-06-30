@@ -29,6 +29,7 @@ zh-CN:
     deleted: '已删除'
   garment: 
     storing: '入库中'
+    caring: '护理中'
     stored: '已入库'
     in_basket: '配送篮中'
     delivering: '配送中'

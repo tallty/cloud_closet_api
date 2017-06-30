@@ -239,6 +239,12 @@ resource "管理后台相关接口" do
       # 文字描述
       parameter :title, "衣服标题", require: false, scope: :garment
       parameter :description, "衣服描述信息", require: false, scope: :garment
+      parameter :status, "衣服状态,  storing: '入库中'
+        caring: '护理中'
+        stored: '已入库'
+        in_basket: '配送篮中'
+        delivering: '配送中'
+        at_home: '已到达'", required: false, scope: :garment
       # 标签
       parameter :add_tag_list, "【添加的】标签 组成的字符串，以英文逗号',' 分隔各标签", required: true, scope: :garment
       parameter :remove_tag_list, "【删除的】标签 组成的字符串，以英文逗号',' 分隔各标签", required: true, scope: :garment
@@ -256,6 +262,7 @@ resource "管理后台相关接口" do
       # let(:appointment_id) { @appointments.first.id }
       let(:id) { @exhibition_chests.first.garments.first.id }
       let(:title) { "garemnt new title" }
+      let(:status) { 'caring' }
       let(:description) { '我是新简述 新简述新简述' }
       let(:add_tag_list) { '上衣,半裙' }
       let(:remove_tag_list) { '上衣' }
@@ -270,7 +277,29 @@ resource "管理后台相关接口" do
       example "管理员修改 对应衣柜中的衣服的详细信息成功" do
         do_request
         puts response_body
-        expect(status).to eq(201)
+        expect(response_status).to eq(201)
+      end
+      
+      describe '只改变状态' do
+        let(:id) { @exhibition_chests.first.garments.first.id }
+        let(:status) { 'delivering' }
+        example "【new】管理员修改 衣服状态" do
+          do_request
+          puts response_body
+          expect(response_status).to eq(201)
+        end
+      end
+      
+
+      describe '状态非法' do
+        let(:id) { @exhibition_chests.first.garments.first.id }
+        let(:status) { 'hahaha' }
+
+        example "【new】管理员修改 衣服状态失败（状态非法" do
+          do_request
+          puts response_body
+          expect(response_status).to eq(422)
+        end
       end
     end
 

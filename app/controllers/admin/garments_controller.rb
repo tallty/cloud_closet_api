@@ -4,7 +4,7 @@ class Admin::GarmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin 
 
-  before_action :set_garment, only: [:show, :destroy, :delete_detail]
+  before_action :set_garment, only: [:show, :destroy, :delete_detail, :change_status]
 
   respond_to :json
 
@@ -33,12 +33,10 @@ class Admin::GarmentsController < ApplicationController
   end
 
   def update
-    p params[:exhibition_chest_id]
     @garment = ExhibitionChest.find(params[:exhibition_chest_id]).garments.find(params[:id])
-    @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list])) if p tag_params[:add_tag_list]
-    @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list])) if p tag_params[:remove_tag_list]
-    p @garment.tag_list
-    @garment.update(garment_params)
+    @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list])) if tag_params[:add_tag_list]
+    @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list])) if tag_params[:remove_tag_list]
+    @garment.update!(garment_params)
     ##更新时可不传图片
     #大图 cover_image
     @garment.update(cover_image_params)
@@ -47,7 +45,7 @@ class Admin::GarmentsController < ApplicationController
     @garment.update(detail_image_2_params)
     @garment.update(detail_image_3_params)
     #管理员入库衣服后 衣服状态改为 已入库
-    @garment.do_finish_storing 
+    # @garment.do_finish_storing 
     #设置 入库时间 与 过期时间
     respond_with @garment, template: "garments/show", status: 201
   rescue => @error
@@ -72,7 +70,7 @@ class Admin::GarmentsController < ApplicationController
 
     def garment_params
       params.require(:garment).permit(
-        :title, :row, :carbit, 
+        :title, :row, :carbit, :status,
         :place, :description, :appointment_id,
         )
     end
