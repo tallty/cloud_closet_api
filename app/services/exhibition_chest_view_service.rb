@@ -32,7 +32,7 @@ class ExhibitionChestViewService
 		[ 
 			_chest, 
 			_garments.reject{ 
-				|garment| garment.at_home 
+				|garment| garment.at_home?
 			}
 		]
 	end
