@@ -31,8 +31,8 @@ class ExhibitionChestViewService
 		end
 		[ 
 			_chest, 
-			_garments.select{ 
-				|garment| garment.status.in?(['storing', 'stored', 'in_basket'])} 
+			_garments.reject{ 
+				|garment| garment.status.in?(['in_basket'])} 
 			]
 	end
 
@@ -42,12 +42,7 @@ class ExhibitionChestViewService
 		graments_count = @exhibition_chests.collect(&:garments).reduce(:+)&.select{ 
 				|garment| garment.status.in?(['storing', 'stored', 'in_basket'])
 			}&.count || 0
-		storing_garments_count = 
-			user.appointments.sum { |appt| 
-				appt.garment_count_info ?
-					appt.garment_count_info.values.sum(&:to_i) :
-					0
-				} - graments_count
+		storing_garments_count = user.garments.storing.count
 
 		{
 			graments_count: graments_count,

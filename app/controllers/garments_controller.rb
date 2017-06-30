@@ -9,6 +9,7 @@ class GarmentsController < ApplicationController
   respond_to :json
 
   def index
+    # 获取衣柜中衣服 在 exhibition_chest#show 
     page = params[:page] || 1
     per_page = params[:per_page] || 10
     @garments = current_user.garments.where.not(status: ['in_basket', 'at_home']).paginate(page: page, per_page: per_page)
