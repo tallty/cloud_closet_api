@@ -1,6 +1,6 @@
 class SmsService
 	@worker_list = [
-		'15800634815',
+		# '15800634815',
 		'13605028695',
 		]
 	@me_list = [
@@ -26,6 +26,16 @@ class SmsService
 	def insufficient_blannce_remind info
 		@tpl_id = 1735962
     @sms_hash = info
+    send_msg
+	end
+
+	def new_delivery_order delivery_order
+		@tpl_id = 1857532
+    @sms_hash = {
+    	seq: delivery_order.seq,
+    	name: delivery_order.name,
+    	phone: delivery_order.phone,
+    }
     send_msg
 	end
 

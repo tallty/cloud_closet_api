@@ -4,6 +4,10 @@ resource "配送 相关" do
   header "Accept", "application/json"
   describe 'About User' do 
     before do
+      @sent = 0
+      allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
+        @sent += 1
+      }
       @user = create(:user)
       header "X-User-Phone", @user.phone
       header "X-User-Token", @user.authentication_token

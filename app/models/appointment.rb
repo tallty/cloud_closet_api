@@ -71,7 +71,7 @@ class Appointment < ApplicationRecord
   has_many :val_chests, source: 'valuation_chests', through: :groups
 
   after_create :generate_seq
-  after_create :send_sms
+  after_create :send_sms_after_created
   after_save :send_wechat_appt_state_msg, if: :aasm_state_changed?
 
   def state
@@ -211,7 +211,7 @@ class Appointment < ApplicationRecord
       self.save
     end
 
-    def send_sms
+    def send_sms_after_created
       respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production' || created_by_admin.!
       logger.info respond
     end

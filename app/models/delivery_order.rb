@@ -46,7 +46,7 @@ class DeliveryOrder < ApplicationRecord
   	state :paid, :canceled, :delivering, :finished
 
     event :pay do
-      transitions from: :unpaid, to: :paid, after:  :after_pay
+      transitions from: :unpaid, to: :paid, :after => [:after_pay, :send_msg_after_paid]
     end
 
     event :cancel do
@@ -120,6 +120,13 @@ class DeliveryOrder < ApplicationRecord
       PurchaseLogService.new(self.user, ['delivery_order'], 
         delivery_order: self
       ).create
+    end
+
+    def send_msg_after_paid
+      respond = SmsService.new('worker').new_delivery_order(self)# if Rails.env == 'production'
+      logger.info respond
+      p '-----------------'
+      p respond
     end
 
     def restore_garments
