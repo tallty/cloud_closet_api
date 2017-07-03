@@ -25,6 +25,7 @@
 #  stacking_count     :integer          default(0)
 #  full_dress_count   :integer          default(0)
 #  number_alias       :string
+#  created_by_admin   :boolean
 #
 # Indexes
 #
@@ -126,26 +127,13 @@ class Appointment < ApplicationRecord
     self.save
   end
 
-  def worker_update_appt params
-    appt_params = params.require(:appointment).permit(
-          :remark, :care_type, :care_cost, :service_cost,
-          :garment_count_info
-        )
-    appt_group_params = params.require(:appointment_items).permit(
-        price_groups: [
-          :price_system_id, :count, :store_month,
-        ]
-      )
-
+  def worker_update_appt appt_params, appt_group_params
     ActiveRecord::Base.transaction do
-
       raise '订单选择错误，只可对已接受且未支付订单操作' unless self.aasm_state.in?(["accepted", "unpaid"])
       self.groups.destroy_all
       self.update(appt_params)
-      
       self.garment_count_info = params['appointment'].try(:[], 'garment_count_info')
       self.save
-      
       appt_group_params[:price_groups].each do |group_param|
         appointment_group = self.groups.build(group_param)
         appointment_group.save!
@@ -154,8 +142,33 @@ class Appointment < ApplicationRecord
       self.service!
     end
     self
-  # rescue => error
   end
+  
+  # 后台由管理员创建
+  def self.create_by_admin user, appt_params, appt_group_params
+    raise '禁止创建空订单。' unless appt_params || appt_group_params
+    ActiveRecord::Base.transaction do
+      _appt = user.appointments.new(
+        aasm_state: 'unpaid',
+        created_by_admin: true,
+        name: user.info.nickname,
+        phone: user.phone,
+        service_cost: 0,
+        care_cost: 0
+        )
+      _appt.update!(appt_params) if appt_params
+      if appt_group_params
+        appt_group_params[:price_groups].each do |group_param|
+          price_group = _appt.groups.build(group_param)
+          price_group.save!
+          price_group.create_relate_valuation_chest
+        end 
+      end
+      _appt.service!
+      _appt
+    end
+  end
+  
 
   def new_chests
     # 直接使用 though 到达 exhibition_chest 会报错 ambiguous column name: aasm_state
@@ -199,7 +212,7 @@ class Appointment < ApplicationRecord
     end
 
     def send_sms
-      respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production'
+      respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production' || created_by_admin.!
       logger.info respond
     end
 end

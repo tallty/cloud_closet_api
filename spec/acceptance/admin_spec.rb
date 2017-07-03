@@ -4,8 +4,9 @@ resource "管理后台相关接口" do
   header "Accept", "application/json"
 
   before do 
+    @sent = 0
     allow_any_instance_of(WechatMessageService).to receive(:send_msg) {
-      @sent = true
+      @sent += 1
     }
     create_list(:store_method, 3)
     create_list(:garment_tag, 3)
@@ -129,6 +130,113 @@ resource "管理后台相关接口" do
         do_request
         puts response_body
         expect(status).to eq(200)
+      end
+    end
+
+    post 'admin/users/:user_id/appointments' do
+      
+      parameter :user_id, '用户id', required: true
+      parameter :remark, '备注', required: false, scope: :appointment
+      parameter :care_type, '护理类型', required: true, scope: :appointment
+      parameter :care_cost, '护理费用', required: true, scope: :appointment        
+      parameter :service_cost, '服务费', required: true, scope: :appointment
+
+      parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: false, scope: [ :appointment_groups, :price_groups ]
+      parameter :price_system_id, '价格 price_system id', required: false, scope: [ :appointment_groups, :price_groups ]
+      parameter :store_month, "存放的月份数", required: false, scope: [ :appointment_groups, :price_groups ]
+
+      example "【new】管理员  创建普通预约订单（新建柜子，或 收取服务费），需要用户确认收费" do
+        sent_was = @sent
+        params = {
+          user_id: @user.id,
+          appointment:
+            {
+              remark: '我是备注',
+              care_cost: 100,
+              service_cost: 200,
+            },
+          appointment_groups: 
+            {
+              price_groups: [
+                {
+                  price_system_id: @stocking_chest.id,
+                  count: 1,
+                  store_month: 3,
+                },
+                {
+                  price_system_id: @group_chest1.id,
+                  count: 2,
+                  store_month: 4,
+                },
+                {
+                  price_system_id: @vacuum_bag_medium.id,
+                  count: 2,
+                  store_month: 2,
+                },
+                {
+                  price_system_id: @alone_full_dress_chest.id,
+                  count: 4,
+                  store_month: 6,
+                },
+              ]
+            }
+        }
+
+        do_request params
+        expect(@sent - sent_was).to eq 1
+        puts response_body
+        expect(status).to eq(201)
+      end
+
+      describe '只填写柜子' do
+        example "【new】管理员  创建服务订单（不填写柜子 " do
+          params = {
+            user_id: @user.id,
+            appointment_groups: 
+            {
+              price_groups: [
+                {
+                  price_system_id: @stocking_chest.id,
+                  count: 1,
+                  store_month: 3,
+                },
+              ]
+            }
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(201)
+        end
+      end
+
+      describe '不填写柜子' do
+        example "【new】管理员  创建服务订单  只填写柜子 " do
+          params = {
+            user_id: @user.id,
+            appointment:
+              {
+                remark: '我是备注',
+                care_cost: 100,
+                service_cost: 200,
+              }
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(201)
+        end
+      end
+      describe '禁止创建空订单' do
+        example "【new】管理员  创建服务订单 失败 禁止创建空订单 " do
+          params = {
+            user_id: @user.id,
+          }
+
+          do_request params
+          puts response_body
+          expect(status).to eq(422)
+        end
       end
     end
 
@@ -592,6 +700,8 @@ resource "管理后台相关接口" do
       end
     end
   end
+
+  
 
   # describe '价格系统操作' do
   

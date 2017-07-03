@@ -330,7 +330,7 @@ resource "配送 相关" do
       describe '【新增用户id查询】' do
         let(:user_id) { @user.id }
         
-        example "【new】【管理员】查询 某状态 配送订单列表成功" do
+        example "【管理员】查询 某状态 配送订单列表成功" do
           do_request
           puts response_body
           expect(status).to eq(200)

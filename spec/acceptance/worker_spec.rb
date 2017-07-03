@@ -305,7 +305,7 @@ resource "工作台相关接口" do
 
       let(:amount) { 100 }
       
-      example "【new】工作人员 申请获取 授权码（指定金额）” 成功" do
+      example "工作人员 申请获取 授权码（指定金额）” 成功" do
         do_request
         puts response_body
         expect(status).to eq(201)
@@ -327,7 +327,7 @@ resource "工作台相关接口" do
         before do
           SmsToken.create(auth_key: "worker-#{@worker.phone}-2000", token: '1234')
         end
-        example "【new】工作人员 创建线下充值成功" do
+        example "工作人员 创建线下充值成功" do
           do_request
           puts response_body
           expect(status).to eq(201)
@@ -335,7 +335,7 @@ resource "工作台相关接口" do
       end
 
       describe 'fail' do
-        example "【new】工作人员 创建线下充值 失败（未获取授权码、授权金额错误）" do
+        example "工作人员 创建线下充值 失败（未获取授权码、授权金额错误）" do
           do_request
           puts response_body
           expect(status).to eq(422)
@@ -348,7 +348,7 @@ resource "工作台相关接口" do
               updated_at: Time.zone.yesterday
             )
           end
-          example "【new】工作人员 创建线下充值失败（授权码已过期" do
+          example "工作人员 创建线下充值失败（授权码已过期" do
             do_request
             puts response_body
             expect(status).to eq(422)
@@ -361,7 +361,7 @@ resource "工作台相关接口" do
               auth_key: "worker-#{@worker.phone}-2000", token: 'hahaha'
             )
           end
-          example "【new】工作人员 创建线下充值失败（授权码填写错误" do
+          example "工作人员 创建线下充值失败（授权码填写错误" do
             do_request
             puts response_body
             expect(status).to eq(422)

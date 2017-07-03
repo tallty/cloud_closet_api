@@ -38,6 +38,18 @@ class Admin::AppointmentsController < ApplicationController
     respond_with @admin_appointment, template: "admin/appointments/show", status: 200
   end
 
+  def create
+    user = User.find_by_id(params[:user_id])
+    if user
+      @admin_appointment = Appointment.create_by_admin user, appt_params, appt_group_params
+      respond_with @admin_appointment, template: "admin/appointments/show", status: 201
+    else
+      head 404
+    end
+  rescue => error
+    render json: { error: error }, status: 422
+  end
+
   private
 
     def set_admin_appointment
@@ -48,5 +60,17 @@ class Admin::AppointmentsController < ApplicationController
       params.require(:appointment).permit(
         garment_count_info: [:hanging, :stacking, :full_dress]
       )
+    end
+
+    def appt_params
+      params.require(:appointment).permit(
+          :remark, :care_type, :care_cost, :service_cost
+        ) if params[:appointment]
+    end
+    
+    def appt_group_params 
+      params.require(:appointment_groups).permit(
+        price_groups: [:price_system_id, :count, :store_month]
+      ) if params[:appointment_groups]
     end
 end

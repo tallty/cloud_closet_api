@@ -49,7 +49,7 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   def update
-    @worker_appointment = @worker_appointment.worker_update_appt(params)
+    @worker_appointment = @worker_appointment.worker_update_appt(appt_params, appt_group_params)
     @store_methods = StoreMethod.all
     respond_with(@worker_appointment, template: "worker/appointments/show", status: 200)
   rescue => @error
@@ -67,20 +67,18 @@ class Worker::AppointmentsController < ApplicationController
       @worker_appointment = Appointment.find(params[:id])
     end
 
-    def worker_appointment_params
-      params[:worker_appointment]
-    end
     def appt_params
-      params.require(:appointment).permit(
+      appt_params = params.require(:appointment).permit(
           :remark, :care_type, :care_cost, :service_cost,
           :garment_count_info
         )
     end
+
     def appt_group_params
       params.require(:appointment_items).permit(
-          price_groups: [
-            :price_system_id, :count, :store_month,
-          ]
-        )
+        price_groups: [
+          :price_system_id, :count, :store_month,
+        ]
+      )
     end
 end

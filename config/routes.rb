@@ -123,6 +123,7 @@ Rails.application.routes.draw do
       resources :delivery_orders, only: :index
       resources :exhibition_chests, only: :index
       resources :service_orders, only: [:index, :create]
+      resources :appointments, only: :create
     end
 
     resources :service_orders, only: [:index, :show]
