@@ -123,10 +123,8 @@ class DeliveryOrder < ApplicationRecord
     end
 
     def send_msg_after_paid
-      respond = SmsService.new('worker').new_delivery_order(self)# if Rails.env == 'production'
+      respond = SmsService.new('worker').new_delivery_order(self) if Rails.env == 'production'
       logger.info respond
-      p '-----------------'
-      p respond
     end
 
     def restore_garments

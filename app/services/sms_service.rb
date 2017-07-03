@@ -28,7 +28,7 @@ class SmsService
     @sms_hash = info
     send_msg
 	end
-
+	# 【乐存好衣】有新的用户配送订单，订单号: #seq#，用户名：#name#，联系电话： #phone#。
 	def new_delivery_order delivery_order
 		@tpl_id = 1857532
     @sms_hash = {
