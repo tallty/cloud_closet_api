@@ -1,6 +1,6 @@
 class SmsService
 	@worker_list = [
-		# '15800634815',
+		'15800634815',
 		'13605028695',
 		]
 	@me_list = [
