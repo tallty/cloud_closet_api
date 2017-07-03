@@ -212,7 +212,7 @@ class Appointment < ApplicationRecord
     end
 
     def send_sms_after_created
-      respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production' || created_by_admin.!
+      respond = SmsService.new('worker').new_appt(self) if Rails.env == 'production' && created_by_admin.!
       logger.info respond
     end
 end
