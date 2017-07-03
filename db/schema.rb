@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170623102716) do
+ActiveRecord::Schema.define(version: 20170703092718) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20170623102716) do
     t.integer  "stacking_count",     default: 0
     t.integer  "full_dress_count",   default: 0
     t.string   "number_alias"
+    t.boolean  "created_by_admin"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
