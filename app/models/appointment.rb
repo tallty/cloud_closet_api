@@ -66,7 +66,7 @@ class Appointment < ApplicationRecord
 
   belongs_to :user
 
-  has_many :graments, dependent: :destroy
+  has_many :garments, dependent: :destroy
   has_many :groups, class_name: "AppointmentPriceGroup", dependent: :destroy
   has_many :val_chests, source: 'valuation_chests', through: :groups
 
@@ -132,13 +132,13 @@ class Appointment < ApplicationRecord
       raise '订单选择错误，只可对已接受且未支付订单操作' unless self.aasm_state.in?(["accepted", "unpaid"])
       self.groups.destroy_all
       self.update(appt_params)
-      self.garment_count_info = params['appointment'].try(:[], 'garment_count_info')
+      self.garment_count_info = appt_params.try(:[], 'garment_count_info')
       self.save
       appt_group_params[:price_groups].each do |group_param|
         appointment_group = self.groups.build(group_param)
         appointment_group.save!
       end
-      self.check_space_and_garment_count
+      # self.check_space_and_garment_countcheck_space_and_garment_count
       self.service!
     end
     self
@@ -175,15 +175,15 @@ class Appointment < ApplicationRecord
     self.groups.collect(&:valuation_chests).reduce(:+).collect(&:exhibition_chests).map(&:to_a).reduce(:+)
   end
 
-  def check_space_and_garment_count
-    _count_info =  self.garment_count_info
-    self.new_chests.map do |new_chest|
-      _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
-    end
-    _warning = ''
-    _count_info.each { |store_method, count| _warning += "#{store_method}不足 " if count > 0}
-    raise _warning unless _warning.empty?
-  end
+  # def check_space_and_garment_count
+    # _count_info =  self.garment_count_info
+    # self.new_chests.map do |new_chest|
+    #   _count_info[ new_chest.store_method ] -= new_chest.max_count if _count_info[ new_chest.store_method ]
+    # end
+    # _warning = ''
+    # _count_info.each { |store_method, count| _warning += "#{store_method}不足 " if count > 0}
+    # raise _warning unless _warning.empty?
+  # end
 
   private
     def send_wechat_appt_state_msg

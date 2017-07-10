@@ -17,12 +17,6 @@ class Worker::AppointmentsController < ApplicationController
     respond_with(@worker_appointment)
   end
 
-  # def create
-  #   @worker_appointment = Worker::Appointment.new(worker_appt_params)
-  #   @worker_appointment.save
-  #   respond_with(@worker_appointment)
-  # end
-
   def accept
     @worker_appointment.accept!
     @worker_appointment.save
@@ -57,9 +51,8 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   def destroy
-    # @worker_appointment = Appointment.all.appointment_state("accepted").find(params[:id])
     @worker_appointment.destroy
-    respond_with(@worker_appointment)
+    head 204
   end
 
   private
