@@ -63,7 +63,7 @@ class Worker::AppointmentsController < ApplicationController
     def appt_params
       appt_params = params.require(:appointment).permit(
           :remark, :care_type, :care_cost, :service_cost,
-          :garment_count_info
+          garment_count_info: [:hanging, :stacking, :full_dress]
         )
     end
 
