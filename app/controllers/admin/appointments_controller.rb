@@ -14,8 +14,7 @@ class Admin::AppointmentsController < ApplicationController
     # 筛选 state
     @query_state = params[:query_state].present? ? params[:query_state] : "storing"
     # 筛选用户
-    appt = Appointment.user_is(User.find_by_id(params[:user_id]))
-    # appt = User.find_by_id(params[:user_id]).try(:appointments) || Appointment.all
+    appt = User.find_by_id(params[:user_id])&.appointments || Appointment.all
     # 是否由管理员创建
     appt = appt.created_by_admin if params[:created_by_admin]
     @admin_appointments = appt.appointment_state(@query_state).by_join_date.paginate(page: page, per_page: per_page)
