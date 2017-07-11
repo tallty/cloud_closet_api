@@ -114,12 +114,25 @@ resource "管理后台相关接口" do
 
       parameter :query_state, "输入查询的状态(storing: 入库中，stored: 已上架)", require: false
       parameter :user_id, '新增用户id查询，条件可同时存在', required: false
+      parameter :created_by_admin, '是否由管理员创建'
+
       let(:query_state) {"stored"}
 
       example "【new】【新增用户id查询】管理员查询所有‘已上架'或者‘入库中‘的预订订单的列表成功" do
         do_request
         puts response_body
         expect(status).to eq 200
+      end
+
+      describe 'get appt :created by admin' do
+        let(:query_state) {"stored"}
+        let(:created_by_admin) { true }
+        example "【new】【新增created_by_admin 查询】管理员查询所有‘已上架'或者‘入库中‘的预订订单的列表成功" do
+          do_request
+          puts response_body
+          expect(JSON.parse(response_body)['appointments'].blank?).to eql(true)
+          expect(status).to eq 200
+        end
       end
     end
 
