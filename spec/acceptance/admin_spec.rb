@@ -514,16 +514,16 @@ resource "管理后台相关接口" do
       end
     end
 
-    # 上架订单  扣取本次新柜子本月租费!!!
-    # post '/admin/appointments/:id/stored' do
-    #   let(:id) { @appointments.first.id }
 
-    #   example "管理员‘确认上架’指定预订订单成功" do
-    #     do_request
-    #     puts response_body
-    #     expect(status).to eq(201)
-    #   end
-    # end
+    post '/admin/appointments/:id/stored' do
+      let(:id) { @appointments.first.id }
+
+      example "管理员‘确认上架’指定预订订单成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
 
     post 'admin/exhibition_chests/:id/release' do 
       let(:id) { @exhibition_chests.first.id }

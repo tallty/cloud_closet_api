@@ -59,6 +59,7 @@ class AppointmentsController < ApplicationController
   # v2 工作人员上门统计结束 用户确认，系统确认余额足够
   def pay_by_balance
     @appointment.pay!
+    @appointment.storing! if @appointment.created_by_admin
     respond_with @appointment, template: "appointments/show", status: 201
   rescue => @error
     respond_with @error, template: 'error', status: 422
