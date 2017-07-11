@@ -81,7 +81,9 @@ class Appointment < ApplicationRecord
   
   scope :appointment_state, -> (state) {where(aasm_state:state)}
   scope :by_join_date, -> {order("created_at DESC")} #降序
-                                                     #
+  scope :user_is, -> (user){ where(user: (user|| /.*/))}
+  scope :created_by_admin, -> { where(created_by_admin: true) }
+  
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
     # e.g.
