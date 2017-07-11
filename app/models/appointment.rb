@@ -161,7 +161,6 @@ class Appointment < ApplicationRecord
         appt_group_params[:price_groups].each do |group_param|
           price_group = _appt.groups.build(group_param)
           price_group.save!
-          price_group.create_relate_valuation_chest
         end 
       end
       _appt.service!
