@@ -4,7 +4,7 @@ class Admin::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin, except: [:check, :reset] 
 
-  before_action :set_admin_appointment, only: [:show, :update, :its_chests, :destroy, :stored]
+  before_action :set_admin_appointment, only: [:show, :update, :its_chests, :destroy, :stored, :cancel]
 
   respond_to :json
 
@@ -51,6 +51,11 @@ class Admin::AppointmentsController < ApplicationController
     end
   rescue => error
     render json: { error: error }, status: 422
+  end
+
+  def cancel
+    @admin_appointment.cancel!
+    respond_with @admin_appointment, template: "admin/appointments/show", status: 201
   end
 
   private

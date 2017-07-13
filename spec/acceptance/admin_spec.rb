@@ -525,6 +525,19 @@ resource "管理后台相关接口" do
       end
     end
 
+    post '/admin/appointments/:id/cancel' do
+      before do
+        @appointments.first.update!(aasm_state: 'unpaid')
+      end
+      let(:id) { @appointments.first.id }
+
+      example "管理员‘取消’指定预订订单成功（合法起始状态：committed, accepted, unpaid" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
     post 'admin/exhibition_chests/:id/release' do 
       let(:id) { @exhibition_chests.first.id }
     	example "管理员‘发布某衣柜’成功，可多次发布" do

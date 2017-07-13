@@ -109,6 +109,7 @@ Rails.application.routes.draw do
     resources :appointments, only: [:index, :show, :update] do
       member do 
         post 'stored'
+        post 'cancel'
         get 'its_chests'
       end
     end
