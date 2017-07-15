@@ -33,11 +33,13 @@
 #
 
 class Appointment < ApplicationRecord
-  include AASM
 
+  default_scope { where.not( aasm_state: 'deleted' ) }
+  
+  include AASM
   aasm do
     state :committed, initial: true
-    state :accepted, :unpaid, :paid, :storing, :stored, :canceled
+    state :accepted, :unpaid, :paid, :storing, :stored, :canceled, :deleted
 
     event :accept do
       transitions from: :committed, to: :accepted
@@ -61,6 +63,14 @@ class Appointment < ApplicationRecord
 
     event :cancel do
       transitions from: [:committed, :accepted, :unpaid], to: :canceled
+    end
+
+    event :recover do 
+      transitions from: :canceled, to: :unpaid
+    end
+
+    event :soft_delete do
+      transitions from: :canceled, to: :deleted
     end
   end
 

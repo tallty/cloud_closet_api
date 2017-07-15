@@ -538,194 +538,233 @@ resource "管理后台相关接口" do
       end
     end
 
-    post 'admin/exhibition_chests/:id/release' do 
-      let(:id) { @exhibition_chests.first.id }
-    	example "管理员‘发布某衣柜’成功，可多次发布" do
+    post '/admin/appointments/:id/cancel' do
+      before do
+        @appointments.first.update!(aasm_state: 'unpaid')
+      end
+      let(:id) { @appointments.first.id }
+
+      example "管理员‘取消’指定预订订单成功（合法起始状态：committed, accepted, unpaid" do
         do_request
         puts response_body
         expect(status).to eq(201)
       end
-  	end
+    end
+
+    post '/admin/appointments/:id/recover' do
+      before do
+        @appointments.first.update!(aasm_state: 'canceled')
+      end
+      let(:id) { @appointments.first.id }
+
+      example "管理员 恢复 已取消订单至未支付成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
+    delete '/admin/appointments/:id' do
+      before do
+        @appointments.first.update!(aasm_state: 'canceled')
+      end
+      let(:id) { @appointments.first.id }
+
+      example "管理员 删除历史订单（已取消订单 成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(201)
+      end
+    end
+
+    # post 'admin/exhibition_chests/:id/release' do 
+    #   let(:id) { @exhibition_chests.first.id }
+    # 	example "管理员‘发布某衣柜’成功，可多次发布" do
+    #     do_request
+    #     puts response_body
+    #     expect(status).to eq(201)
+    #   end
+  	# end
 
   end
 
-  describe '服务订单 ServiceOrder' do
+  # describe '服务订单 ServiceOrder' do
     
-    before do
-      create_list(:service_order, 3, user: @user)
-    end
+  #   before do
+  #     create_list(:service_order, 3, user: @user)
+  #   end
 
-    get 'admin/users/:user_id/service_orders' do
-      let(:user_id) { @user.id }
-      example "【new】管理员 查看某用户所有服务订单 列表 成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
+  #   get 'admin/users/:user_id/service_orders' do
+  #     let(:user_id) { @user.id }
+  #     example "【new】管理员 查看某用户所有服务订单 列表 成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
       
-      describe '用户不存在' do
-        let(:user_id) { 0 }
-        example "【new】管理员 查看某用户所有服务订单 列表 失败 （用户不存在）" do
-          do_request
-          puts response_body
-          expect(status).to eq(404)
-        end
-      end
-    end
+  #     describe '用户不存在' do
+  #       let(:user_id) { 0 }
+  #       example "【new】管理员 查看某用户所有服务订单 列表 失败 （用户不存在）" do
+  #         do_request
+  #         puts response_body
+  #         expect(status).to eq(404)
+  #       end
+  #     end
+  #   end
 
-    get 'admin/service_orders' do
-      example "【new】管理员 查看 所有用户 所有服务订单 列表 成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+  #   get 'admin/service_orders' do
+  #     example "【new】管理员 查看 所有用户 所有服务订单 列表 成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
+  #   end
 
-    get 'admin/service_orders' do
-      example "【new】管理员 查看 所有用户 所有服务订单 列表 成功" do
-        do_request
-        puts response_body
-        expect(status).to eq(200)
-      end
-    end
+  #   get 'admin/service_orders' do
+  #     example "【new】管理员 查看 所有用户 所有服务订单 列表 成功" do
+  #       do_request
+  #       puts response_body
+  #       expect(status).to eq(200)
+  #     end
+  #   end
 
-    post 'admin/users/:user_id/service_orders' do
+  #   post 'admin/users/:user_id/service_orders' do
       
-      parameter :user_id, '用户id', required: true
-      parameter :remark, '备注', required: false, scope: :service_order
-      parameter :care_cost, '护理费用', required: true, scope: :service_order        
-      parameter :service_cost, '服务费', required: true, scope: :service_order
+  #     parameter :user_id, '用户id', required: true
+  #     parameter :remark, '备注', required: false, scope: :service_order
+  #     parameter :care_cost, '护理费用', required: true, scope: :service_order        
+  #     parameter :service_cost, '服务费', required: true, scope: :service_order
 
-      parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: [ :service_order_groups, :price_groups ]
-      parameter :price_system_id, '价格 price_system id', required: true, scope: [ :service_order_groups, :price_groups ]
-      parameter :store_month, "存放的月份数", required: false, scope: [ :service_order_groups, :price_groups ]
+  #     parameter :count, "price_group 此栏选择的衣柜/真空袋数量", required: true, scope: [ :service_order_groups, :price_groups ]
+  #     parameter :price_system_id, '价格 price_system id', required: true, scope: [ :service_order_groups, :price_groups ]
+  #     parameter :store_month, "存放的月份数", required: false, scope: [ :service_order_groups, :price_groups ]
 
-      example "【new】管理员  创建服务订单（新建柜子，或 收取服务费）注：创建后立刻收取费用（是否需要一个“收费”操作的接口" do
-        params = {
-          user_id: @user.id,
-          service_order:
-            {
-              remark: '我是备注',
-              care_cost: 100,
-              service_cost: 200,
-            },
-          service_order_groups: 
-            {
-              price_groups: [
-                {
-                  price_system_id: @stocking_chest.id,
-                  count: 1,
-                  store_month: 3,
-                },
-                {
-                  price_system_id: @group_chest1.id,
-                  count: 2,
-                  store_month: 4,
-                },
-                {
-                  price_system_id: @vacuum_bag_medium.id,
-                  count: 2,
-                  store_month: 2,
-                },
-                {
-                  price_system_id: @alone_full_dress_chest.id,
-                  count: 4,
-                  store_month: 6,
-                },
-              ]
-            }
-        }
+  #     example "【new】管理员  创建服务订单（新建柜子，或 收取服务费）注：创建后立刻收取费用（是否需要一个“收费”操作的接口" do
+  #       params = {
+  #         user_id: @user.id,
+  #         service_order:
+  #           {
+  #             remark: '我是备注',
+  #             care_cost: 100,
+  #             service_cost: 200,
+  #           },
+  #         service_order_groups: 
+  #           {
+  #             price_groups: [
+  #               {
+  #                 price_system_id: @stocking_chest.id,
+  #                 count: 1,
+  #                 store_month: 3,
+  #               },
+  #               {
+  #                 price_system_id: @group_chest1.id,
+  #                 count: 2,
+  #                 store_month: 4,
+  #               },
+  #               {
+  #                 price_system_id: @vacuum_bag_medium.id,
+  #                 count: 2,
+  #                 store_month: 2,
+  #               },
+  #               {
+  #                 price_system_id: @alone_full_dress_chest.id,
+  #                 count: 4,
+  #                 store_month: 6,
+  #               },
+  #             ]
+  #           }
+  #       }
 
-        do_request params
-        expect(PurchaseLog.last.amount).to eq(5500)
-        puts response_body
-        expect(status).to eq(201)
-      end
+  #       do_request params
+  #       expect(PurchaseLog.last.amount).to eq(5500)
+  #       puts response_body
+  #       expect(status).to eq(201)
+  #     end
 
-      describe '只填写柜子' do
-        example "【new】管理员  创建服务订单（不填写柜子 " do
-          params = {
-            user_id: @user.id,
-            service_order_groups: 
-            {
-              price_groups: [
-                {
-                  price_system_id: @stocking_chest.id,
-                  count: 1,
-                  store_month: 3,
-                },
-              ]
-            }
-          }
+  #     describe '只填写柜子' do
+  #       example "【new】管理员  创建服务订单（不填写柜子 " do
+  #         params = {
+  #           user_id: @user.id,
+  #           service_order_groups: 
+  #           {
+  #             price_groups: [
+  #               {
+  #                 price_system_id: @stocking_chest.id,
+  #                 count: 1,
+  #                 store_month: 3,
+  #               },
+  #             ]
+  #           }
+  #         }
 
-          do_request params
-          puts response_body
-          expect(status).to eq(201)
-        end
-      end
+  #         do_request params
+  #         puts response_body
+  #         expect(status).to eq(201)
+  #       end
+  #     end
 
-      describe '不填写柜子' do
-        example "【new】管理员  创建服务订单  只填写柜子 " do
-          params = {
-            user_id: @user.id,
-            service_order:
-              {
-                remark: '我是备注',
-                care_cost: 100,
-                service_cost: 200,
-              }
-          }
+  #     describe '不填写柜子' do
+  #       example "【new】管理员  创建服务订单  只填写柜子 " do
+  #         params = {
+  #           user_id: @user.id,
+  #           service_order:
+  #             {
+  #               remark: '我是备注',
+  #               care_cost: 100,
+  #               service_cost: 200,
+  #             }
+  #         }
 
-          do_request params
-          puts response_body
-          expect(status).to eq(201)
-        end
-      end
-      describe '禁止创建空订单' do
-        example "【new】管理员  创建服务订单 失败 禁止创建空订单 " do
-          params = {
-            user_id: @user.id,
-          }
+  #         do_request params
+  #         puts response_body
+  #         expect(status).to eq(201)
+  #       end
+  #     end
+  #     describe '禁止创建空订单' do
+  #       example "【new】管理员  创建服务订单 失败 禁止创建空订单 " do
+  #         params = {
+  #           user_id: @user.id,
+  #         }
 
-          do_request params
-          puts response_body
-          expect(status).to eq(422)
-        end
-      end
+  #         do_request params
+  #         puts response_body
+  #         expect(status).to eq(422)
+  #       end
+  #     end
 
-      describe '余额不足' do
-        before do
-          @user_info.balance = 0
-          @user_info.save
-        end
-        example "【new】管理员  创建服务订单 失败（余额不足" do
-          params = {
-            user_id: @user.id,
-            service_order:
-              {
-                remark: '我是备注',
-                care_cost: 100,
-                service_cost: 200,
-              },
-            service_order_groups: 
-              {
-                price_groups: [
-                  {
-                    price_system_id: @stocking_chest.id,
-                    count: 1,
-                    store_month: 3,
-                  },
-                ]
-              }
-          }
+  #     describe '余额不足' do
+  #       before do
+  #         @user_info.balance = 0
+  #         @user_info.save
+  #       end
+  #       example "【new】管理员  创建服务订单 失败（余额不足" do
+  #         params = {
+  #           user_id: @user.id,
+  #           service_order:
+  #             {
+  #               remark: '我是备注',
+  #               care_cost: 100,
+  #               service_cost: 200,
+  #             },
+  #           service_order_groups: 
+  #             {
+  #               price_groups: [
+  #                 {
+  #                   price_system_id: @stocking_chest.id,
+  #                   count: 1,
+  #                   store_month: 3,
+  #                 },
+  #               ]
+  #             }
+  #         }
 
-          do_request params
-          puts response_body
-          expect(status).to eq(422)
-        end
-      end
-    end
-  end
+  #         do_request params
+  #         puts response_body
+  #         expect(status).to eq(422)
+  #       end
+  #     end
+  #   end
+  # end
 
   
 

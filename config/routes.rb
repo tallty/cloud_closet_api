@@ -106,10 +106,11 @@ Rails.application.routes.draw do
 
   # ------------ Admin Routes ------------------------------#
   namespace :admin do
-    resources :appointments, only: [:index, :show, :update] do
+    resources :appointments do
       member do 
         post 'stored'
         post 'cancel'
+        post 'recover'
         get 'its_chests'
       end
     end

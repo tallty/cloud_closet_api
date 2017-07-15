@@ -40,6 +40,7 @@ zh-CN:
     delivering: '已发出'
     finished: '已收货'
     canceled: '已取消'
+    deleted: '已删除'
 
   devise:
     failure:

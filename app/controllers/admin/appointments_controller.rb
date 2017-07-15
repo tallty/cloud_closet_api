@@ -4,7 +4,7 @@ class Admin::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin, except: [:check, :reset] 
 
-  before_action :set_admin_appointment, only: [:show, :update, :its_chests, :destroy, :stored, :cancel]
+  before_action :set_admin_appointment, exepct: [:index, :create]
 
   respond_to :json
 
@@ -55,6 +55,16 @@ class Admin::AppointmentsController < ApplicationController
 
   def cancel
     @admin_appointment.cancel!
+    respond_with @admin_appointment, template: "admin/appointments/show", status: 201
+  end
+
+  def recover # canceled -> unpaid
+    @admin_appointment.recover!
+    respond_with @admin_appointment, template: "admin/appointments/show", status: 201
+  end
+
+  def destroy # 只允许删除 canceled 订单
+    @admin_appointment.soft_delete!
     respond_with @admin_appointment, template: "admin/appointments/show", status: 201
   end
 
