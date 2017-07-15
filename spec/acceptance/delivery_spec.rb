@@ -351,6 +351,19 @@ resource "配送 相关" do
       end
     end
 
+    delete '/admin/delivery_orders/:id' do 
+      before do
+        @delivery_order2.update(aasm_state: 'canceled')
+      end
+      let(:id) { @delivery_order2.id }
+
+      example "【管理员】删除 某【已取消】配送订单详情成功" do
+        do_request
+        puts response_body
+        expect(status).to eq(204)
+      end
+    end
+
     post 'admin/delivery_orders/:id/cancel' do
       before do
       # 支付 order 1  将会导致 order 2 部分衣服已支付

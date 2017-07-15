@@ -24,6 +24,8 @@
 #
 
 class DeliveryOrder < ApplicationRecord
+  default_scope { where.not( aasm_state: 'deleted' ) }
+
   belongs_to :user
   # 只有当配送订单支付(after_pay)之后 Garment 才与 DeliveryOrder 关联
   # 所以允许 garment 的 id 同时存在于多个 delivery_order
@@ -43,7 +45,7 @@ class DeliveryOrder < ApplicationRecord
 
   aasm do 
   	state :unpaid, initial: true
-  	state :paid, :canceled, :delivering, :finished
+  	state :paid, :canceled, :delivering, :finished, :deleted
 
     event :pay do
       transitions from: :unpaid, to: :paid, :after => [:after_pay, :send_msg_after_paid]
@@ -63,6 +65,10 @@ class DeliveryOrder < ApplicationRecord
 
     event :canceled_by_admin do
       transitions from: :paid, to: :canceled, after: :restore_garments
+    end
+    
+    event :soft_delete do
+      transitions from: :canceled, to: :deleted
     end
   end
 
@@ -99,7 +105,7 @@ class DeliveryOrder < ApplicationRecord
     def send_wechat_delivery_order_state_msg
       WechatMessageService.new(self.user).send_msg(
         'delivery_order_state_msg', self
-        ) unless aasm_state == 'unpaid'
+        ) unless aasm_state.in?(['unpaid', 'deleted'])
     end
 
     def generate_seq

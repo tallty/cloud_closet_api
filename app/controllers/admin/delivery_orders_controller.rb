@@ -4,7 +4,7 @@ class Admin::DeliveryOrdersController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin
 
-  before_action :set_delivery_order, only: [:show, :cancel, :send_out]
+  before_action :set_delivery_order, only: [:show, :cancel, :send_out, :destroy]
 
   respond_to :json
 
@@ -35,6 +35,10 @@ class Admin::DeliveryOrdersController < ApplicationController
     respond_with @error, template: 'error', status: 422
   end
 
+  def destroy
+    @delivery_order.soft_delete
+    head 204
+  end
 
   private
     def set_delivery_order
