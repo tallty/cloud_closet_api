@@ -4,7 +4,7 @@ class Admin::AppointmentsController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin, except: [:check, :reset] 
 
-  before_action :set_admin_appointment, exepct: [:index, :create]
+  before_action :set_admin_appointment, except: [:index, :create]
 
   respond_to :json
 
