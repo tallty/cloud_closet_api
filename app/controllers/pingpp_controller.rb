@@ -87,6 +87,7 @@ class PingppController < ApplicationController
               {
                 ping_request: @ping_request
                 }).create
+            SmsService.new('worker').user_recharge.
             status = 200
           else
             status = 500

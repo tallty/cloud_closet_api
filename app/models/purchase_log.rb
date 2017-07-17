@@ -24,6 +24,8 @@
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 
+	after_save :send_sms
+
 	def change_output
 		self.is_increased ?
 			"+%.2f"%self.amount :
@@ -64,5 +66,9 @@ class PurchaseLog < ApplicationRecord
 	end
 
 	private
-
+		def send_sms
+			is_increased ?
+				SmsService.new('me').new_recharge(self) :
+				SmsService.new('me').new_consume(self) 
+		end
 end

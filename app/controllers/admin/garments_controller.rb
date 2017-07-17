@@ -36,6 +36,7 @@ class Admin::GarmentsController < ApplicationController
     @garment = ExhibitionChest.find(params[:exhibition_chest_id]).garments.find(params[:id])
     @garment.tag_list.add(ConstantTag.tag_validate('garment', tag_params[:add_tag_list])) if tag_params[:add_tag_list]
     @garment.tag_list.remove(ConstantTag.tag_validate('garment', tag_params[:remove_tag_list])) if tag_params[:remove_tag_list]
+    @garment.save
     @garment.update!(garment_params)
     ##更新时可不传图片
     #大图 cover_image
