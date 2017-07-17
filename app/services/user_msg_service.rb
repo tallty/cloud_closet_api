@@ -14,7 +14,7 @@ class UserMsgService
 
 	def from_wechat_msg 
 		@title = @wechat_msg.instance_variable_get('@title')
-		@abstract = @wechat_msg.instance_variable_get('@remark').gsub("\n", ' ')
+		@abstract = @wechat_msg.instance_variable_get('@remark')&.gsub("\n", ' ')
 		@url = @wechat_msg.instance_variable_get('@url')
 	end
 
