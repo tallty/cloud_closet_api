@@ -52,6 +52,7 @@ class SmsService
 	end
 
 	def new_recharge purchase_log
+		p purchase_log
 		@tpl_id = 1876540
     @sms_hash = {
     	name: purchase_log.user_info.nickname,

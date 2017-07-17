@@ -68,7 +68,7 @@ class PurchaseLog < ApplicationRecord
 	private
 		def send_sms
 			is_increased ?
-				SmsService.new('worker').new_recharge(self) :
-				SmsService.new('worker').new_consume(self) 
+				SmsService.new('me').new_recharge(self) :
+				SmsService.new('me').new_consume(self) 
 		end
 end

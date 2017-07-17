@@ -144,6 +144,7 @@ private
 			@detail = 
 				"充值 #{object.amount}元 ; " + 
 				"赠送 #{object.credit}元"
+			@actual_amount = 0
 			@amount = object.credit
 			@credit = @amount
 			@is_increased = true
