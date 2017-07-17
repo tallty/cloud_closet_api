@@ -69,9 +69,6 @@ class SmsService
 			ChinaSMS.use :yunpian, password: "255281473668c1ef1fc752b71ce575d8"
 	    result_ary << (ChinaSMS.to phone, @sms_hash, {tpl_id: @tpl_id})
     end
-		p '---- - - - - - -- - - - - - - - - ---'
-    p result_ary
-		p '---- - - - - - -- - - - - - - - - ---'
 	end
 
 end

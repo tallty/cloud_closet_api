@@ -24,7 +24,7 @@
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 
-	after_save :send_sms
+	after_create :send_sms
 
 	def change_output
 		self.is_increased ?
@@ -68,7 +68,7 @@ class PurchaseLog < ApplicationRecord
 	private
 		def send_sms
 			is_increased ?
-				SmsService.new('me').new_recharge(self) :
-				SmsService.new('me').new_consume(self) 
+				SmsService.new('worker').new_recharge(self) :
+				SmsService.new('worker').new_consume(self) 
 		end
 end
