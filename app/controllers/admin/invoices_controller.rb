@@ -4,7 +4,7 @@ class Admin::InvoicesController < ApplicationController
 
   acts_as_token_authentication_handler_for Admin
 
-  before_action :set_invoice, only: [:show, :update, :destroy]
+  before_action :set_invoice, except: :index
 
   respond_to :json
 
@@ -18,19 +18,11 @@ class Admin::InvoicesController < ApplicationController
   def show
     respond_with @invoice, template: 'invoices/show', status: 200
   end
-
-  # def create
-  #   @invoice = current_user.invoices.new(invoice_params)
-  #   @invoice.save!
-  #   respond_with @invoice, template: 'invoices/show', status: 201
-  # rescue => @error
-  #   respond_with @error, template: 'error', status: 422
-  # end
-
-  # def update
-  #   @invoice.update(invoice_params)
-  #   respond_with(@invoice)
-  # end
+  
+  def accept
+    @invoice.accept!
+    head 200
+  end
 
   def destroy
     @invoice.destroy
@@ -40,15 +32,6 @@ class Admin::InvoicesController < ApplicationController
   private
     def set_invoice
       @invoice = Invoice.find(params[:id])
-    end
-
-    def invoice_params
-      # params.require(:invoice).permit(
-      #   :title, :amount, :invoice_type, 
-      #   :cel_name, :cel_phone, :postcode, 
-      #   :address
-      #   )
-
     end
 
 end

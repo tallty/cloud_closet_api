@@ -147,8 +147,8 @@ Rails.application.routes.draw do
     resources :invoices, only: [:show, :index] do 
       member do 
         post :accept
-        post :refuse
-        post :send_out
+        # post :refuse
+        # post :send_out
       end
     end
   end

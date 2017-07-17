@@ -27,13 +27,13 @@ class Invoice < ApplicationRecord
 	
 	before_save :set_remaining_limit
 	after_create :send_sms_to_worker
-	after_save :send_msg, if: :aasm_state_changed?
+	after_save :send_wechat_msg, if: :aasm_state_changed?
 	
 	include AASM
 
 	aasm do
-    state :waiting
-    state :accepted, :initial => true
+    state :waiting, :initial => true
+    state :accepted
     state :refused, :had_been_send
 
     event :accept do
@@ -53,8 +53,6 @@ class Invoice < ApplicationRecord
   	I18n.t :"invoice_aasm_state.#{aasm_state}"
   end
 
-
-
 	private
 		def set_remaining_limit
 			user_info = self.user.info
@@ -64,7 +62,7 @@ class Invoice < ApplicationRecord
 				user_info.recharge_amount if user_info.save!
 		end
 
-		def send_msg
+		def send_wechat_msg
 			# aasm_state
 		end
 
