@@ -144,7 +144,30 @@ resource "我的衣橱" do
     example "用户查询我的衣橱 某衣柜【非单件礼服】详情成功" do
       do_request
       puts response_body
+      res = JSON.parse(response_body)
+      expect(res['garments'].count).to eq(@exhi_chests.first.garments.count)
       expect(status).to eq(200)
+    end
+
+    describe 'Find by tags' do
+      parameter :tags, '标签的数组'
+
+      before do
+        @tagged_garment = @exhi_chests.first.garments.first
+        @tagged_garment.tag_list.add(['test-tag'])
+        @tagged_garment.save
+      end
+      let(:id) {@exhi_chests.first.id}
+      let(:tags) { ['test-tag'] }
+
+      example "用户查询我的衣橱 某衣柜 详情成功【标签查询，各条件结果相交🍌" do
+        do_request
+        puts response_body
+        res = JSON.parse(response_body)
+        expect(res['garments'].count).to eq(1)
+        expect(status).to eq(200)
+      end
+
     end
   end
 

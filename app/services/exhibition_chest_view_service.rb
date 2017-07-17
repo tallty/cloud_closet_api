@@ -15,25 +15,21 @@ class ExhibitionChestViewService
 		_chests
 	end
 
-	def in_user_show chest_id
+	def in_user_show chest_id, &garment_scope
 		_chest = @exhibition_chests.find_by_id(chest_id)
 		raise 'id错误' unless _chest
 		# 替换 衣橱详细页 garment
-		_garments = []
-		if _chest.need_join
-			@exhibition_chests.select{ |chest| 
-				chest.exhibition_unit_id == _chest.exhibition_unit_id 
-			}.each { |chest| 
-				_garments.concat chest.garments
-			}
-		else
-			_garments = _chest.garments
-		end
+p _chest
+p ' garment ssss'
+p _chest.garments.map(&:id)
+p _chest.garments.map(&:tag_list)
+		_garments = _chest.need_join ?
+			@exhibition_chests.where(exhibition_unit: _chest.exhibition_unit).map(&:garments).reduce(:merge).in_chest :
+			_chest.garments.in_chest
+			p _garments
 		[ 
 			_chest, 
-			_garments.reject{ 
-				|garment| garment.at_home?
-			}
+			garment_scope.call(_garments)
 		]
 	end
 
