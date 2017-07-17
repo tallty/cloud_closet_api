@@ -80,6 +80,7 @@ class SmsService
 	end
 
 	def send_msg
+		return true if Rails.env == 'test'
 		result_ary = []
 		@phone_list.each do |phone|
 			ChinaSMS.use :yunpian, password: "255281473668c1ef1fc752b71ce575d8"

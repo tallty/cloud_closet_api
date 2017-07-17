@@ -67,6 +67,6 @@ class Invoice < ApplicationRecord
 		end
 
 		def send_sms_to_worker
-			SmsService.new('me').new_invoice(self)
+			SmsService.new('worker').new_invoice(self)
 		end
 end
