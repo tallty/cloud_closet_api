@@ -52,7 +52,6 @@ class SmsService
 	end
 
 	def new_recharge purchase_log
-		p purchase_log
 		@tpl_id = 1876540
     @sms_hash = {
     	name: purchase_log.user_info.nickname,
@@ -64,12 +63,29 @@ class SmsService
     send_msg
 	end
 
+	def new_invoice invoice
+		@tpl_id = 1876710
+    @sms_hash = {
+			name: invoice.cel_name,
+			phone: invoice.cel_phone,
+			title: invoice.title,
+			amount: invoice.amount,
+			invoice_type: invoice.invoice_type.gsub('发票', 'invoice'),
+			address: invoice.address,
+			postcode: invoice.postcode,
+			user_name: invoice.user.nickname,
+			user_phone: invoice.user.phone
+    }
+    send_msg
+	end
+
 	def send_msg
 		result_ary = []
 		@phone_list.each do |phone|
 			ChinaSMS.use :yunpian, password: "255281473668c1ef1fc752b71ce575d8"
 	    result_ary << (ChinaSMS.to phone, @sms_hash, {tpl_id: @tpl_id})
     end
+		result_ary
 	end
 
 end

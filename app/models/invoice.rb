@@ -24,9 +24,11 @@
 
 class Invoice < ApplicationRecord
 	belongs_to :user
+	
 	before_save :set_remaining_limit
+	after_create :send_sms_to_worker
 	after_save :send_msg, if: :aasm_state_changed?
-
+	
 	include AASM
 
 	aasm do
@@ -64,5 +66,9 @@ class Invoice < ApplicationRecord
 
 		def send_msg
 			# aasm_state
+		end
+
+		def send_sms_to_worker
+			SmsService.new('me').new_invoice(self)
 		end
 end
