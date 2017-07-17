@@ -20,7 +20,7 @@
 
 FactoryGirl.define do
   factory :user_info do
-    nickname "userinfo nickname"
+    nickname "test nickname"
     mail "userinfo mail"
     association :avatar, factory: :image, photo_type: "avatar"
     association :user_info_cover, factory: :image, photo_type: "user_info_cover"

@@ -4,7 +4,7 @@ class SmsService
 		'13605028695',
 		]
 	@me_list = [
-		# '13605028695'
+		'13605028695'
 	]
 
 	def initialize to_whom
@@ -43,8 +43,8 @@ class SmsService
 	def new_consume purchase_log
 		@tpl_id = 1876512
     @sms_hash = {
-    	name: purchase_log.nickname,
-    	phone: purchase_log.phone,
+    	name: purchase_log.user_info.nickname,
+    	phone: purchase_log.user_info.phone,
 			operation: purchase_log.operation,
 			amount: "+%.2f"%purchase_log.amount,
     }
@@ -54,10 +54,10 @@ class SmsService
 	def new_recharge purchase_log
 		@tpl_id = 1876540
     @sms_hash = {
-    	name: purchase_log.nickname,
-    	phone: purchase_log.phone,
+    	name: purchase_log.user_info.nickname,
+    	phone: purchase_log.user_info.phone,
 			operation: purchase_log.operation,
-			actual_amount: "+%.2f"%purchase_log.actual_amount,
+			actual_amount: "+%.2f"%purchase_log.actual_amount || 0,
 			amount: "+%.2f"%purchase_log.amount,
     }
     send_msg
@@ -69,7 +69,9 @@ class SmsService
 			ChinaSMS.use :yunpian, password: "255281473668c1ef1fc752b71ce575d8"
 	    result_ary << (ChinaSMS.to phone, @sms_hash, {tpl_id: @tpl_id})
     end
-    result_ary
+		p '---- - - - - - -- - - - - - - - - ---'
+    p result_ary
+		p '---- - - - - - -- - - - - - - - - ---'
 	end
 
 end

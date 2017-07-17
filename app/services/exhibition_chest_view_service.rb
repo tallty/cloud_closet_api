@@ -19,14 +19,11 @@ class ExhibitionChestViewService
 		_chest = @exhibition_chests.find_by_id(chest_id)
 		raise 'id错误' unless _chest
 		# 替换 衣橱详细页 garment
-p _chest
-p ' garment ssss'
-p _chest.garments.map(&:id)
-p _chest.garments.map(&:tag_list)
+
 		_garments = _chest.need_join ?
 			@exhibition_chests.where(exhibition_unit: _chest.exhibition_unit).map(&:garments).reduce(:merge).in_chest :
 			_chest.garments.in_chest
-			p _garments
+			
 		[ 
 			_chest, 
 			garment_scope.call(_garments)

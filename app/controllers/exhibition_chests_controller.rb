@@ -19,8 +19,9 @@ class ExhibitionChestsController < ApplicationController
   end
 
   def show
-    @exhibition_chest, @garments = ExhibitionChestViewService.new(@user_chests).in_user_show(params[:id]) { |garments| garments.tagged_with(params[:tags] || []) }
-    # @garments = @garments.select{ |g| (g.tag_list | params[:tags]) } if params[:tags].is_a?(Array)
+    @exhibition_chest, @garments = ExhibitionChestViewService.new(@user_chests).in_user_show(params[:id]) { |garments| 
+      params[:tags].is_a?(Array) ? garments.tagged_with(params[:tags])  : garments.all
+    }
     respond_with @exhibition_chest, template: 'exhibition_chests/show'
   end
 
