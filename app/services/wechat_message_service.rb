@@ -4,6 +4,7 @@ class WechatMessageService
 	def initialize user
     @user = user
 		@openid = user.try(:openid)
+    # @openid =  'olclvwHtOBENZ-rLA2NxsBCVZky0'
 		raise '用户openid 为空' if @openid.blank?
 		@template = {}
     @merchant_phone = '15800634815'
@@ -73,8 +74,7 @@ class WechatMessageService
       @balance_now = purchase_log.balance
       @time = purchase_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
       @remark = '谢谢您的支持'
-   p '-----url -----'   
-   p  @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
+      @url = "http://closet.tallty.com/bills/#{purchase_log.id}"
       @template = consume_template
     end
 
@@ -100,6 +100,23 @@ class WechatMessageService
       @url = 'http://closet.tallty.com/user'
       @template = insufficient_balance_template
     end
+
+    def set_invoice_state_msg invoice
+      @title =
+        case invoice.aasm_state
+        when 'waiting'
+          "您的开票申请 已提交。\n工作人员即将与您联系确认。\n"
+        when 'accepted'
+          '您的开票申请 已被接受。'
+        end
+      @company = '乐存家庭服务（上海）有限公司'
+      @invoice_title = invoice.title
+      @amount = invoice.amount
+      @invoice_type = invoice.invoice_type
+      # @remark = 
+      @template = invoice_state_template
+    end
+    
 
     # ---- 订单状态改变 提示不同备注 --- #
 
@@ -243,7 +260,7 @@ class WechatMessageService
     def insufficient_balance_template
       template = {
         template_id: "6uuBWTV5mf9FzmGsCEH0Ddtt13gxsQn1RiUkb4Fk9ok",
-        url: @usl, 
+        url: @url, 
         topcolor: "#FF0000",
         data: {
           first: {
@@ -260,6 +277,51 @@ class WechatMessageService
             value: @balance,
             color: "#757575"
           },
+          remark: {
+            value: @remark,
+            color: "#173177"
+          }
+        }
+      }
+    end
+
+    def invoice_state_template
+      template = {
+        template_id: "AB1QTPle0NdypkYakRCXTMBZVAaUJcIZPfKKt4u5Shk",
+        url: @url, 
+        topcolor: "#FF0000",
+        data: {
+          first: {
+            value: @title,
+            color: "#0A0A0A"
+          },
+          # 开票单位
+          keyword1: {
+            value: @company,
+            color: "#757575"
+          },
+          # 发票抬头
+          keyword2: {
+            value: @invoice_title,
+            color: "#757575"
+          },
+
+          # 发票金额
+          keyword3: {
+            value: @amount,
+            color: "#757575"
+          },
+          # 发票内容
+          # keyword4: {
+          #   value: ,
+          #   color: "#757575"
+          # },
+          # 发票类型
+          keyword5: {
+            value: @invoice_type,
+            color: "#757575"
+          },
+
           remark: {
             value: @remark,
             color: "#173177"

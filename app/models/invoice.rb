@@ -63,7 +63,9 @@ class Invoice < ApplicationRecord
 		end
 
 		def send_wechat_msg
-			# aasm_state
+			WechatMessageService.new(user).send_msg(
+				'invoice_state_msg', self
+			)
 		end
 
 		def send_sms_to_worker
