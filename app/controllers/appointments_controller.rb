@@ -62,7 +62,7 @@ class AppointmentsController < ApplicationController
     @appointment.storing! if @appointment.created_by_admin
     respond_with @appointment, template: "appointments/show", status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def cancel

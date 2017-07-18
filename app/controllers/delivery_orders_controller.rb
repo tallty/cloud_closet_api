@@ -24,7 +24,7 @@ class DeliveryOrdersController < ApplicationController
   	@delivery_order = current_user.delivery_orders.create!(delivery_order_params)
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def update
@@ -32,7 +32,7 @@ class DeliveryOrdersController < ApplicationController
     @delivery_order.update!(delivery_order_params)  
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def destroy
@@ -40,21 +40,21 @@ class DeliveryOrdersController < ApplicationController
     @delivery_order.destroy!
     head 204
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def pay
     @delivery_order.pay!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def get_home
     @delivery_order.get_home!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
 

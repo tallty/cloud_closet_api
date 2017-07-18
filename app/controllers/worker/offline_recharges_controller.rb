@@ -27,7 +27,7 @@ class Worker::OfflineRechargesController < ApplicationController
     @offline_recharge =  current_worker.offline_recharges.create!( offline_recharge_params )
     respond_with @offline_recharge, template: 'offline_recharges/show', status: 201
   rescue => @error
-  	respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   # def update

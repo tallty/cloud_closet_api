@@ -97,9 +97,12 @@ class ExhibitionChest < ApplicationRecord
       # 组合柜将一起延期
       _chests = valuation_chest.exhibition_chests
       # 创建订单
+      rent_charge = valuation_chest.price.to_i * month
       appt_params = {
           remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月",
-          rent_charge: valuation_chest.price.to_i * month,
+          rent_charge: rent_charge,
+          # 在微信初始化订单的通知上显示总价
+          price: rent_charge,
           meta: { 
             lease_renewal_chest_id: self.id,
             month: month

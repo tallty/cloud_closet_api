@@ -25,14 +25,14 @@ class Admin::DeliveryOrdersController < ApplicationController
     @delivery_order.canceled_by_admin!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def send_out
     @delivery_order.admin_send_it_out!
     respond_with @delivery_order, template: 'delivery_orders/show', status: 201
   rescue => @error
-    respond_with @error, template: 'error', status: 422
+    raise MyError.new(@error)
   end
 
   def destroy
