@@ -97,16 +97,23 @@ class ExhibitionChest < ApplicationRecord
       # 组合柜将一起延期
       _chests = valuation_chest.exhibition_chests
       # 创建订单
-      appt = Appointment.create_by_admin(user,{
-          rent_charge: valuation_chest.price.to_i * month,
+      appt_params = {
           remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月",
           meta: { 
             lease_renewal_chest_id: self.id,
             month: month
           }
-        }, nil 
-      )
-      appt
+      }
+      appt_group_params = {
+        price_groups: [
+          {
+            price_system: valuation_chest.price_system,
+            count: 1,
+            store_month: month
+          }
+        ]
+      }
+      appt = Appointment.create_by_admin(user, appt_params, appt_group_params)
     end
   end
 

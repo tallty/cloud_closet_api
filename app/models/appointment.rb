@@ -160,15 +160,16 @@ class Appointment < ApplicationRecord
   def self.create_by_admin user, appt_params, appt_group_params
     raise '禁止创建空订单。' unless appt_params || appt_group_params
     ActiveRecord::Base.transaction do
-      _appt = user.appointments.new(
-        aasm_state: 'unpaid',
-        created_by_admin: true,
-        name: user.info.nickname,
-        phone: user.phone,
-        service_cost: 0,
-        care_cost: 0
+      _appt = user.appointments.create!(
+          {
+            aasm_state: 'unpaid',
+            created_by_admin: true,
+            name: user.info.nickname,
+            phone: user.phone,
+            service_cost: 0,
+            care_cost: 0
+          }.merge(appt_params || {})
         )
-      _appt.update!(appt_params) if appt_params
       if appt_group_params
         appt_group_params[:price_groups].each do |group_param|
           price_group = _appt.groups.build(group_param)
