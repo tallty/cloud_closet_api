@@ -51,7 +51,8 @@ class Garment < ApplicationRecord
   has_one :detail_image_3, -> { where photo_type: 'detail_3' }, class_name: 'Image', as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :detail_image_3, allow_destroy: true
 
-
+  # 关于 delivery_order 的状态切换，不使用aasm自带方法 
+  # 使用 DeliveryService.new.change_garments_status
   aasm :column => :status do
     state :storing, :initial => true
     state :caring, :stored, :in_basket, :delivering, :at_home

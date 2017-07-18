@@ -36,7 +36,7 @@ class GarmentsController < ApplicationController
   end
 
   def add_them_to_basket # params[:garment_ids]
-    change_status(['stored'], 'in_basket')
+    change_status(['stored', 'storing'], 'in_basket')
   end
 
   def get_out_of_basket
