@@ -61,7 +61,7 @@ class Garment < ApplicationRecord
     end
 
     event :add_to_basket do 
-      transitions from: :stored, to: :in_basket
+      transitions from: [:stored, :storing], to: :in_basket
     end
 
     event :come_back_to_chest do 
