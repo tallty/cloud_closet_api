@@ -34,6 +34,7 @@ class Admin::ExhibitionChestsController < ApplicationController
     @exhibition_chest.lease_renewal params[:renewal_month]
     respond_with @exhibition_chest, template: 'exhibition_chests/show', status: 201
   rescue => @error
+    logger.info @error
     respond_with @error, template: 'error', status: 422
   end
 

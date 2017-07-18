@@ -24,6 +24,8 @@
 #  hanging_count      :integer          default(0)
 #  stacking_count     :integer          default(0)
 #  full_dress_count   :integer          default(0)
+#  number_alias       :string
+#  created_by_admin   :boolean
 #
 # Indexes
 #

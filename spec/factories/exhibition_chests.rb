@@ -11,6 +11,8 @@
 #  valuation_chest_id       :integer
 #  appointment_new_chest_id :integer
 #  user_id                  :integer
+#  expire_time              :datetime
+#  max_count                :integer
 #
 # Indexes
 #

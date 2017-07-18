@@ -13,16 +13,17 @@
 #  row                 :integer
 #  carbit              :integer
 #  place               :integer
-#  aasm_state          :string           default("storing")
 #  status              :string
 #  store_method        :string
 #  appointment_id      :integer
 #  exhibition_chest_id :integer
 #  description         :text
+#  delivery_order_id   :integer
 #
 # Indexes
 #
 #  index_garments_on_appointment_id       (appointment_id)
+#  index_garments_on_delivery_order_id    (delivery_order_id)
 #  index_garments_on_exhibition_chest_id  (exhibition_chest_id)
 #  index_garments_on_seq                  (seq)
 #  index_garments_on_user_id              (user_id)

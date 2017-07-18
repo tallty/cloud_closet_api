@@ -440,11 +440,20 @@ resource "管理后台相关接口" do
       end
       let(:id) { @exhibition_chests.first.id }
       let(:renewal_month) { 1 }
-      example "【new】管理员 对某衣橱 续柜 成功" do
+      example "【new】【new】【new】管理员 对某衣橱 续柜 成功" do
         do_request
-        expect(@exhibition_chests.first.expire_time).to eq(@expire_time_was + 1.month)
+        # 柜子租期不变
+        expect(@exhibition_chests.first.expire_time).to eq(@expire_time_was)
+        # 生成待支付的 续期订单 appointment
+        @lease_renewal_appt = @user.appointments.last
+        expect(@lease_renewal_appt.meta[:lease_renewal_chest_id]).to eq(@exhibition_chests.first.id)
+        
         puts response_body
         expect(status).to eq(201)
+
+        @lease_renewal_appt.pay!
+        expect(@exhibition_chests.first.expire_time).to eq(@expire_time_was + 1.month)
+        # expect()
       end
 
       describe '【new】管理员 对某衣柜 续柜 成功（组合柜将同时续柜）' do
@@ -459,11 +468,11 @@ resource "管理后台相关接口" do
 
         example "【new】管理员 对某衣橱 续柜 成功" do
           do_request
+          @user.appointments.last.pay!
           # 组合柜 一起延期
           expect(@group_exh_chest1.expire_time.strftime("%Y-%m-%d %H:%M")).to eq(@group_exh_chest2.expire_time.strftime("%Y-%m-%d %H:%M"))
           expect(ExhibitionChest.find(@group_exh_chest1.id).expire_time).to eq(@expire_time_was1 + 1.month)
           # 生成 purchase_log 成功
-          expect(ServiceOrder.count).to eq(1)
           expect(PurchaseLog.last.amount).to eq(ValuationChest.where(price_system: @group_chest1).first.price * 1)
           
           puts response_body

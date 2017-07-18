@@ -26,6 +26,7 @@
 #  full_dress_count   :integer          default(0)
 #  number_alias       :string
 #  created_by_admin   :boolean
+#  meta               :text 
 #
 # Indexes
 #
@@ -35,7 +36,7 @@
 class Appointment < ApplicationRecord
 
   default_scope { where.not( aasm_state: 'deleted' ) }
-  
+  serialize :meta
   include AASM
   aasm do
     state :committed, initial: true
@@ -120,7 +121,7 @@ class Appointment < ApplicationRecord
 
   def count_price
     # 租用柜子的租金
-    self.rent_charge = 
+    self.rent_charge ||= 
       self.groups.chests.map { |group| 
         group.price 
       }.reduce(:+)
@@ -204,6 +205,13 @@ class Appointment < ApplicationRecord
 
     def after_pay
       create_chests
+      # 续期
+      if _chest = ExhibitionChest.find_by_id(meta&.[](:lease_renewal_chest_id))
+        _chest.valuation_chest.exhibition_chests.each do |chest|
+          chest.expire_time += meta[:month].months
+          chest.save!
+        end
+      end
       PurchaseLogService.new(
           self.user, ['appt_paid_successfully'],
           { appointment: self }

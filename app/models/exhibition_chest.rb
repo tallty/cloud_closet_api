@@ -96,17 +96,17 @@ class ExhibitionChest < ApplicationRecord
     ActiveRecord::Base.transaction do
       # 组合柜将一起延期
       _chests = valuation_chest.exhibition_chests
-      _chests.each do |chest|
-        chest.expire_time += month.months
-        chest.save
-      end
-      # 创建服务订单 并收费
-      order = user.service_orders.create!(
-          rent: valuation_chest.price.to_i * month,
-          operation: '衣橱续租',
-          remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月"
-        )
-      order.cut_balance
+      # 创建订单
+      appt = Appointment.create_by_admin(user,{
+          rent_charge: valuation_chest.price.to_i * month,
+          remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月",
+          meta: { 
+            lease_renewal_chest_id: self.id,
+            month: month
+          }
+        }, nil 
+      )
+      appt
     end
   end
 
