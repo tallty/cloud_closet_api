@@ -99,6 +99,7 @@ class ExhibitionChest < ApplicationRecord
       # 创建订单
       appt_params = {
           remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月",
+          rent_charge: valuation_chest.price.to_i * month,
           meta: { 
             lease_renewal_chest_id: self.id,
             month: month
