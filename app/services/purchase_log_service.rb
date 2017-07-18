@@ -24,6 +24,10 @@ class PurchaseLogService
 			purchase_log_ary.each do |purchase_log|
 				# 操作 用户 余额
 				change_balance(purchase_log)
+				# 工作人员短信消息
+				purchase_log.is_increased ?
+					SmsService.new('worker').new_recharge(purchase_log) :
+					SmsService.new('worker').new_consume(purchase_log) 
 				# 发送 充值/消费 微信消息
 				WechatMessageService.new(@user).send_msg(
 					purchase_log.is_increased ? 

@@ -24,7 +24,7 @@
 class PurchaseLog < ApplicationRecord
 	belongs_to :user_info
 
-	after_create :send_sms
+	# after_create :send_sms
 
 	def change_output
 		self.is_increased ?
