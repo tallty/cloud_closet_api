@@ -44,7 +44,11 @@ class Admin::AppointmentsController < ApplicationController
   def create
     user = User.find_by_id(params[:user_id])
     if user
-      @admin_appointment = Appointment.create_by_admin user, appt_params, appt_group_params
+      @admin_appointment = Appointment.create_by_admin(
+        user, 
+        { appt_type: '服务订单' }.merge( appt_params || {} ),
+        appt_group_params
+      )
       respond_with @admin_appointment, template: "admin/appointments/show", status: 201
     else
       head 404

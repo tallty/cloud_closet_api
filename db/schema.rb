@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170718025109) do
+ActiveRecord::Schema.define(version: 20170718080059) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_info_id"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20170718025109) do
     t.string   "number_alias"
     t.boolean  "created_by_admin"
     t.text     "meta"
+    t.string   "appt_type"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 

@@ -99,6 +99,7 @@ class ExhibitionChest < ApplicationRecord
       # 创建订单
       rent_charge = valuation_chest.price.to_i * month
       appt_params = {
+          appt_type: '衣柜续期',
           remark: "#{_chests.map(&:custom_title).reject(&:blank?).join('与')}续租#{month}月",
           rent_charge: rent_charge,
           # 在微信初始化订单的通知上显示总价
@@ -109,13 +110,15 @@ class ExhibitionChest < ApplicationRecord
           }
       }
       appt_group_params = {
-        price_groups: [
+        price_groups: 
+        _chests.map { |chest|
           {
+            title: "#{chest.custom_title} - 续期",
             price_system: valuation_chest.price_system,
             count: 1,
             store_month: month
           }
-        ]
+        }
       }
       appt = Appointment.create_by_admin(user, appt_params, appt_group_params)
     end

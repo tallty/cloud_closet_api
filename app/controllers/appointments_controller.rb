@@ -18,7 +18,9 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    @appointment = current_user.appointments.build(appointment_params)
+    @appointment = current_user.appointments.build(
+          appointment_params.merge({ appt_type: '入库订单' })
+        )
     @appointment.save
     respond_with @appointment, template: "appointments/show", status: 201
   end

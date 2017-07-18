@@ -26,7 +26,8 @@
 #  full_dress_count   :integer          default(0)
 #  number_alias       :string
 #  created_by_admin   :boolean
-#  meta               :text 
+#  meta               :text
+#  appt_type          :string
 #
 # Indexes
 #
@@ -36,7 +37,9 @@
 class Appointment < ApplicationRecord
 
   default_scope { where.not( aasm_state: 'deleted' ) }
+  
   serialize :meta
+  
   include AASM
   aasm do
     state :committed, initial: true
@@ -88,7 +91,6 @@ class Appointment < ApplicationRecord
   def state
     I18n.t :"appointment_aasm_state.#{aasm_state}"
   end
-
   
   scope :appointment_state, -> (state) {where(aasm_state:state)}
   scope :by_join_date, -> {order("created_at DESC")} #降序
@@ -158,7 +160,7 @@ class Appointment < ApplicationRecord
   
   # 后台由管理员创建
   def self.create_by_admin user, appt_params, appt_group_params
-    raise '禁止创建空订单。' unless appt_params || appt_group_params
+    raise '禁止创建空订单。' unless appt_params.except(:appt_type).any? || appt_group_params
     ActiveRecord::Base.transaction do
       _appt = user.appointments.create!(
           {

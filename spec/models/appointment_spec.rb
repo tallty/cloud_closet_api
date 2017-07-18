@@ -26,6 +26,8 @@
 #  full_dress_count   :integer          default(0)
 #  number_alias       :string
 #  created_by_admin   :boolean
+#  meta               :text
+#  appt_type          :string
 #
 # Indexes
 #
