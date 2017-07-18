@@ -11,6 +11,7 @@ zh-CN:
     storing: "入库中"
     stored: "已上架"
     canceled: "已取消"
+    deleted: '已删除'
 
   invoice_aasm_state:
     waiting: '待处理'

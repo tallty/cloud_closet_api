@@ -203,7 +203,7 @@ class Appointment < ApplicationRecord
     def send_wechat_appt_state_msg
       WechatMessageService.new(self.user).send_msg(
         'appt_state_msg', self
-        )
+        ) unless aasm_state == 'deleted'
     end
 
     def after_pay
