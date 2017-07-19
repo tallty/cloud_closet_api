@@ -36,7 +36,7 @@
 
 class Appointment < ApplicationRecord
 
-  default_scope { where.not( aasm_state: 'deleted' ).order('date DESC') }
+  default_scope { where.not( aasm_state: 'deleted' ).order('created_at DESC') }
   
   serialize :meta
   
@@ -62,7 +62,7 @@ class Appointment < ApplicationRecord
     end
 
     event :stored do
-      transitions from: :storing, to: :stored
+      transitions from: [:paid, :storing], to: :stored
     end
 
     event :cancel do
