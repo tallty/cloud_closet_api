@@ -10,7 +10,7 @@ class Admin::ExhibitionChestsController < ApplicationController
     @user = User.find_by_id(params[:user_id])
     @exhibition_chests = @user ? 
       # ExhibitionChestViewService.new(@user.exhibition_chests).in_user_index :
-      @user.exhibition_chests
+      @user.exhibition_chests :
       ExhibitionChest.all
     respond_with(@exhibition_chests)
   end
