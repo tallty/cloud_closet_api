@@ -108,6 +108,10 @@ class Appointment < ApplicationRecord
     self[:garment_count_info] && self[:garment_count_info].split(',').map{ |x| x.split(':')}.map {|store_method, count|[store_method, count.to_i]}.to_h
   end
 
+  def created_date
+    created_at.to_date
+  end
+
   def other_price
     self.groups.other_items.map { |group| 
       group.price 

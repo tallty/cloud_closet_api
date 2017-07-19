@@ -10,7 +10,7 @@ class Worker::AppointmentsController < ApplicationController
 
   def index
     @appointments_hash = 
-      Appointment.appointment_state("committed").not_by_admin.group_by(&:created_at)
+      Appointment.appointment_state("committed").not_by_admin.group_by(&:created_date)
     respond_with(@appointments_hash)
   end
 
@@ -40,7 +40,7 @@ class Worker::AppointmentsController < ApplicationController
     Appointment.aasm.state_machine.states.collect(&:name).each do |state|
       instance_variable_set(
         "@#{state}_appointments", 
-        Appointment.appointment_state(state).not_by_admin.group_by(&:created_at)
+        Appointment.appointment_state(state).not_by_admin.group_by(&:created_date)
       )
     end
     respond_with template: "worker/appointments/state_query", status: 200
