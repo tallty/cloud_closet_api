@@ -92,10 +92,10 @@ class Appointment < ApplicationRecord
     I18n.t :"appointment_aasm_state.#{aasm_state}"
   end
   
-  scope :appointment_state, -> (state) {where(aasm_state:state)}
+  scope :appointment_state, -> (state) { where( aasm_state:state ) }
   scope :by_join_date, -> {order("created_at DESC")} #降序
   scope :created_by_admin, -> { where(created_by_admin: true) }
-  scope :not_by_admin, -> { where(created_by_admin: false) }
+  scope :not_by_admin, -> { where(created_by_admin: nil) }
 
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
