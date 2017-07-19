@@ -107,6 +107,12 @@ class Garment < ApplicationRecord
     created_at
   end
 
+  def expire_time
+    self.exhibition_chest.need_join ?
+      self.exhibition_chest.expire_time :
+      nil
+  end
+
   #管理员入库衣服后 衣服状态改为 已入库
   def do_finish_storing 
     self.finish_storing! unless self.status == 'stored'
