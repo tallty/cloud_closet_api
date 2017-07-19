@@ -36,7 +36,7 @@
 
 class Appointment < ApplicationRecord
 
-  default_scope { where.not( aasm_state: 'deleted' ) }
+  default_scope { where.not( aasm_state: 'deleted' ).order('date DESC') }
   
   serialize :meta
   
@@ -95,7 +95,8 @@ class Appointment < ApplicationRecord
   scope :appointment_state, -> (state) {where(aasm_state:state)}
   scope :by_join_date, -> {order("created_at DESC")} #降序
   scope :created_by_admin, -> { where(created_by_admin: true) }
-  
+  scope :not_by_admin, -> { where(created_by_admin: false) }
+
   # 重写 garment_count_info 读写方法 attr_accessor
   def garment_count_info=(json)
     # e.g.
@@ -169,7 +170,8 @@ class Appointment < ApplicationRecord
             name: user.info.nickname,
             phone: user.phone,
             service_cost: 0,
-            care_cost: 0
+            care_cost: 0,
+            date: Time.now.zone
           }.merge(appt_params || {})
         )
       if appt_group_params

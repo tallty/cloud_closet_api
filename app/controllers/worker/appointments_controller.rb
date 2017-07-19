@@ -9,7 +9,8 @@ class Worker::AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    @appointments_hash = Appointment.all.appointment_state("committed").order('date DESC').group_by(&:date)
+    @appointments_hash = 
+      Appointment.appointment_state("committed").not_by_admin.group_by(&:date)
     respond_with(@appointments_hash)
   end
 
@@ -37,7 +38,10 @@ class Worker::AppointmentsController < ApplicationController
 
   def state_query
     Appointment.aasm.state_machine.states.collect(&:name).each do |state|
-      instance_variable_set("@#{state}_appointments", Appointment.all.appointment_state(state).order('date DESC').group_by(&:date))
+      instance_variable_set(
+        "@#{state}_appointments", 
+        Appointment.appointment_state(state).not_by_admin.group_by(&:date)
+      )
     end
     respond_with template: "worker/appointments/state_query", status: 200
   end
