@@ -207,13 +207,14 @@ class Appointment < ApplicationRecord
     end
 
     def after_pay
-      create_chests
       # 续期
       if _chest = ExhibitionChest.find_by_id(meta&.[](:lease_renewal_chest_id))
         _chest.valuation_chest.exhibition_chests.each do |chest|
           chest.expire_time += meta[:month].months
           chest.save!
         end
+      else
+        create_chests
       end
       PurchaseLogService.new(
           self.user, ['appt_paid_successfully'],
