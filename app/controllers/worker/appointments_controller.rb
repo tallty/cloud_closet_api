@@ -37,12 +37,19 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   def state_query
-    Appointment.aasm.state_machine.states.collect(&:name).each do |state|
+    @hash = {
+      accepted: [:accepted],
+      waiting: [:unpaid, :paid],
+      history: [:storing, :canceled]
+    }
+
+    @hash.each do |name, state_ary|
       instance_variable_set(
-        "@#{state}_appointments", 
-        Appointment.appointment_state(state).not_by_admin.group_by(&:created_date)
+        "@#{name}_appointments", 
+        Appointment.appointment_state(state_ary).not_by_admin.group_by(&:created_date)
       )
     end
+
     respond_with template: "worker/appointments/state_query", status: 200
   end
 
