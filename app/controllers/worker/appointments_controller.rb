@@ -9,7 +9,7 @@ class Worker::AppointmentsController < ApplicationController
   respond_to :json
 
   def index
-    @appointments_hash = Appointment.all.appointment_state("committed").group_by(&:date)
+    @appointments_hash = Appointment.all.appointment_state("committed").order('date DESC').group_by(&:date)
     respond_with(@appointments_hash)
   end
 
@@ -37,7 +37,7 @@ class Worker::AppointmentsController < ApplicationController
 
   def state_query
     Appointment.aasm.state_machine.states.collect(&:name).each do |state|
-      instance_variable_set("@#{state}_appointments", Appointment.all.appointment_state(state).group_by(&:date))
+      instance_variable_set("@#{state}_appointments", Appointment.all.appointment_state(state).order('date DESC').group_by(&:date))
     end
     respond_with template: "worker/appointments/state_query", status: 200
   end
@@ -51,7 +51,7 @@ class Worker::AppointmentsController < ApplicationController
   end
 
   def destroy
-    @worker_appointment.destroy
+    @worker_appointment.soft_delete!
     head 204
   end
 
