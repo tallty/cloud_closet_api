@@ -24,7 +24,7 @@
 #
 
 class DeliveryOrder < ApplicationRecord
-  default_scope { where.not( aasm_state: 'deleted' ) }
+  default_scope { where.not( aasm_state: 'deleted' ).order('created_at DESC') }
 
   belongs_to :user
   # 只有当配送订单支付(after_pay)之后 Garment 才与 DeliveryOrder 关联
