@@ -21,12 +21,12 @@ class ExhibitionChestViewService
 		# 替换 衣橱详细页 garment
 
 		_garments = _chest.need_join ?
-			@exhibition_chests.where(exhibition_unit: _chest.exhibition_unit).map(&:garments).reduce(:merge).in_chest :
+			@exhibition_chests.where(exhibition_unit: _chest.exhibition_unit).map(&:garments).reduce(:or).in_chest :
 			_chest.garments.in_chest
 			
 		[ 
 			_chest, 
-			garment_scope.call(_garments)
+			garment_scope&.call(_garments) || _garments
 		]
 	end
 
